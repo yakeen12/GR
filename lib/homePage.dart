@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/Pages/home.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,10 +12,10 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    Page1(),
-    Page2(),
-    Page3(),
-    Page4(),
+    Home(),
+    PlayLists(),
+    Me(),
+    // Page4(),
   ];
 
   @override
@@ -33,47 +34,35 @@ class _HomePageState extends State<HomePage> {
           });
         },
         showSelectedLabels: true,
-        showUnselectedLabels: true,
+        showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
         items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.explore_outlined), label: "Page1"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.explore_outlined), label: "Page2"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.explore_outlined), label: "Page3"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.explore_outlined), label: "Page4"),
+              icon: Icon(Icons.favorite), label: "PlayLists"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Me"),
+          // BottomNavigationBarItem(
+          //     icon: Icon(Icons.explore_outlined), label: "Page4"),
         ],
       ),
     );
   }
 }
 
-class Page1 extends StatelessWidget {
+class PlayLists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Text('Page 1',
+        child: Text('PlayLists',
             style: TextStyle(fontSize: 24, color: Colors.white)));
   }
 }
 
-class Page2 extends StatelessWidget {
+class Me extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Text('Page 2',
-            style: TextStyle(fontSize: 24, color: Colors.white)));
-  }
-}
-
-class Page3 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Text('Page 3',
-            style: TextStyle(fontSize: 24, color: Colors.white)));
+        child: Text('Me', style: TextStyle(fontSize: 24, color: Colors.white)));
   }
 }
 
