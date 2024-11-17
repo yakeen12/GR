@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/Pages/home.dart';
+import 'package:music_app/Pages/me.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -58,13 +59,7 @@ class PlayLists extends StatelessWidget {
   }
 }
 
-class Me extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Text('Me', style: TextStyle(fontSize: 24, color: Colors.white)));
-  }
-}
+
 
 class Page4 extends StatelessWidget {
   @override

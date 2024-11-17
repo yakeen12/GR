@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/homePage.dart';
 
+
 void main() {
   runApp(const MyApp());
 }
