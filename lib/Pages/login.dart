@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_app/homePage.dart';
+import 'package:music_app/main.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -11,42 +13,60 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController PasswordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
+Widget build(BuildContext context) {
+  return Container(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
         begin: FractionalOffset.topCenter,
         end: Alignment.bottomCenter,
         colors: [Color.fromARGB(255, 0, 0, 0), Color.fromARGB(255, 80, 17, 13)],
-      )),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: _Page(),
       ),
-    );
-  }
+    ),
+    child: Scaffold(
+      backgroundColor: Colors.transparent,
+      body: _Page(),
+    ),
+  );
+}
 
-  Widget _Page() {
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _icon(),
-            const SizedBox(height: 50),
-            _inputfield("UserName", UserNameController),
-            const SizedBox(height: 30),
-            _inputfield("Password", PasswordController, isPassword: true),
-            const SizedBox(height: 50),
-            _loginbtn(),
-            const SizedBox(height: 20),
-            _extraText(),
-          ],
+
+Widget _Page() {
+  return LayoutBuilder(
+    builder: (BuildContext context, BoxConstraints constraints) {
+      return SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: constraints.maxHeight,
+          ),
+          child: IntrinsicHeight(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _icon(),
+                  const SizedBox(height: 30),
+                  _inputfield("UserName", UserNameController),
+                  const SizedBox(height: 30),
+                  _inputfield("Password", PasswordController, isPassword: true),
+                  const SizedBox(height: 30),
+                  _loginbtn(),
+                  const SizedBox(height: 20),
+                  _extraText(),
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
-    );
-  }
+      );
+    },
+  );
+}
+
+
+
+
 
   Widget _icon() {
     return Container(
@@ -93,10 +113,11 @@ class _LoginPageState extends State<LoginPage> {
                         MaterialPageRoute(
                             builder: (context) => const HomePage()));
       },
+      
       child: SizedBox(
           width: MediaQuery.sizeOf(context).width * 0.5,
           child: Text(
-            "sign in ",
+            "Login ",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20),
           )),
@@ -124,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             // Facebook Login Button
             SizedBox(
-              width: 150,
+              width: 120,
               child: TextButton(
                 onPressed: () {
                   print('Facebook Login Pressed');
@@ -147,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                       'FB',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -158,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
 
             // Google Login Button
             SizedBox(
-              width: 150,
+              width: 120,
               child: TextButton(
                 onPressed: () {
                   print('Google Login Pressed');
@@ -180,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                       'Google',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -198,7 +219,10 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(color: Colors.grey),
             ),
             TextButton(
-                onPressed: () {},
+                onPressed: () { Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CreateAcc()));},
                 style: TextButton.styleFrom(foregroundColor: Colors.grey),
                 child: Text(
                   "sign in now",
