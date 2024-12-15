@@ -1,221 +1,220 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:music_app/homePage.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _rememberMe = false;
+  TextEditingController UserNameController = TextEditingController();
+  TextEditingController PasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Align(
-        alignment: Alignment.center,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 60, 15, 15),
-          // padding: const EdgeInsets.all(15.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "LOGIN",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 50,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey,
-                  hintText: 'Email',
-                  prefixIcon: Icon(Icons.email, color: Colors.grey[800]),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none,
+    return Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+        begin: FractionalOffset.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Color.fromARGB(255, 0, 0, 0), Color.fromARGB(255, 80, 17, 13)],
+      )),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: _Page(),
+      ),
+    );
+  }
+
+  Widget _Page() {
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _icon(),
+            const SizedBox(height: 50),
+            _inputfield("UserName", UserNameController),
+            const SizedBox(height: 30),
+            _inputfield("Password", PasswordController, isPassword: true),
+            const SizedBox(height: 50),
+            _loginbtn(),
+            const SizedBox(height: 20),
+            _extraText(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _icon() {
+    return Container(
+      padding: EdgeInsets.zero,
+      decoration: BoxDecoration(
+          //border: Border.all(color: const Color.fromARGB(255, 2, 2, 2),width: 2),
+          shape: BoxShape.circle),
+      child: Center(
+        child: Image.asset(
+          'assets/my_image.png',
+          width: 230,
+          height: 179,
+          fit: BoxFit.cover, // Adjust how the image fits within the space
+        ),
+      ),
+    );
+  }
+
+  Widget _inputfield(String hintText, TextEditingController controller,
+      {isPassword = false}) {
+    var border = OutlineInputBorder(
+        borderRadius: BorderRadius.circular(18),
+        borderSide: const BorderSide(color: Colors.black));
+    return TextField(
+      style: const TextStyle(color: Colors.white),
+      controller: controller,
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: const TextStyle(color: Color.fromARGB(255, 96, 75, 75)),
+        enabledBorder: border,
+        focusedBorder: border,
+      ),
+      obscureText: isPassword,
+    );
+  }
+
+  Widget _loginbtn() {
+    return ElevatedButton(
+      onPressed: () {
+        debugPrint("UserName: " + UserNameController.text);
+        debugPrint("Password: " + PasswordController.text);
+         Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
+      },
+      child: SizedBox(
+          width: MediaQuery.sizeOf(context).width * 0.5,
+          child: Text(
+            "sign in ",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20),
+          )),
+      style: ElevatedButton.styleFrom(
+        shape: const StadiumBorder(),
+        primary: Color.fromARGB(255, 104, 2, 2),
+        onPrimary: Color.fromARGB(255, 18, 4, 4),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+      ),
+    );
+  }
+
+  Widget _extraText() {
+    return Column(
+      children: [
+        Text(
+          'Or login with',
+          style: TextStyle(color: Colors.grey),
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // Facebook Login Button
+            SizedBox(
+              width: 150,
+              child: TextButton(
+                onPressed: () {
+                  print('Facebook Login Pressed');
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.grey[800],
+                  padding: EdgeInsets.symmetric(
+                    vertical: 16,
                   ),
-                ),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey,
-                  hintText: 'Password',
-                  prefixIcon: Icon(Icons.lock, color: Colors.grey[700]),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                ),
-                obscureText: true,
-              ),
-              Theme(
-                data: Theme.of(context).copyWith(
-                  unselectedWidgetColor: Colors.grey,
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Checkbox(
-                      value: _rememberMe,
-
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _rememberMe = value ?? false;
-                        });
-                      },
-                      activeColor: Colors.red[400], // Checked color
-                      checkColor: Colors.grey[400], // Color of the checkmark
-                    ),
+                    Icon(Icons.facebook, color: Colors.white),
+                    SizedBox(width: 8),
                     Text(
-                      'Remember Me',
-                      style: TextStyle(color: Colors.grey),
+                      'FB',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: 30,
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.red[400],
-                    foregroundColor: Colors.grey[400],
-                    padding: EdgeInsets.symmetric(vertical: 15),
+            ),
+
+            // Google Login Button
+            SizedBox(
+              width: 150,
+              child: TextButton(
+                onPressed: () {
+                  print('Google Login Pressed');
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.grey[800],
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Text(
-                    "Login",
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()));
-                  },
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.g_mobiledata,
+                        color: Colors.white), // Google logo
+                    SizedBox(width: 8),
+                    Text(
+                      'Google',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: 50,
-              ),
-              Text(
-                'Or login with',
-                style: TextStyle(color: Colors.grey),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Facebook Login Button
-                  SizedBox(
-                    width: 150,
-                    child: TextButton(
-                      onPressed: () {
-                        print('Facebook Login Pressed');
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.grey[800],
-                        padding: EdgeInsets.symmetric(
-                          vertical: 16,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.facebook, color: Colors.white),
-                          SizedBox(width: 8),
-                          Text(
-                            'FB',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  // Google Login Button
-                  SizedBox(
-                    width: 150,
-                    child: TextButton(
-                      onPressed: () {
-                        print('Google Login Pressed');
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.grey[800],
-                        padding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.g_mobiledata,
-                              color: Colors.white), // Google logo
-                          SizedBox(width: 8),
-                          Text(
-                            'Google',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Expanded(child: SizedBox()),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Not yet signed in?',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(foregroundColor: Colors.grey),
-                      child: Text(
-                        "sign in now",
-                        style: TextStyle(decoration: TextDecoration.underline),
-                      ))
-                ],
-              )
-            ],
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Not yet signed in?',
+              style: TextStyle(color: Colors.grey),
+            ),
+            TextButton(
+                onPressed: () {},
+                style: TextButton.styleFrom(foregroundColor: Colors.grey),
+                child: Text(
+                  "sign in now",
+                  style: TextStyle(decoration: TextDecoration.underline),
+                ))
+          ],
+        ),
+        const Text(
+          "have a problem?",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromARGB(255, 88, 82, 82),
           ),
         ),
-      ),
+      ],
     );
   }
 }
