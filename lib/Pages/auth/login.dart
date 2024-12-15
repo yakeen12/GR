@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_app/Pages/auth/signin.dart';
 import 'package:music_app/homePage.dart';
 import 'package:music_app/main.dart';
 
@@ -13,60 +14,59 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController PasswordController = TextEditingController();
 
   @override
-Widget build(BuildContext context) {
-  return Container(
-    decoration: const BoxDecoration(
-      gradient: LinearGradient(
-        begin: FractionalOffset.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [Color.fromARGB(255, 0, 0, 0), Color.fromARGB(255, 80, 17, 13)],
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: FractionalOffset.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color.fromARGB(255, 0, 0, 0),
+            Color.fromARGB(255, 80, 17, 13)
+          ],
+        ),
       ),
-    ),
-    child: Scaffold(
-      backgroundColor: Colors.transparent,
-      body: _Page(),
-    ),
-  );
-}
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: _Page(),
+      ),
+    );
+  }
 
-
-Widget _Page() {
-  return LayoutBuilder(
-    builder: (BuildContext context, BoxConstraints constraints) {
-      return SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: constraints.maxHeight,
-          ),
-          child: IntrinsicHeight(
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _icon(),
-                  const SizedBox(height: 30),
-                  _inputfield("UserName", UserNameController),
-                  const SizedBox(height: 30),
-                  _inputfield("Password", PasswordController, isPassword: true),
-                  const SizedBox(height: 30),
-                  _loginbtn(),
-                  const SizedBox(height: 20),
-                  _extraText(),
-                ],
+  Widget _Page() {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _icon(),
+                    const SizedBox(height: 30),
+                    _inputfield("UserName", UserNameController),
+                    const SizedBox(height: 30),
+                    _inputfield("Password", PasswordController,
+                        isPassword: true),
+                    const SizedBox(height: 30),
+                    _loginbtn(),
+                    const SizedBox(height: 20),
+                    _extraText(),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      );
-    },
-  );
-}
-
-
-
-
+        );
+      },
+    );
+  }
 
   Widget _icon() {
     return Container(
@@ -108,12 +108,9 @@ Widget _Page() {
       onPressed: () {
         debugPrint("UserName: " + UserNameController.text);
         debugPrint("Password: " + PasswordController.text);
-         Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
       },
-      
       child: SizedBox(
           width: MediaQuery.sizeOf(context).width * 0.5,
           child: Text(
@@ -146,6 +143,7 @@ Widget _Page() {
             // Facebook Login Button
             SizedBox(
               width: 120,
+              height: 55,
               child: TextButton(
                 onPressed: () {
                   print('Facebook Login Pressed');
@@ -180,13 +178,14 @@ Widget _Page() {
             // Google Login Button
             SizedBox(
               width: 120,
+              height: 55,
               child: TextButton(
                 onPressed: () {
                   print('Google Login Pressed');
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.grey[800],
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 22),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -219,10 +218,12 @@ Widget _Page() {
               style: TextStyle(color: Colors.grey),
             ),
             TextButton(
-                onPressed: () { Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CreateAcc()));},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CreateAcc()));
+                },
                 style: TextButton.styleFrom(foregroundColor: Colors.grey),
                 child: Text(
                   "sign in now",
