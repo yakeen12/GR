@@ -23,7 +23,7 @@ class AppTheme{
   
   static final LightTheme=ThemeData(
     primaryColor: AppColors.primary,
-    scaffoldBackgroundColor: AppColors.LightMode,
+    scaffoldBackgroundColor: const Color.fromARGB(255, 223, 215, 214),
     brightness: Brightness.light,
     fontFamily: 'ClashGrotesk',
   
