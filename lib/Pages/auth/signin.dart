@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 
 class CreateAcc extends StatefulWidget {
   const CreateAcc({super.key});
@@ -12,40 +13,8 @@ class _CreateAccState extends State<CreateAcc> {
   bool isObscurePassword = true;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: FractionalOffset.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color.fromARGB(255, 0, 0, 0),
-            Color.fromARGB(255, 80, 17, 13)
-          ],
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          title: const Text("       Create Account"),
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Color.fromARGB(97, 28, 26, 26),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.settings,
-                color: Color.fromARGB(97, 15, 14, 14),
-              ),
-            )
-          ],
-        ),
+    return CustomScaffold(
+        title: "Create Account",
         body: Container(
           padding: const EdgeInsets.only(left: 15, top: 20, right: 15),
           child: GestureDetector(
@@ -191,9 +160,44 @@ class _CreateAccState extends State<CreateAcc> {
               ],
             ),
           ),
-        ),
-      ),
-    );
+        ));
+    //  return Container(
+    //   decoration: const BoxDecoration(
+    //     gradient: LinearGradient(
+    //       begin: FractionalOffset.topCenter,
+    //       end: Alignment.bottomCenter,
+    //       colors: [
+    //         Color.fromARGB(255, 0, 0, 0),
+    //         Color.fromARGB(255, 80, 17, 13)
+    //       ],
+    //     ),
+    //   ),
+    //   child: Scaffold(
+    //     backgroundColor: Colors.transparent,
+    //     appBar: AppBar(
+    //       title: const Text("       Create Account"),
+    //       leading: IconButton(
+    //         icon: const Icon(
+    //           Icons.arrow_back,
+    //           color: Color.fromARGB(97, 28, 26, 26),
+    //         ),
+    //         onPressed: () {
+    //           Navigator.pop(context);
+    //         },
+    //       ),
+    //       actions: [
+    //         IconButton(
+    //           onPressed: () {},
+    //           icon: const Icon(
+    //             Icons.settings,
+    //             color: Color.fromARGB(97, 15, 14, 14),
+    //           ),
+    //         )
+    //       ],
+    //     ),
+    //     body:
+    //   ),
+    // );
   }
 
   Widget buildTextField(

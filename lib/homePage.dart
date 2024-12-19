@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/Pages/home.dart';
-import 'package:music_app/Pages/me.dart';
+import 'package:music_app/Pages/navigation-bar-pages/communities.dart';
+import 'package:music_app/Pages/navigation-bar-pages/home.dart';
+import 'package:music_app/Pages/navigation-bar-pages/me.dart';
+import 'package:music_app/Pages/navigation-bar-pages/playlists.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,8 +17,8 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     Home(),
     PlayLists(),
+    Communities(),
     Me(),
-    // Page4(),
   ];
 
   @override
@@ -40,32 +42,12 @@ class _HomePageState extends State<HomePage> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: "PlayLists"),
+              icon: Icon(Icons.library_music), label: "PlayLists"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.people_alt_outlined), label: "Communities"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Me"),
-          // BottomNavigationBarItem(
-          //     icon: Icon(Icons.explore_outlined), label: "Page4"),
         ],
       ),
     );
-  }
-}
-
-class PlayLists extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Text('PlayLists',
-            style: TextStyle(fontSize: 24, color: Colors.white)));
-  }
-}
-
-
-
-class Page4 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Text('Page 4',
-            style: TextStyle(fontSize: 24, color: Colors.white)));
   }
 }
