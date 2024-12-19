@@ -14,8 +14,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      body: LayoutBuilder(
+    return CustomScaffold(body: LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return SingleChildScrollView(
           child: ConstrainedBox(
@@ -92,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
           shape: BoxShape.circle),
       child: Center(
         child: Image.asset(
-          'assets/my_image.png',
+          'assets/images/my_image.png',
           width: 230,
           height: 179,
           fit: BoxFit.cover, // Adjust how the image fits within the space
