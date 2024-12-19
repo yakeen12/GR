@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/Pages/auth/signin.dart';
 import 'package:music_app/homePage.dart';
-import 'package:music_app/main.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,22 +14,39 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: FractionalOffset.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color.fromARGB(255, 0, 0, 0),
-            Color.fromARGB(255, 80, 17, 13)
-          ],
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: _Page(),
-      ),
-    );
+    return CustomScaffold(
+      body: LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _icon(),
+                    const SizedBox(height: 30),
+                    _inputfield("UserName", UserNameController),
+                    const SizedBox(height: 30),
+                    _inputfield("Password", PasswordController,
+                        isPassword: true),
+                    const SizedBox(height: 30),
+                    _loginbtn(),
+                    const SizedBox(height: 20),
+                    _extraText(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    ));
   }
 
   Widget _Page() {
