@@ -45,72 +45,75 @@ class PlayLists extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 30,
+          height: 19,
         ),
         Expanded(
           // height: MediaQuery.sizeOf(context).height * 0.8,
           child: DefaultTabController(
             length: 2,
-            child: Expanded(
-              // height: MediaQuery.sizeOf(context).height * 0.7,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    // TabBar داخل الـ Scaffold
-                    TabBar(
-                      labelColor: Colors.white,
-                      unselectedLabelColor: Colors.grey,
-                      indicator: UnderlineTabIndicator(
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                          width: 2.0,
-                        ),
-                        insets: EdgeInsets.symmetric(horizontal: 30.0),
-                      ),
-                      unselectedLabelStyle: TextStyle(
-                        fontSize: 16,
-                      ),
-                      labelStyle: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      indicatorSize: TabBarIndicatorSize.label,
-                      labelPadding: EdgeInsets.symmetric(horizontal: 20),
-                      tabs: [
-                        Tab(
-                          child: Container(
-                            height: 35,
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Music',
+            child: Flex(
+                direction: Axis.vertical,
+                // height: MediaQuery.sizeOf(context).height * 0.7,
+                children: [
+                  SingleChildScrollView(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      children: [
+                        // TabBar داخل الـ Scaffold
+                        TabBar(
+                          labelColor: Colors.white,
+                          unselectedLabelColor: Colors.grey,
+                          indicator: UnderlineTabIndicator(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 2.0,
                             ),
+                            insets: EdgeInsets.symmetric(horizontal: 30.0),
                           ),
-                        ),
-                        Tab(
-                          child: Container(
-                            height: 35,
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Podcast',
+                          unselectedLabelStyle: TextStyle(
+                            fontSize: 16,
+                          ),
+                          labelStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          indicatorSize: TabBarIndicatorSize.label,
+                          labelPadding: EdgeInsets.symmetric(horizontal: 20),
+                          tabs: [
+                            Tab(
+                              child: Container(
+                                height: 35,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Music',
+                                ),
+                              ),
                             ),
+                            Tab(
+                              child: Container(
+                                height: 35,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Podcast',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.73,
+                          child: TabBarView(
+                            children: [
+                              PlaylistsTab(),
+                              PodcastTab(),
+                            ],
                           ),
                         ),
                       ],
                     ),
-
-                    SizedBox(
-                      height: MediaQuery.sizeOf(context).height * 0.73,
-                      child: TabBarView(
-                        children: [
-                          PlaylistsTab(),
-                          PodcastTab(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
+                ]),
           ),
         )
       ]),
@@ -179,7 +182,7 @@ class PlaylistsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
           SizedBox(
@@ -226,7 +229,7 @@ class PlaylistsTab extends StatelessWidget {
             height: 15,
           ),
           SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.55,
+            height: MediaQuery.sizeOf(context).height * 0.595,
             child: ListView.builder(
               itemCount: playlists.length,
               itemBuilder: (context, index) {
@@ -246,8 +249,8 @@ class PlaylistsTab extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
+                      Flex(direction: Axis.vertical, children: [
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -268,7 +271,7 @@ class PlaylistsTab extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ),
+                      ]),
                       IconButton(
                         icon: Icon(
                           Icons.more_vert,
@@ -295,13 +298,108 @@ class PodcastTab extends StatelessWidget {
     return ListView.builder(
       itemCount: 8,
       itemBuilder: (context, index) {
-        return ListTile(
-          leading: Icon(Icons.mic, color: Colors.orange, size: 30),
-          title: Text('بودكاست ${index + 1}', style: TextStyle(fontSize: 18)),
-          subtitle: Text('المضيف ${index + 1}'),
-          trailing: Icon(Icons.play_arrow, color: Colors.grey),
-          onTap: () {},
-        );
+        return Center(
+            child: Container(
+          padding: EdgeInsets.all(16),
+          margin: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(69, 158, 158, 158),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Header with title and subtitle
+              Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      'https://yt3.googleusercontent.com/ytc/AIdro_knm8C6-aj25mYqJ01I6WoeJY1ctxQeswGLqO6xxV-ltA=s900-c-k-c0x00ffffff-no-rj', // Replace with your image URL
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '321B-Viking Legends: The Peacemaker',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'Myths and Legends',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.more_vert,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              // Description
+              Text(
+                'On his quest to help princess Ingigerd, Hrolf has become enslaved by the wily Wi...',
+                style: TextStyle(
+                  color: Colors.grey[300],
+                  fontSize: 14,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 16),
+              // Progress bar and time left
+              Row(
+                children: [
+                  Expanded(
+                    child: LinearProgressIndicator(
+                      value: 0.5, // Example progress value
+                      backgroundColor: Colors.grey[800],
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    '53min left',
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              // Save and more options
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(
+                    Icons.bookmark_border,
+                    color: Colors.white,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ));
       },
     );
   }
