@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:music_app/Pages/auth/login.dart';
-import 'package:music_app/Pages/splash.dart';
+import 'package:music_app/Views/auth/login.dart';
+import 'package:music_app/Views/splash.dart';
 import 'package:music_app/homePage.dart';
 
 void main() {

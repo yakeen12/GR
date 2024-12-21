@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
-import 'package:music_app/Pages/auth/login.dart';
+import 'package:music_app/Views/auth/login.dart';
 import 'package:music_app/homePage.dart';
 
 class splash extends StatefulWidget {
