@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/CustomWidgets/CustomTextField.dart';
+import 'package:music_app/CustomWidgets/custom-Button.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
-import 'package:music_app/Pages/auth/signin.dart';
+import 'package:music_app/Views/auth/signin.dart';
 import 'package:music_app/homePage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,10 +31,13 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _icon(),
-                    const SizedBox(height: 30),
-                    _inputfield("UserName", UserNameController),
-                    const SizedBox(height: 30),
-                    _inputfield("Password", PasswordController,
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                        hintText: "UserName", controller: UserNameController),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                        hintText: "Password",
+                        controller: PasswordController,
                         isPassword: true),
                     const SizedBox(height: 30),
                     _loginbtn(),
@@ -65,9 +70,12 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     _icon(),
                     const SizedBox(height: 30),
-                    _inputfield("UserName", UserNameController),
+                    CustomTextField(
+                        hintText: "UserName", controller: UserNameController),
                     const SizedBox(height: 30),
-                    _inputfield("Password", PasswordController,
+                    CustomTextField(
+                        hintText: "Password",
+                        controller: PasswordController,
                         isPassword: true),
                     const SizedBox(height: 30),
                     _loginbtn(),
@@ -100,45 +108,17 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _inputfield(String hintText, TextEditingController controller,
-      {isPassword = false}) {
-    var border = OutlineInputBorder(
-        borderRadius: BorderRadius.circular(18),
-        borderSide: const BorderSide(color: Colors.black));
-    return TextField(
-      style: const TextStyle(color: Colors.white),
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: const TextStyle(color: Color.fromARGB(255, 96, 75, 75)),
-        enabledBorder: border,
-        focusedBorder: border,
-      ),
-      obscureText: isPassword,
-    );
-  }
-
   Widget _loginbtn() {
-    return ElevatedButton(
-      onPressed: () {
-        debugPrint("UserName: " + UserNameController.text);
-        debugPrint("Password: " + PasswordController.text);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const HomePage()));
-      },
-      child: SizedBox(
-          width: MediaQuery.sizeOf(context).width * 0.5,
-          child: Text(
-            "Login ",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20),
-          )),
-      style: ElevatedButton.styleFrom(
-        shape: const StadiumBorder(),
-        primary: Color.fromARGB(255, 104, 2, 2),
-        onPrimary: Color.fromARGB(255, 18, 4, 4),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-      ),
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width * 0.5,
+      child: CustomButton(
+          onPressed: () {
+            debugPrint("UserName: " + UserNameController.text);
+            debugPrint("Password: " + PasswordController.text);
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const HomePage()));
+          },
+          text: "Login"),
     );
   }
 
@@ -237,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const CreateAcc()));
+                          builder: (context) => const SignInView()));
                 },
                 style: TextButton.styleFrom(foregroundColor: Colors.grey),
                 child: Text(
