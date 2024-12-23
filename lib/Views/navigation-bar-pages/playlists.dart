@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/Views/music/musicPlayer.dart';
 
 class PlayLists extends StatelessWidget {
   @override
@@ -102,7 +103,7 @@ class PlayLists extends StatelessWidget {
                         ),
 
                         SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.73,
+                          height: MediaQuery.sizeOf(context).height * 0.7,
                           child: TabBarView(
                             children: [
                               PlaylistsTab(),
@@ -229,57 +230,67 @@ class PlaylistsTab extends StatelessWidget {
             height: 15,
           ),
           SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.595,
+            height: MediaQuery.sizeOf(context).height * 0.55,
             child: ListView.builder(
               itemCount: playlists.length,
               itemBuilder: (context, index) {
                 final playlist = playlists[index];
-                return Container(
-                  margin: EdgeInsets.only(bottom: 15),
-                  child: Row(
-                    children: [
-                      // صورة البلاي ليست
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          playlist['image']!,
-                          width: 70,
-                          height: 70,
-                          fit: BoxFit.cover,
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => MusicPlayer(),
+                        ));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 15),
+                    child: Row(
+                      children: [
+                        // صورة البلاي ليست
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            playlist['image']!,
+                            width: 70,
+                            height: 70,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 10),
-                      Flex(direction: Axis.vertical, children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              playlist['name']!,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              playlist['songs']!,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
+                        SizedBox(width: 10),
+                        Flex(direction: Axis.vertical, children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                playlist['name']!,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                          ],
+                              SizedBox(height: 5),
+                              Text(
+                                playlist['songs']!,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ]),
+                        Spacer(),
+                        IconButton(
+                          icon: Icon(
+                            Icons.more_vert,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {},
                         ),
-                      ]),
-                      IconButton(
-                        icon: Icon(
-                          Icons.more_vert,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
