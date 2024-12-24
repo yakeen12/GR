@@ -138,19 +138,171 @@ class _HomeState extends State<Home> {
               ),
               backgroundColor: Colors.black,
             ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => Container(
-                height: 50,
-                width: 100,
-                color: Colors.deepPurple,
-                margin: EdgeInsets.all(10),
+          // SliverList(
+          //   delegate: SliverChildBuilderDelegate(
+          //     (context, index) => Container(
+          //       height: 50,
+          //       width: 100,
+          //       color: Colors.deepPurple,
+          //       margin: EdgeInsets.all(10),
+          //     ),
+          //     childCount: 50,
+          //   ),
+          // ),
+          // Section: "More of what you like"
+          SliverPadding(
+            padding: EdgeInsets.all(16.0),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'More of what you like',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Suggestions based on what you\'ve liked or played',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  SizedBox(height: 16),
+                ],
               ),
-              childCount: 50,
             ),
           ),
+
+          // Horizontal list using SliverToBoxAdapter
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 150,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  RecommendationCard(
+                    imageUrl: 'https://example.com/album1.jpg',
+                    title: 'Pouya - Daddy Issues',
+                    subtitle: 'Related tracks',
+                  ),
+                  RecommendationCard(
+                    imageUrl: 'https://example.com/album2.jpg',
+                    title: 'GHOSTEMANE - Rake',
+                    subtitle: 'Related tracks',
+                  ),
+                  RecommendationCard(
+                    imageUrl: 'https://example.com/album3.jpg',
+                    title: 'Hate On Me',
+                    subtitle: 'Related tracks',
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Section: "Artists you should know"
+          SliverPadding(
+            padding: EdgeInsets.all(16.0),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Artists you should know',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Top tracks from artists similar to Lil Pump',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  SizedBox(height: 16),
+                ],
+              ),
+            ),
+          ),
+
+          // Grid for artists using SliverList
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            sliver: SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 8.0,
+                childAspectRatio: 0.8,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  // Replace this with your data
+                  final List<Map<String, String>> artists = [
+                    {
+                      'title': 'Famous Dex',
+                      'imageUrl': 'https://example.com/artist1.jpg'
+                    },
+                    {
+                      'title': 'SKI MASK THE SLUMP GOD',
+                      'imageUrl': 'https://example.com/artist2.jpg'
+                    },
+                    {
+                      'title': 'SUICIDEBOYS',
+                      'imageUrl': 'https://example.com/artist3.jpg'
+                    },
+                  ];
+
+                  return RecommendationCard(
+                    imageUrl: artists[index]['imageUrl']!,
+                    title: artists[index]['title']!,
+                    subtitle: '',
+                  );
+                },
+                childCount: 3, // عدد العناصر في الشبكة
+              ),
+            ),
+          )
         ],
       ),
+    );
+  }
+}
+
+class RecommendationCard extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final String subtitle;
+
+  const RecommendationCard({
+    required this.imageUrl,
+    required this.title,
+    required this.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          height: 120,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            image: DecorationImage(
+              image: NetworkImage(imageUrl),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        SizedBox(height: 8),
+        Text(
+          title,
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          overflow: TextOverflow.ellipsis,
+        ),
+        if (subtitle.isNotEmpty)
+          Text(
+            subtitle,
+            style: TextStyle(color: Colors.grey, fontSize: 12),
+          ),
+      ],
     );
   }
 }
