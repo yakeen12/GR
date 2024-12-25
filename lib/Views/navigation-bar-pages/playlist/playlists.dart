@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/Views/music/musicPlayer.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
 
 class PlayLists extends StatelessWidget {
   @override
@@ -10,39 +11,80 @@ class PlayLists extends StatelessWidget {
         SizedBox(
           height: 50,
         ),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: TextField(
-            enabled: false,
-            onTap: () {},
-            style: TextStyle(color: Colors.black),
-            // onChanged: _filterItems,
-            decoration: InputDecoration(
-              labelText:
-                  'Search in your playlists...', // Use confirmation text as label if provided, else use default label text
-              labelStyle: TextStyle(color: Colors.black), // Set accent color
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.7,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: TextField(
+                  enabled: false,
+                  onTap: () {},
+                  style: TextStyle(color: Colors.black),
+                  // onChanged: _filterItems,
+                  decoration: InputDecoration(
+                    labelText:
+                        'Search in your playlists...', // Use confirmation text as label if provided, else use default label text
+                    labelStyle:
+                        TextStyle(color: Colors.black), // Set accent color
 
-              prefixIcon: Icon(Icons.search),
+                    prefixIcon: Icon(Icons.search),
 
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.black, width: 1),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.black, width: 1),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.black, width: 2),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.black, width: 1),
+                    ),
+                  ),
+                ),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.black, width: 2),
+              Expanded(child: SizedBox()),
+              InkWell(
+                child: SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: Icon(
+                    Icons.card_giftcard_outlined,
+                    color: Colors.white,
+                    size: 33.2,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Me()));
+                },
               ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.black, width: 1),
-              ),
-            ),
+              SizedBox(
+                width: 22,
+              ), //
+              InkWell(
+                child: SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: CircleAvatar(
+                    maxRadius: 40,
+                    backgroundColor: Colors.amberAccent,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Me()));
+                },
+              )
+            ],
           ),
         ),
         SizedBox(
