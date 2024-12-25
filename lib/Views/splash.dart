@@ -23,7 +23,7 @@ class _SplashState extends State<Splash> {
       final token = LocalStorageService().getToken();
       if (token != null && token.isNotEmpty) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) => Home(),
+          builder: (_) => HomePage(),
         ));
       } else {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
