@@ -21,12 +21,13 @@ class _SignInViewState extends State<SignInView> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
-  final authViewModel = AuthViewModel();
 
   String? selectedImagePath;
 
-  bool isObscurePassword = true;
+  // bool isObscurePassword = true;
   void signIn() async {
+    final authViewModel = AuthViewModel();
+
     final userName = nameController.text;
     final email = emailController.text;
     final password = passwordController.text;

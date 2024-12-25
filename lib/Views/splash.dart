@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/Views/auth/login.dart';
+import 'package:music_app/Views/navigation-bar-pages/home.dart';
 import 'package:music_app/homePage.dart';
+import 'package:music_app/utils/local_storage_service.dart';
 
 class splash extends StatefulWidget {
   const splash({super.key});
@@ -18,10 +20,17 @@ class _splashState extends State<splash> with SingleTickerProviderStateMixin {
     // TODO: implement initState
     super.initState();
 
-    Future.delayed(Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (_) => LoginPage(),
-      ));
+    Future.delayed(Duration(seconds: 2), () async {
+      final token = LocalStorageService().getToken();
+      if (token != null && token.isNotEmpty) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => Home(),
+        ));
+      } else {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => LoginPage(),
+        ));
+      }
     });
   }
 
