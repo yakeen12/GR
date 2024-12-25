@@ -7,8 +7,6 @@ import 'package:music_app/Views/auth/login.dart';
 import 'package:music_app/Views/navigation-bar-pages/home.dart';
 import 'package:music_app/homePage.dart';
 import 'package:music_app/utils/local_storage_service.dart';
-=======
-
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -32,6 +30,7 @@ class _SplashState extends State<Splash> {
           builder: (_) => LoginPage(),
         ));
       }
+    });
   }
 
   @override
@@ -82,7 +81,6 @@ class _GlitchTextState extends State<GlitchText> {
             random.nextDouble() * 6 - 3; // Random y offset (-3 to 3)
         glitchOpacity = random.nextBool() ? 0.5 : 1.0; // Flicker effect
       });
-
     });
   }
 

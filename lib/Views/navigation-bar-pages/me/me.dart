@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:music_app/CustomWidgets/custom-Button.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/editPorf.dart';
@@ -12,10 +11,13 @@ class Me extends StatefulWidget {
 class _MeState extends State<Me> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(
+            height: 20,
+          ),
           // Profile Header
           Container(
             padding: EdgeInsets.all(20),
@@ -34,6 +36,7 @@ class _MeState extends State<Me> {
                     Text(
                       'User Name',
                       style: TextStyle(
+                        color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -92,6 +95,7 @@ class _MeState extends State<Me> {
           count,
           style: TextStyle(
             fontSize: 18,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
