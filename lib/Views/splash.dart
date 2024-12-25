@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/Views/auth/login.dart';
 
+import 'package:music_app/Views/navigation-bar-pages/home.dart';
+import 'package:music_app/homePage.dart';
+import 'package:music_app/utils/local_storage_service.dart';
+=======
+
+
 class Splash extends StatefulWidget {
   const Splash({super.key});
 
@@ -15,15 +21,17 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-
-    // Navigate to the login page after 5 seconds
-    Future.delayed(Duration(seconds: 5), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
+    Future.delayed(Duration(seconds: 2), () async {
+      final token = LocalStorageService().getToken();
+      if (token != null && token.isNotEmpty) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => Home(),
+        ));
+      } else {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => LoginPage(),
-        ),
-      );
-    });
+        ));
+      }
   }
 
   @override
@@ -74,6 +82,7 @@ class _GlitchTextState extends State<GlitchText> {
             random.nextDouble() * 6 - 3; // Random y offset (-3 to 3)
         glitchOpacity = random.nextBool() ? 0.5 : 1.0; // Flicker effect
       });
+
     });
   }
 

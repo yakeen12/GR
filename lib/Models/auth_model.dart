@@ -71,31 +71,96 @@ import 'package:http/http.dart' as http;
 //   }
 // }
 
+// class AuthModel {
+//   final String username;
+//   final String email;
+//   final String password;
+//   final String? profilePicture; // الصورة قد تكون اختيارية
+
+//   AuthModel({
+//     required this.username,
+//     required this.email,
+//     required this.password,
+//     this.profilePicture,
+//   });
+
+//   // لتحويل البيانات إلى JSON لإرسالها إلى الخادم
+//   Map<String, String> toJson() {
+//     return {'username': username, 'email': email, 'password': password};
+//   }
+
+//   // لإنشاء كائن مستخدم من استجابة الخادم
+//   factory AuthModel.fromJson(Map<String, dynamic> json) {
+//     return AuthModel(
+//       username: json['username'],
+//       email: json['email'],
+//       password: json['password'],
+//       profilePicture: json['profilePicture'], // رابط الصورة
+//     );
+//   }
+// }
+
+// class AuthModel {
+//   final String? username; // قد يكون موجودًا في الساين إن فقط
+//   final String email;
+//   final String password;
+//   final String? profilePicture; // اختيارية
+
+//   AuthModel({
+//     this.username,
+//     required this.email,
+//     required this.password,
+//     this.profilePicture,
+//   });
+
+//   // تحويل إلى JSON
+//   Map<String, String> toJson({bool isSignUp = false}) {
+//     final data = {
+//       'email': email,
+//       'password': password,
+//     };
+
+//     // عند التسجيل فقط
+//     if (isSignUp) {
+//       if (username != null) data['username'] = username!;
+//       if (profilePicture != null) data['profilePicture'] = profilePicture!;
+//     }
+//     return data;
+//   }
+// }
+
 class AuthModel {
-  final String username;
-  final String email;
-  final String password;
-  final String? profilePicture; // الصورة قد تكون اختيارية
+  final String? username; // اسم المستخدم (اختياري في حالة تسجيل الدخول)
+  final String email; // البريد الإلكتروني
+  final String password; // كلمة المرور
+  final String? profilePicture; // رابط الصورة (اختياري)
 
   AuthModel({
-    required this.username,
+    this.username,
     required this.email,
     required this.password,
     this.profilePicture,
   });
 
-  // لتحويل البيانات إلى JSON لإرسالها إلى الخادم
+  // لتحويل البيانات إلى JSON لإرسالها إلى السيرفر
   Map<String, String> toJson() {
-    return {'username': username, 'email': email, 'password': password};
+    // print(email);
+    // print(password);
+    return {
+      if (username != null) 'username': username!, // يُرسل فقط إذا كان موجودًا
+      'email': email,
+      'password': password,
+      if (profilePicture != null) 'profilePicture': profilePicture!,
+    };
   }
 
-  // لإنشاء كائن مستخدم من استجابة الخادم
+  // لإنشاء كائن مستخدم من استجابة السيرفر
   factory AuthModel.fromJson(Map<String, dynamic> json) {
     return AuthModel(
       username: json['username'],
       email: json['email'],
-      password: json['password'],
-      profilePicture: json['profilePicture'], // رابط الصورة
+      password: json['password'], // يُفترض أنك لن تعرض كلمة المرور
+      profilePicture: json['profilePicture'], // رابط الصورة إذا كان موجودًا
     );
   }
 }
