@@ -85,49 +85,6 @@ class _SignInViewState extends State<SignInView> {
             },
             child: ListView(
               children: [
-                // Center(
-                //   child: Stack(
-                //     children: [
-                //       Container(
-                //         width: 130,
-                //         height: 130,
-                //         decoration: BoxDecoration(
-                //           border: Border.all(width: 4, color: Colors.black54),
-                //           boxShadow: [
-                //             BoxShadow(
-                //               spreadRadius: 2,
-                //               blurRadius: 10,
-                //               color: Colors.black.withOpacity(0.2),
-                //             ),
-                //           ],
-                //           shape: BoxShape.circle,
-                //           image: const DecorationImage(
-                //             fit: BoxFit.cover,
-                //             image: NetworkImage(
-                //               'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg', // Placeholder URL
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //       Positioned(
-                //         bottom: 0,
-                //         right: 0,
-                //         child: Container(
-                //           height: 40,
-                //           width: 40,
-                //           decoration: const BoxDecoration(
-                //             shape: BoxShape.circle,
-                //             color: Color.fromARGB(255, 12, 13, 14),
-                //           ),
-                //           child: const Icon(
-                //             Icons.edit,
-                //             color: Colors.white,
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
                 ProfileImagePicker(
                     onImageSelected: (path) => selectedImagePath = path),
                 const SizedBox(height: 30),

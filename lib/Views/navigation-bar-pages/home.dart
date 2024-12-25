@@ -206,22 +206,25 @@ class _HomeState extends State<Home> {
           // Horizontal list using SliverToBoxAdapter
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 150,
+              height: 170,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
                   RecommendationCard(
-                    imageUrl: 'https://example.com/album1.jpg',
+                    imageUrl:
+                        'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg',
                     title: 'Pouya - Daddy Issues',
                     subtitle: 'Related tracks',
                   ),
                   RecommendationCard(
-                    imageUrl: 'https://example.com/album2.jpg',
+                    imageUrl:
+                        'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg',
                     title: 'GHOSTEMANE - Rake',
                     subtitle: 'Related tracks',
                   ),
                   RecommendationCard(
-                    imageUrl: 'https://example.com/album3.jpg',
+                    imageUrl:
+                        'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg',
                     title: 'Hate On Me',
                     subtitle: 'Related tracks',
                   ),
@@ -268,15 +271,18 @@ class _HomeState extends State<Home> {
                   final List<Map<String, String>> artists = [
                     {
                       'title': 'Famous Dex',
-                      'imageUrl': 'https://example.com/artist1.jpg'
+                      'imageUrl':
+                          'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg'
                     },
                     {
                       'title': 'SKI MASK THE SLUMP GOD',
-                      'imageUrl': 'https://example.com/artist2.jpg'
+                      'imageUrl':
+                          'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg'
                     },
                     {
                       'title': 'SUICIDEBOYS',
-                      'imageUrl': 'https://example.com/artist3.jpg'
+                      'imageUrl':
+                          'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg'
                     },
                   ];
 
@@ -313,7 +319,7 @@ class RecommendationCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: double.infinity,
+          width: MediaQuery.sizeOf(context).width,
           height: 120,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/CustomWidgets/custom-Button.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/Services/auth.dart';
+import 'package:music_app/Views/auth/login.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/editPorf.dart';
 
 class Meeye extends StatefulWidget {
@@ -109,8 +111,7 @@ class _MeeyeState extends State<Meeye> {
                                 onPressed: () {
                                   // Add logout logic here
                                   Navigator.pop(context); // Close dialog
-                                  Navigator.pushReplacementNamed(
-                                      context, '/login'); // Example navigation
+                                  AuthService().logout();
                                 },
                                 child: Text('Logout'),
                               ),
