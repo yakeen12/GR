@@ -236,7 +236,7 @@ class PlaylistsTab extends StatelessWidget {
             children: [
               Container(
                 height: 80,
-                width: 80,
+                width: MediaQuery.sizeOf(context).width * 0.47,
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
                     color: Colors.grey,
@@ -256,14 +256,18 @@ class PlaylistsTab extends StatelessWidget {
                 ),
               ),
               Container(
+                height: 80,
+                width: MediaQuery.sizeOf(context).width * 0.47,
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(78, 158, 158, 158),
+                    color: Color.fromARGB(255, 158, 158, 158),
                     borderRadius: BorderRadius.circular(15)),
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                child: Text(
-                  "+ NEW PLAYLIST",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                child: Center(
+                  child: Text(
+                    "+ NEW PLAYLIST",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
                 ),
               )
             ],
