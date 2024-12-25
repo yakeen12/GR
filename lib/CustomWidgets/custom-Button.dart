@@ -24,7 +24,7 @@ class _CustomButtonState extends State<CustomButton> {
         style: TextStyle(fontSize: 18),
       )),
       style: ElevatedButton.styleFrom(
-        shape: const StadiumBorder(),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         elevation: 22,
         primary: Color.fromARGB(255, 104, 2, 2),
         onPrimary: Color.fromARGB(255, 18, 4, 4),

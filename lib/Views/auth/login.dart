@@ -138,9 +138,9 @@ class _LoginPageState extends State<LoginPage> {
           shape: BoxShape.circle),
       child: Center(
         child: Image.asset(
-          'assets/images/my_image.png',
-          width: 230,
-          height: 179,
+          'assets/images/rg.png',
+          width: 150,
+          height: 140,
           fit: BoxFit.cover, // Adjust how the image fits within the space
         ),
       ),
@@ -181,14 +181,6 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(decoration: TextDecoration.underline),
                 ))
           ],
-        ),
-        const Text(
-          "have a problem?",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            color: Color.fromARGB(255, 88, 82, 82),
-          ),
         ),
       ],
     );
