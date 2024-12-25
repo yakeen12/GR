@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -68,13 +70,13 @@ class _HomeState extends State<Home> {
               title: Container(
                 padding: EdgeInsets.only(top: 15),
                 width: MediaQuery.of(context).size.width,
-                height: 80,
+                height: 70,
                 child: Column(
                   children: [
                     Row(
                       children: [
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.7,
+                          width: MediaQuery.of(context).size.width * 0.6,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8),
@@ -112,15 +114,45 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                         ),
-                        Expanded(child: SizedBox()), //
-                        SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: CircleAvatar(
-                            maxRadius: 40,
-                            backgroundColor: Colors.amberAccent,
+                        Expanded(
+                          child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Meeye()),
+                                );
+                              },
+                              child: Icon(
+                                Icons.card_giftcard_outlined,
+                                color: Colors.white,
+                                size: 33.2,
+                              ),
+                            ),
                           ),
-                        )
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Meeye()),
+                                );
+                              },
+                              child: CircleAvatar(
+                                maxRadius: 40,
+                                backgroundColor: Colors.amberAccent,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     Expanded(
