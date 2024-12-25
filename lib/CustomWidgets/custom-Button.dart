@@ -21,14 +21,14 @@ class _CustomButtonState extends State<CustomButton> {
           child: Text(
         widget.text,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+        style: TextStyle(fontSize: 18),
       )),
       style: ElevatedButton.styleFrom(
         shape: const StadiumBorder(),
-        elevation: 6,
+        elevation: 22,
         primary: Color.fromARGB(255, 104, 2, 2),
         onPrimary: Color.fromARGB(255, 18, 4, 4),
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: 12),
       ),
     );
   }

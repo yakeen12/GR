@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/Views/navigation-bar-pages/communities.dart';
 import 'package:music_app/Views/navigation-bar-pages/home.dart';
-import 'package:music_app/Views/navigation-bar-pages/me.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlists.dart';
 
 class HomePage extends StatefulWidget {
