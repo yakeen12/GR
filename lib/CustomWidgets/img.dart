@@ -32,7 +32,7 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
         return FileImage(selectedImage!);
       } else {
         return const NetworkImage(
-            'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg');
+            'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg');
       }
     }
 

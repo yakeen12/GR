@@ -26,4 +26,5 @@ class LocalStorageService {
   Future<void> clearToken() async {
     await _preferences?.remove('authToken');
   }
+  
 }

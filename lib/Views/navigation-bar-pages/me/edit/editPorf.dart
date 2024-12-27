@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/CustomTextField.dart';
 import 'package:music_app/CustomWidgets/custom-Button.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/ViewModels/user_view_model.dart';
+import 'package:music_app/methods.dart';
+import 'package:music_app/utils/local_storage_service.dart';
 
 class EditProf extends StatefulWidget {
   @override
@@ -9,10 +13,22 @@ class EditProf extends StatefulWidget {
 }
 
 class _EditProfState extends State<EditProf> {
+  final UserViewModel userViewModel = Get.find();
+
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      body: Column(
+    var user = userViewModel.user.value;
+    TextEditingController emailController =
+        TextEditingController(text: user!.email);
+    TextEditingController nameController =
+        TextEditingController(text: user.username);
+
+    return CustomScaffold(body: Obx(() {
+      if (userViewModel.isLoading.value) {
+        return Center(child: CircularProgressIndicator());
+      }
+
+      return Column(
         children: [
           // Add a SizedBox to push the image lower from the top
           SizedBox(
@@ -38,7 +54,7 @@ class _EditProfState extends State<EditProf> {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                    'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg',
+                    user!.profilePicture!,
                   ),
                 ),
               ),
@@ -51,14 +67,14 @@ class _EditProfState extends State<EditProf> {
               child: ListView(
                 children: [
                   CustomTextField(
-                    controller: TextEditingController(text: ""),
+                    controller: nameController,
                     hintText: "Name",
                   ),
                   SizedBox(
                       height:
                           16.0), // Adds vertical spacing between text fields
                   CustomTextField(
-                    controller: TextEditingController(text: ""),
+                    controller: emailController,
                     hintText: "Email",
                   ),
                 ],
@@ -75,7 +91,15 @@ class _EditProfState extends State<EditProf> {
               child: CustomButton(
                 text: "Save",
                 onPressed: () {
-                  // Add your save functionality here
+                  final email = emailController.text;
+                  final name = nameController.text;
+
+                  // Validate the email and passwords
+                  if (!isEmailValid(email)) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Please enter a valid email address')));
+                    return;
+                  }
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
@@ -89,14 +113,30 @@ class _EditProfState extends State<EditProf> {
                           child: Text('Cancel'),
                         ),
                         TextButton(
-                          onPressed: () {
-                            // Implement your save logic here
-                            Navigator.pop(context); // Close dialog
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Changes saved successfully!'),
-                              ),
+                          onPressed: () async {
+                            String token = LocalStorageService().getToken() ??
+                                ""; // اجلب التوكن من التخزين
+                            await userViewModel.updateUserProfile(
+                              token: token,
+                              name: nameController.text,
+                              email: emailController.text,
                             );
+
+                            if (userViewModel.errorMessage.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content:
+                                        Text("Profile updated successfully")),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content:
+                                        Text(userViewModel.errorMessage.value)),
+                              );
+                            }
+
+                            Navigator.pop(context);
                           },
                           child: Text('Save'),
                         ),
@@ -108,8 +148,8 @@ class _EditProfState extends State<EditProf> {
             ),
           ),
         ],
-      ),
-    );
+      );
+    }));
   }
 }
 
