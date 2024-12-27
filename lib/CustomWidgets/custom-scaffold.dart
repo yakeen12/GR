@@ -38,6 +38,9 @@ class _CustomScaffoldState extends State<CustomScaffold> {
         body: Column(
           children: [
             // Custom AppBar
+            SizedBox(
+              height: 24,
+            ),
             (widget.title != null)
                 ? Container(
                     height: 90,

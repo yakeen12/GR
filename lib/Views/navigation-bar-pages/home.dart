@@ -1,346 +1,245 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  final ScrollController _scrollController = ScrollController();
-  bool _showAppBar = true;
-
-  void _scrollListener() {
-    if (_scrollController.position.userScrollDirection ==
-        ScrollDirection.reverse) {
-      if (_showAppBar) setState(() => _showAppBar = false);
-    } else if (_scrollController.position.userScrollDirection ==
-        ScrollDirection.forward) {
-      if (!_showAppBar) setState(() => _showAppBar = true);
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_scrollListener);
-    // for search
-    filteredItems = allItems;
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_scrollListener);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  //Listtttt
-  List<String> allItems = [
-    'Apple',
-    'Banana',
-    'Orange',
-    'Mango',
-    'Grapes',
-    'Pineapple'
-  ];
-  List<String> filteredItems = [];
-
-  void _filterItems(String query) {
-    setState(() {
-      filteredItems = allItems
-          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    });
-  }
-
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          if (_showAppBar)
-            SliverAppBar(
-              pinned: true,
-              floating: true,
-              title: Container(
-                padding: EdgeInsets.only(top: 15),
-                width: MediaQuery.of(context).size.width,
-                height: 70,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: TextField(
-                            enabled: false,
-                            onTap: () {},
-                            style: TextStyle(color: Colors.black),
-                            onChanged: _filterItems,
-                            decoration: InputDecoration(
-                              labelText:
-                                  'Search...', // Use confirmation text as label if provided, else use default label text
-                              labelStyle: TextStyle(
-                                  color: Colors.black), // Set accent color
+    return CustomScaffold(
+      body: ListView(
+        padding: EdgeInsets.all(12.0),
+        children: [
+          // Music Room Tabs
+          SizedBox(
+            height: 50,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: TextField(
+                    enabled: false,
+                    onTap: () {},
+                    style: TextStyle(color: Colors.black),
+                    // onChanged: _filterItems,
+                    decoration: InputDecoration(
+                      labelText:
+                          'Search in your playlists...', // Use confirmation text as label if provided, else use default label text
+                      labelStyle:
+                          TextStyle(color: Colors.black), // Set accent color
 
-                              prefixIcon: Icon(Icons.search),
+                      prefixIcon: Icon(Icons.search),
 
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 12),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 2),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Meeye()),
-                                );
-                              },
-                              child: Icon(
-                                Icons.card_giftcard_outlined,
-                                color: Colors.white,
-                                size: 33.2,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Meeye()),
-                                );
-                              },
-                              child: CircleAvatar(
-                                maxRadius: 40,
-                                backgroundColor: Colors.amberAccent,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: filteredItems.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(filteredItems[index]),
-                          );
-                        },
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.black, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.black, width: 2),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.black, width: 1),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              backgroundColor: Colors.black,
+                Expanded(child: SizedBox()),
+                InkWell(
+                  child: SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: Icon(
+                      Icons.card_giftcard_outlined,
+                      color: Colors.white,
+                      size: 33.2,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Gift()));
+                  },
+                ),
+                SizedBox(
+                  width: 20,
+                ), //
+                InkWell(
+                  child: SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CircleAvatar(
+                      maxRadius: 40,
+                      backgroundColor: Colors.amberAccent,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Meeye()));
+                  },
+                )
+              ],
             ),
-          // SliverList(
-          //   delegate: SliverChildBuilderDelegate(
-          //     (context, index) => Container(
-          //       height: 50,
-          //       width: 100,
-          //       color: Colors.deepPurple,
-          //       margin: EdgeInsets.all(10),
-          //     ),
-          //     childCount: 50,
-          //   ),
-          // ),
-          // Section: "More of what you like"
-          SliverPadding(
-            padding: EdgeInsets.all(16.0),
-            sliver: SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'More of what you like',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Suggestions based on what you\'ve liked or played',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  SizedBox(height: 16),
-                ],
+          ),
+          SizedBox(
+            height: 19,
+          ),
+          SizedBox(height: 20),
+
+          // Featured Section
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              image: DecorationImage(
+                image: NetworkImage('https://via.placeholder.com/600x300'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              'SUMMER CHILL',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
 
-          // Horizontal list using SliverToBoxAdapter
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 170,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  RecommendationCard(
-                    imageUrl:
-                        'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg',
-                    title: 'Pouya - Daddy Issues',
-                    subtitle: 'Related tracks',
-                  ),
-                  RecommendationCard(
-                    imageUrl:
-                        'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg',
-                    title: 'GHOSTEMANE - Rake',
-                    subtitle: 'Related tracks',
-                  ),
-                  RecommendationCard(
-                    imageUrl:
-                        'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg',
-                    title: 'Hate On Me',
-                    subtitle: 'Related tracks',
-                  ),
-                ],
-              ),
+          SizedBox(height: 20),
+
+          // Most Top Song Section
+          _buildSectionHeader('Most Top Song', () {}),
+          SizedBox(height: 10),
+          SizedBox(
+            height: 120,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                _buildSongCard(
+                    'Laugh', 'Goose House', 'https://via.placeholder.com/100'),
+                _buildSongCard('Nancy Mulligan', 'Ed Sheeran',
+                    'https://via.placeholder.com/100'),
+                _buildSongCard(
+                    'Up&Up', 'Coldplay', 'https://via.placeholder.com/100'),
+              ],
             ),
           ),
 
-          // Section: "Artists you should know"
-          SliverPadding(
-            padding: EdgeInsets.all(16.0),
-            sliver: SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Artists you should know',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Top tracks from artists similar to Lil Pump',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  SizedBox(height: 16),
-                ],
-              ),
+          SizedBox(height: 20),
+
+          // Recent Added Group Section
+          _buildSectionHeader('Recent Added Group', () {}),
+          SizedBox(height: 10),
+          SizedBox(
+            height: 120,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                _buildGroupCard(
+                    'Bunkface', 'Rock', 'https://via.placeholder.com/100'),
+                _buildGroupCard('Barasuara', 'Alternative',
+                    'https://via.placeholder.com/100'),
+              ],
             ),
           ),
-
-          // Grid for artists using SliverList
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            sliver: SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
-                childAspectRatio: 0.8,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  // Replace this with your data
-                  final List<Map<String, String>> artists = [
-                    {
-                      'title': 'Famous Dex',
-                      'imageUrl':
-                          'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg'
-                    },
-                    {
-                      'title': 'SKI MASK THE SLUMP GOD',
-                      'imageUrl':
-                          'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg'
-                    },
-                    {
-                      'title': 'SUICIDEBOYS',
-                      'imageUrl':
-                          'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg'
-                    },
-                  ];
-
-                  return RecommendationCard(
-                    imageUrl: artists[index]['imageUrl']!,
-                    title: artists[index]['title']!,
-                    subtitle: '',
-                  );
-                },
-                childCount: 3, // عدد العناصر في الشبكة
-              ),
-            ),
-          )
         ],
       ),
     );
   }
-}
 
-class RecommendationCard extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-  final String subtitle;
+  Widget _buildTabItem(String title, bool isSelected) {
+    return Text(
+      title,
+      style: TextStyle(
+        color: isSelected ? Colors.white : Colors.grey,
+        fontSize: 16,
+        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+      ),
+    );
+  }
 
-  const RecommendationCard({
-    required this.imageUrl,
-    required this.title,
-    required this.subtitle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildSectionHeader(String title, VoidCallback onViewAllPressed) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
-          width: MediaQuery.sizeOf(context).width,
-          height: 120,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            image: DecorationImage(
-              image: NetworkImage(imageUrl),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        SizedBox(height: 8),
         Text(
           title,
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-          overflow: TextOverflow.ellipsis,
-        ),
-        if (subtitle.isNotEmpty)
-          Text(
-            subtitle,
-            style: TextStyle(color: Colors.grey, fontSize: 12),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
+        ),
+        TextButton(
+          onPressed: onViewAllPressed,
+          child: Text('See All', style: TextStyle(color: Colors.grey)),
+        ),
       ],
+    );
+  }
+
+  Widget _buildSongCard(String title, String artist, String imageUrl) {
+    return Container(
+      width: 100,
+      margin: EdgeInsets.only(right: 10),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(imageUrl, height: 70, fit: BoxFit.cover),
+          ),
+          SizedBox(height: 8),
+          Text(
+            title,
+            style: TextStyle(color: Colors.white, fontSize: 14),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            artist,
+            style: TextStyle(color: Colors.grey, fontSize: 12),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGroupCard(String name, String genre, String imageUrl) {
+    return Container(
+      width: 100,
+      margin: EdgeInsets.only(right: 10),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(imageUrl, height: 70, fit: BoxFit.cover),
+          ),
+          SizedBox(height: 8),
+          Text(
+            name,
+            style: TextStyle(color: Colors.white, fontSize: 14),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            genre,
+            style: TextStyle(color: Colors.grey, fontSize: 12),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
     );
   }
 }
