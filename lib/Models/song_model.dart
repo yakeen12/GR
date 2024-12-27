@@ -1,9 +1,13 @@
+import 'package:music_app/Models/artist_model.dart';
+
 class Song {
   final String id;
   final String title;
-  final String artist;
+  final Artist artist;
   final String genre;
   final String url;
+  final String img;
+
   final List<String> likes;
 
   Song({
@@ -12,6 +16,7 @@ class Song {
     required this.artist,
     required this.genre,
     required this.url,
+    required this.img,
     required this.likes,
   });
 
@@ -19,9 +24,10 @@ class Song {
     return Song(
       id: json['_id'],
       title: json['title'],
-      artist: json['artist'],
+      artist: Artist.fromJson(json['artist']),
       genre: json['genre'],
       url: json['url'],
+      img: json['img'],
       likes: List<String>.from(json['likes']),
     );
   }
@@ -33,6 +39,7 @@ class Song {
       'genre': genre,
       'url': url,
       'likes': likes,
+      'img': img
     };
   }
 }

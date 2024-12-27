@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/CustomWidgets/custom_song_card.dart';
+import 'package:music_app/ViewModels/songs_view_model.dart';
+import 'package:music_app/Views/music/musicPlayer.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
 
 class Home extends StatelessWidget {
+  final SongViewModel songViewModel = Get.put(SongViewModel());
+
   @override
   Widget build(BuildContext context) {
+    songViewModel.getAllSongs();
+
     return CustomScaffold(
       body: ListView(
         padding: EdgeInsets.all(12.0),
@@ -17,7 +25,7 @@ class Home extends StatelessWidget {
             height: 50,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 0),
             child: Row(
               children: [
                 Container(
@@ -103,7 +111,8 @@ class Home extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               image: DecorationImage(
-                image: NetworkImage('https://via.placeholder.com/600x300'),
+                image: NetworkImage(
+                    'https://www.unc.edu/wp-content/uploads/2023/07/summer.playlist.hero_.shutterstock-scaled-e1660067871311.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -124,19 +133,42 @@ class Home extends StatelessWidget {
           _buildSectionHeader('Most Top Song', () {}),
           SizedBox(height: 10),
           SizedBox(
-            height: 120,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _buildSongCard(
-                    'Laugh', 'Goose House', 'https://via.placeholder.com/100'),
-                _buildSongCard('Nancy Mulligan', 'Ed Sheeran',
-                    'https://via.placeholder.com/100'),
-                _buildSongCard(
-                    'Up&Up', 'Coldplay', 'https://via.placeholder.com/100'),
-              ],
-            ),
-          ),
+              height: 200,
+              child: Obx(() {
+                if (songViewModel.isLoading.value) {
+                  return Center(child: CircularProgressIndicator()); // تحميل
+                } else if (songViewModel.errorMessage.isNotEmpty) {
+                  return Center(
+                      child: Text(
+                    songViewModel.errorMessage.value,
+                    style: TextStyle(color: Colors.blue),
+                  )); // خطأ
+                } else if (!songViewModel.hasSongs) {
+                  return Center(child: Text("No songs available.")); // فارغة
+                } else {
+                  var songs = songViewModel.songs.value;
+                  return ListView.builder(
+                      itemCount: songs!.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MusicPlayer(
+                                          song: songs[index],
+                                        )));
+                          },
+                          child: CustomSongCard(
+                              artist: songs![index].artist.name,
+                              imageUrl: songs[index].img,
+                              title: songs[index].title),
+                        ); // استدعاء العنصر حسب الفهرس
+                      });
+                  // ,
+                }
+              })),
 
           SizedBox(height: 20),
 
@@ -148,10 +180,10 @@ class Home extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                _buildGroupCard(
-                    'Bunkface', 'Rock', 'https://via.placeholder.com/100'),
+                _buildGroupCard('Bunkface', 'Rock',
+                    'https://mrwallpaper.com/images/hd/summer-vibes-aesthetic-h515jny4z31mjulw.jpg'),
                 _buildGroupCard('Barasuara', 'Alternative',
-                    'https://via.placeholder.com/100'),
+                    'https://mrwallpaper.com/images/hd/summer-vibes-aesthetic-h515jny4z31mjulw.jpg'),
               ],
             ),
           ),
@@ -188,32 +220,6 @@ class Home extends StatelessWidget {
           child: Text('See All', style: TextStyle(color: Colors.grey)),
         ),
       ],
-    );
-  }
-
-  Widget _buildSongCard(String title, String artist, String imageUrl) {
-    return Container(
-      width: 100,
-      margin: EdgeInsets.only(right: 10),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(imageUrl, height: 70, fit: BoxFit.cover),
-          ),
-          SizedBox(height: 8),
-          Text(
-            title,
-            style: TextStyle(color: Colors.white, fontSize: 14),
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(
-            artist,
-            style: TextStyle(color: Colors.grey, fontSize: 12),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
     );
   }
 
