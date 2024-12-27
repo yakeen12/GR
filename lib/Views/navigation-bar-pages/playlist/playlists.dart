@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/Views/music/musicPlayer.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/createplaylist.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/likes.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/playlistinside.dart';
 
 class PlayLists extends StatelessWidget {
   @override
@@ -64,7 +69,7 @@ class PlayLists extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Me()));
+                      context, MaterialPageRoute(builder: (context) => Gift()));
                 },
               ),
               SizedBox(
@@ -80,8 +85,8 @@ class PlayLists extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Me()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Meeye()));
                 },
               )
             ],
@@ -243,30 +248,56 @@ class PlaylistsTab extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15)),
                 child: Column(
                   children: [
-                    Icon(
-                      Icons.favorite,
-                      color: const Color.fromARGB(255, 172, 18, 7),
-                    ),
-                    Text(
-                      "Likes",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Likes()));
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.favorite,
+                            color: const Color.fromARGB(255, 172, 18, 7),
+                          ),
+                          Text(
+                            "Likes",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 ),
               ),
-              Container(
-                height: 80,
-                width: MediaQuery.sizeOf(context).width * 0.47,
-                decoration: BoxDecoration(
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CreatePlaylist()));
+                },
+                borderRadius: BorderRadius.circular(
+                    15), // Matches Container's border radius
+                child: Container(
+                  height: 80,
+                  width: MediaQuery.sizeOf(context).width * 0.47,
+                  decoration: BoxDecoration(
                     color: Color.fromARGB(255, 158, 158, 158),
-                    borderRadius: BorderRadius.circular(15)),
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                child: Center(
-                  child: Text(
-                    "+ NEW PLAYLIST",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                  child: Center(
+                    child: Text(
+                      "+ NEW PLAYLIST",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               )
@@ -286,7 +317,7 @@ class PlaylistsTab extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => MusicPlayer(),
+                          builder: (_) => Playlistinside(),
                         ));
                   },
                   child: Container(
