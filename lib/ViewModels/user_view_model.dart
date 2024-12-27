@@ -34,4 +34,30 @@ class UserViewModel extends GetxController {
       isLoading(false); // إيقاف التحميل
     }
   }
+
+  Future<void> updateUserProfile({
+    required String token,
+    required String name,
+    required String email,
+  }) async {
+    isLoading(true);
+    try {
+      var response = await UserService().updateUser(
+        token: token,
+        name: name,
+        email: email,
+      );
+
+      if (response.containsKey('error')) {
+        errorMessage.value = response['error'];
+      } else {
+        errorMessage.value = '';
+        // تحديث البيانات في التطبيق إذا كنت تخزنها
+      }
+    } catch (e) {
+      errorMessage.value = 'Error: $e';
+    } finally {
+      isLoading(false);
+    }
+  }
 }
