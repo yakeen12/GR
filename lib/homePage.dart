@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/Views/navigation-bar-pages/communities.dart';
+import 'package:music_app/Views/navigation-bar-pages/communities/communities.dart';
 import 'package:music_app/Views/navigation-bar-pages/home.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/playlists.dart';

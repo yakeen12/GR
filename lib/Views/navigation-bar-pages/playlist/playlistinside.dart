@@ -1,51 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/Views/music/musicPlayer.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/artist.dart';
 
 class Playlistinside extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {},
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.more_vert, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      backgroundColor: Colors.black,
+    return CustomScaffold(
+      title: 'Play list name',
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Playlist Info
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                    'assets/eminem_album.jpg', // Replace with your album image
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
-                  ),
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage(
+                      'https://via.placeholder.com/150'), // Replace with actual image URL
                 ),
                 SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '3',
+                      'Ranoosh',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -54,101 +34,55 @@ class Playlistinside extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      '3 songs • 14min 44sec',
-                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                      'rania',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      '1h 25min',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
-
-            SizedBox(height: 16),
-
-            // Buttons and Options
+            SizedBox(height: 24),
             Row(
               children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: Text('SHUFFLE'),
-                  ),
-                ),
-                SizedBox(width: 8),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[800],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
+                Icon(Icons.add_outlined,
+                    color: Color.fromARGB(255, 100, 28, 11)),
+                SizedBox(width: 14),
+                Icon(Icons.edit, color: Color.fromARGB(255, 114, 12, 12)),
+                SizedBox(width: 14),
+                Icon(Icons.shuffle, color: Color.fromARGB(255, 114, 12, 12)),
+                Spacer(),
+                IconButton(
+                  icon: Icon(Icons.play_circle_fill,
+                      color: Color.fromARGB(255, 94, 17, 13), size: 48),
                   onPressed: () {},
-                  child: Text('EDIT', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
-
-            SizedBox(height: 16),
-
-            Row(
-              children: [
-                Switch(
-                  value: true,
-                  onChanged: (value) {},
-                  activeColor: Colors.purple,
-                ),
-                Text(
-                  'Downloaded',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-
-            SizedBox(height: 16),
-
-            // Filters and AI Mix
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  _buildFilterChip('Filter'),
-                  _buildFilterChip('International'),
-                  _buildFilterChip('Pop Rap'),
-                  _buildFilterChip('Gangsta Rap'),
-                ],
-              ),
-            ),
-
-            SizedBox(height: 16),
-
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.amber,
-                foregroundColor: Colors.black,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              onPressed: () {},
-              child: Text('AI MIX this playlist'),
-            ),
-
-            SizedBox(height: 16),
-
-            // Song List
+            SizedBox(height: 24),
             Expanded(
               child: ListView(
                 children: [
-                  _buildSongTile('When I\'m Gone', 'assets/when_im_gone.jpg'),
-                  _buildSongTile(
-                      'Sing For The Moment', 'assets/sing_for_the_moment.jpg'),
-                  _buildSongTile('Love The Way You Lie',
-                      'assets/love_the_way_you_lie.jpg'),
+                  PlaylistItem(
+                    title: 'Lovesong',
+                    subtitle: 'The Cure',
+                    imageUrl: 'https://via.placeholder.com/150',
+                  ),
+                  PlaylistItem(
+                    title: 'This Light Between Us',
+                    subtitle: 'Armin van Buuren',
+                    imageUrl: 'https://via.placeholder.com/150',
+                  ),
                 ],
               ),
             ),
@@ -157,39 +91,154 @@ class Playlistinside extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildFilterChip(String label) {
+class PlaylistItem extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String imageUrl;
+  // final VoidCallback onTap; // Add onTap callback
+
+  PlaylistItem(
+      {required this.title,
+      // required this.onTap,
+      required this.subtitle,
+      required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: Chip(
-        label: Text(label),
-        backgroundColor: Colors.grey[800],
-        labelStyle: TextStyle(color: Colors.white),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              imageUrl,
+              height: 40,
+              width: 40,
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          Spacer(),
+          IconButton(
+            icon: Icon(Icons.more_vert, color: Colors.white),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                ),
+                builder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                imageUrl,
+                                height: 50,
+                                width: 50,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  title,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  subtitle,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        ListTile(
+                          leading:
+                              Icon(Icons.playlist_add, color: Colors.white),
+                          title: Text('Add to other playlist',
+                              style: TextStyle(color: Colors.white)),
+                          onTap: () {},
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.remove_circle_outline,
+                              color: Colors.white),
+                          title: Text('Remove from this playlist',
+                              style: TextStyle(color: Colors.white)),
+                          onTap: () {},
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.album, color: Colors.white),
+                          title: Text('Post',
+                              style: TextStyle(color: Colors.white)),
+                          onTap: () {},
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.person, color: Colors.white),
+                          title: Text('View artist',
+                              style: TextStyle(color: Colors.white)),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Artist()));
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.share, color: Colors.white),
+                          title: Text('Share',
+                              style: TextStyle(color: Colors.white)),
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget _buildSongTile(String title, String imagePath) {
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.asset(
-          imagePath,
-          width: 50,
-          height: 50,
-          fit: BoxFit.cover,
-        ),
-      ),
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.white),
-      ),
-      subtitle: Text(
-        'Eminem',
-        style: TextStyle(color: Colors.grey),
-      ),
-      trailing: Icon(Icons.more_vert, color: Colors.white),
     );
   }
 }
