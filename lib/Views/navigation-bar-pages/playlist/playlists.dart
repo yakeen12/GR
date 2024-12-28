@@ -307,7 +307,7 @@ class PlaylistsTab extends StatelessWidget {
             height: 15,
           ),
           SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.55,
+            height: MediaQuery.sizeOf(context).height * 0.49,
             child: ListView.builder(
               itemCount: playlists.length,
               itemBuilder: (context, index) {

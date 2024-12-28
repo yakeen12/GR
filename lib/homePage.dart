@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/CustomWidgets/now_playing.dart';
 import 'package:music_app/Views/navigation-bar-pages/communities/communities.dart';
 import 'package:music_app/Views/navigation-bar-pages/home.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/playlists.dart';
+import 'package:music_app/providers/music_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,9 +26,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    MusicProvider musicProvider = Provider.of<MusicProvider>(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
-      body: _pages[_currentIndex],
+      body: Stack(
+        children: [
+          // Main content of the page
+          _pages[_currentIndex],
+
+          // Mini player at the bottom of the screen
+          Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: NowPlaying(
+                musicProvider: musicProvider,
+              )),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white30,

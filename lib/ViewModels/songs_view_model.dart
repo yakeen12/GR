@@ -18,10 +18,8 @@ class SongViewModel extends GetxController {
       var response = await SongService().fetchallSongs();
       if (response.isNotEmpty) {
         List<Song> songsList = [];
-        print("object");
         for (var songJson in response) {
           Song song = Song.fromJson(songJson);
-          print("songggggggggg $song");
           songsList.add(song); // إضافة الأغنية المحوّلة إلى القائمة
         }
         songs.value = songsList;

@@ -8,12 +8,15 @@ import 'package:music_app/Views/music/musicPlayer.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
+import 'package:music_app/providers/music_provider.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
   final SongViewModel songViewModel = Get.put(SongViewModel());
 
   @override
   Widget build(BuildContext context) {
+    final musicProvider = Provider.of<MusicProvider>(context, listen: false);
     songViewModel.getAllSongs();
 
     return CustomScaffold(
@@ -153,15 +156,23 @@ class Home extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MusicPlayer(
-                                          song: songs[index],
-                                        )));
+                            // تعيين قائمة الأغاني في البروفايدر
+                            musicProvider.setPlaylist(songs);
+                            musicProvider.currentIndex =
+                                index; // تحديث مؤشر الأغنية
+                            // تشغيل أول أغنية تلقائيًا
+                            musicProvider.playSong();
+                            // استدعاء MusicPlayer كـ BottomSheet
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) {
+                                return MusicPlayer(); // صفحة الـ MusicPlayer
+                              },
+                            );
                           },
                           child: CustomSongCard(
-                              artist: songs![index].artist.name,
+                              artist: songs[index].artist.name,
                               imageUrl: songs[index].img,
                               title: songs[index].title),
                         ); // استدعاء العنصر حسب الفهرس

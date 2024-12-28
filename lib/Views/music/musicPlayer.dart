@@ -2,56 +2,24 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/Models/song_model.dart';
+import 'package:music_app/providers/music_provider.dart';
+import 'package:provider/provider.dart';
 
 class MusicPlayer extends StatefulWidget {
-  final Song song;
-  const MusicPlayer({super.key, required this.song});
+  // final Song song;
+  const MusicPlayer({
+    super.key,
+  });
 
   @override
   State<MusicPlayer> createState() => _MusicPlayerState();
 }
 
 class _MusicPlayerState extends State<MusicPlayer> {
-  late AudioPlayer _audioPlayer;
-  bool isPlaying = false;
-  bool isInitialized = false; // إضافة متغير لفحص إذا تم تحميل الصوت
-
-  @override
-  void initState() {
-    super.initState();
-    _audioPlayer = AudioPlayer();
-
-    // الإعدادات الأولية
-    _audioPlayer.onPlayerStateChanged.listen((state) {
-      if (state == PlayerState.completed) {
-        setState(() {
-          isPlaying =
-              false; // عند انتهاء الأغنية، نعيد حالة isPlaying إلى false
-        });
-      }
-    });
-  }
-
-  void _playPause() async {
-    if (isPlaying) {
-      await _audioPlayer.pause();
-    } else {
-      await _audioPlayer.play(UrlSource(widget.song.url));
-    }
-    setState(() {
-      isPlaying = !isPlaying;
-    });
-  }
-
-  @override
-  void dispose() {
-    _audioPlayer
-        .dispose(); // تأكد من التخلص من الـ AudioPlayer عند إغلاق الشاشة.
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final musicProvider = Provider.of<MusicProvider>(context);
+
     return CustomScaffold(
       // backgroundColor: Colors.greenAccent.shade100, // Background color
       body: Container(
@@ -74,7 +42,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
                 height: MediaQuery.sizeOf(context).width * 0.75,
                 width: MediaQuery.sizeOf(context).width * 0.75,
                 child: Center(
-                  child: Image.network(widget.song.img, fit: BoxFit.cover),
+                  child: Image.network(musicProvider.currentSongImg!,
+                      fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -90,7 +59,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.song.title,
+                    musicProvider.currentSongTitle!,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
@@ -101,7 +70,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                     height: 20,
                   ),
                   Text(
-                    widget.song.artist.name,
+                    musicProvider.currentSongArtist!,
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 16,
@@ -116,8 +85,12 @@ class _MusicPlayerState extends State<MusicPlayer> {
             Column(
               children: [
                 Slider(
-                  value: 0.3, // Current progress
-                  onChanged: (value) {},
+                  value: musicProvider.currentPosition.inSeconds
+                      .toDouble(), // Current progress
+                  max: musicProvider.totalDuration.inSeconds.toDouble(),
+                  onChanged: (value) {
+                    musicProvider.seekTo(Duration(seconds: value.toInt()));
+                  },
                   activeColor: Colors.white,
                   inactiveColor: Colors.grey,
                 ),
@@ -125,14 +98,14 @@ class _MusicPlayerState extends State<MusicPlayer> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '0:34',
+                      _formatDuration(musicProvider.currentPosition),
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 14,
                       ),
                     ),
                     Text(
-                      '2:27',
+                      _formatDuration(musicProvider.totalDuration),
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 14,
@@ -148,15 +121,33 @@ class _MusicPlayerState extends State<MusicPlayer> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Icon(Icons.favorite_border, color: Colors.grey, size: 34),
-                Icon(Icons.skip_previous, color: Colors.white, size: 42),
+                InkWell(
+                  child:
+                      Icon(Icons.skip_previous, color: Colors.white, size: 42),
+                  onTap: musicProvider.currentIndex > 0
+                      ? musicProvider.skipPrevious
+                      : null,
+                ),
                 InkWell(
                   onTap: () {
-                    _playPause();
+                    if (musicProvider.isPlaying) {
+                      musicProvider.pauseSong();
+                    } else {
+                      musicProvider.resumeSong();
+                    }
                   },
-                  child: Icon(isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: Colors.white, size: 58),
+                  child: Icon(
+                      musicProvider.isPlaying ? Icons.pause : Icons.play_arrow,
+                      color: Colors.white,
+                      size: 58),
                 ),
-                Icon(Icons.skip_next, color: Colors.white, size: 42),
+                InkWell(
+                  child: Icon(Icons.skip_next, color: Colors.white, size: 42),
+                  onTap: musicProvider.currentIndex <
+                          musicProvider.playlist.length - 1
+                      ? musicProvider.skipNext
+                      : null,
+                ),
                 Icon(Icons.repeat, color: Colors.grey, size: 34),
               ],
             ),
@@ -167,5 +158,12 @@ class _MusicPlayerState extends State<MusicPlayer> {
         ),
       ),
     );
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String minutes = twoDigits(duration.inMinutes.remainder(60));
+    String seconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$minutes:$seconds";
   }
 }
