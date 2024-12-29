@@ -37,6 +37,31 @@ class SongViewModel extends GetxController {
     }
   }
 
+  Future<void> getLatestSongs() async {
+    isLoading(true); // بدء التحميل
+    try {
+      var response = await SongService().fetchLatestSongs();
+      if (response.isNotEmpty) {
+        List<Song> songsList = [];
+        for (var songJson in response) {
+          Song song = Song.fromJson(songJson);
+          songsList.add(song); // إضافة الأغنية المحوّلة إلى القائمة
+        }
+        songs.value = songsList;
+
+        debugPrint("Number of songs: ${songs.value?.length ?? 0}");
+        debugPrint("Nugs: ${songs.value![0].title}");
+      } else {
+        errorMessage.value = 'Failed to load songs.';
+      }
+      // print(response);
+    } catch (e) {
+      errorMessage.value = 'meaw: $e';
+    } finally {
+      isLoading(false); // إيقاف التحميل
+    }
+  }
+
   bool get hasSongs => songs.value != null && songs.value!.isNotEmpty;
 
   String get displayMessage =>

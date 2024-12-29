@@ -17,7 +17,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final musicProvider = Provider.of<MusicProvider>(context, listen: false);
-    songViewModel.getAllSongs();
+    songViewModel.getLatestSongs();
 
     return CustomScaffold(
       body: ListView(
@@ -133,7 +133,7 @@ class Home extends StatelessWidget {
           SizedBox(height: 20),
 
           // Most Top Song Section
-          _buildSectionHeader('Most Top Song', () {}),
+          _buildSectionHeader('Latest Songs', () {}),
           SizedBox(height: 10),
           SizedBox(
               height: 200,

@@ -12,8 +12,8 @@ class Artist {
   });
 
   factory Artist.fromJson(Map<String, dynamic> json) {
-    print(" arrrrrrttttttttttt ${json['_id']}");
-    print(" arrrrrrttttttttttt ${json['name']}");
+    // print(" arrrrrrttttttttttt ${json['_id']}");
+    // print(" arrrrrrttttttttttt ${json['name']}");
 
     return Artist(
       id: json['_id'] ?? "",

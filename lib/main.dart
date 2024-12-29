@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_app/ViewModels/user_view_model.dart';
 import 'package:music_app/Views/auth/login.dart';
 import 'package:music_app/Views/splash.dart';
 import 'package:music_app/homePage.dart';
@@ -9,10 +10,19 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Get.lazyPut(() => UserViewModel());
   await LocalStorageService().init(); // تهيئة SharedPreferences
-  runApp(ChangeNotifierProvider(
-      create: (_) => MusicProvider(), // إنشاء البروفايدر
-      child: const MyApp()));
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => MusicProvider(),
+        ), // ChangeNotifier للميوزيك بلاير
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

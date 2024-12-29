@@ -9,7 +9,7 @@ import 'package:music_app/utils/local_storage_service.dart';
 
 class AuthService {
   final String baseUrl =
-      'https://music-app-server-50cl.onrender.com/api/auth'; // رابط الخادم
+      'https://music-app-server-1-h4hl.onrender.com/api/auth'; // رابط الخادم
 
   Future<Map<String, dynamic>> register(
     AuthModel userData, {

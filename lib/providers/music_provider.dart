@@ -12,11 +12,13 @@ class MusicProvider with ChangeNotifier {
 
   String? get currentSongImg =>
       playlist.isNotEmpty ? playlist[currentIndex].img : null;
+  String? get currentSongId =>
+      playlist.isNotEmpty ? playlist[currentIndex].id : null;
   String? get currentSongTitle =>
-      playlist.isNotEmpty ? playlist[currentIndex].title: null;
+      playlist.isNotEmpty ? playlist[currentIndex].title : null;
   String? get currentSongArtist =>
       playlist.isNotEmpty ? playlist[currentIndex].artist.name : null;
-      String? get currentSongUrl =>
+  String? get currentSongUrl =>
       playlist.isNotEmpty ? playlist[currentIndex].url : null;
 
   bool get isPlaying => _audioPlayer.playing;

@@ -1,8 +1,12 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/CustomWidgets/likeButton.dart';
 import 'package:music_app/Models/song_model.dart';
+import 'package:music_app/ViewModels/user_view_model.dart';
 import 'package:music_app/providers/music_provider.dart';
+import 'package:music_app/utils/local_storage_service.dart';
 import 'package:provider/provider.dart';
 
 class MusicPlayer extends StatefulWidget {
@@ -16,10 +20,13 @@ class MusicPlayer extends StatefulWidget {
 }
 
 class _MusicPlayerState extends State<MusicPlayer> {
+  final UserViewModel userViewModel = Get.find<UserViewModel>();
+
   @override
   Widget build(BuildContext context) {
     final musicProvider = Provider.of<MusicProvider>(context);
-
+    // bool isLiked = userViewModel.likedSongs
+    //     .any((likedSong) => likedSong?.id == musicProvider.currentSongId);
     return CustomScaffold(
       // backgroundColor: Colors.greenAccent.shade100, // Background color
       body: Container(
@@ -120,7 +127,10 @@ class _MusicPlayerState extends State<MusicPlayer> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Icon(Icons.favorite_border, color: Colors.grey, size: 34),
+                LikeButton(
+                    songId: musicProvider.currentSongId!,
+                    userViewModel: userViewModel,
+                    token: LocalStorageService().getToken()!),
                 InkWell(
                   child:
                       Icon(Icons.skip_previous, color: Colors.white, size: 42),
