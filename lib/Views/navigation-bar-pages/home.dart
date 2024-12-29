@@ -157,11 +157,26 @@ class Home extends StatelessWidget {
                         return InkWell(
                           onTap: () {
                             // تعيين قائمة الأغاني في البروفايدر
+
                             musicProvider.setPlaylist(songs);
-                            musicProvider.currentIndex =
-                                index; // تحديث مؤشر الأغنية
-                            // تشغيل أول أغنية تلقائيًا
-                            musicProvider.playSong();
+
+                            // إذا كانت الأغنية الحالية هي نفسها الأغنية التي نقر عليها، نكمل تشغيلها من نفس المكان
+                            if (musicProvider.currentSongId ==
+                                songs[index].id) {
+                              if (musicProvider.isPlaying) {
+                                printError(info: "is playing");
+                              } else {
+                                printError(info: "resume");
+                                musicProvider.resumeSong();
+                              } // لا نقوم بإعادة تشغيل الأغنية إذا كانت بالفعل قيد التشغيل
+                            } else {
+                              musicProvider.currentIndex =
+                                  index; // تحديث مؤشر الأغنية
+                              // تشغيل أول أغنية تلقائيًا
+
+                              musicProvider.playSong();
+                            }
+
                             // استدعاء MusicPlayer كـ BottomSheet
                             showModalBottomSheet(
                               context: context,

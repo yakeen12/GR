@@ -3,12 +3,12 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_app/Models/song_model.dart';
 
 class MusicProvider with ChangeNotifier {
-  final AudioPlayer _audioPlayer = AudioPlayer(); // مشغل الصوت
-  List<Song> playlist =
-      []; // قائمة الأغاني (تحتوي على عنوان الأغنية والرابط والفنان)
-  int currentIndex = 0; // مؤشر الأغنية الحالية
-  Duration currentPosition = Duration.zero; // التقدم الحالي في الأغنية
-  Duration totalDuration = Duration.zero; // مدة الأغنية الكلية
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  List<Song> playlist = [];
+  int currentIndex = 0;
+  Duration currentPosition = Duration.zero;
+  Duration totalDuration = Duration.zero;
+  bool isRepeat = false;
 
   String? get currentSongImg =>
       playlist.isNotEmpty ? playlist[currentIndex].img : null;
@@ -42,6 +42,11 @@ class MusicProvider with ChangeNotifier {
         currentPosition = position;
         notifyListeners();
       });
+      _audioPlayer.playerStateStream.listen((state) {
+        if (state.processingState == ProcessingState.completed) {
+          _onSongFinished(); // انتقل إلى الأغنية التالية
+        }
+      });
     }
   }
 
@@ -61,6 +66,8 @@ class MusicProvider with ChangeNotifier {
   Future<void> skipNext() async {
     if (currentIndex < playlist.length - 1) {
       currentIndex++;
+      isRepeat = false;
+
       await playSong();
     }
   }
@@ -69,6 +76,7 @@ class MusicProvider with ChangeNotifier {
   Future<void> skipPrevious() async {
     if (currentIndex > 0) {
       currentIndex--;
+      isRepeat = false;
       await playSong();
     }
   }
@@ -76,6 +84,27 @@ class MusicProvider with ChangeNotifier {
   // التحكم في تقدم الأغنية
   Future<void> seekTo(Duration position) async {
     await _audioPlayer.seek(position);
+    notifyListeners();
+  }
+
+  void _onSongFinished() async {
+    if (isRepeat) {
+      // إذا كانت خاصية التكرار مفعلة، عد إلى بداية الأغنية
+      playSong();
+    }
+    // عند انتهاء الأغنية الحالية، انتقل إلى الأغنية التالية
+    else if (currentIndex < playlist.length - 1) {
+      currentIndex++;
+      await playSong();
+    }
+    // else {
+    //
+    //   isPlaying = false;
+    // }
+  }
+
+  void toggleRepeat() {
+    isRepeat = !isRepeat;
     notifyListeners();
   }
 

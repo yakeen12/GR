@@ -158,7 +158,16 @@ class _MusicPlayerState extends State<MusicPlayer> {
                       ? musicProvider.skipNext
                       : null,
                 ),
-                Icon(Icons.repeat, color: Colors.grey, size: 34),
+                InkWell(
+                  child: Icon(
+                      musicProvider.isRepeat ? Icons.repeat_on : Icons.repeat,
+                      color:
+                          musicProvider.isRepeat ? Colors.white : Colors.grey,
+                      size: 34),
+                  onTap: () {
+                    musicProvider.toggleRepeat();
+                  },
+                ),
               ],
             ),
             Spacer(),
