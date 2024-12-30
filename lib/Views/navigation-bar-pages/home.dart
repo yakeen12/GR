@@ -6,7 +6,6 @@ import 'package:music_app/CustomWidgets/custom_song_card.dart';
 import 'package:music_app/ViewModels/songs_view_model.dart';
 import 'package:music_app/Views/music/musicPlayer.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
-import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:provider/provider.dart';
@@ -157,7 +156,7 @@ class Home extends StatelessWidget {
                         return InkWell(
                           onTap: () {
                             // تعيين قائمة الأغاني في البروفايدر
-                            
+
                             musicProvider.setPlaylist(songs);
 
                             // إذا كانت الأغنية الحالية هي نفسها الأغنية التي نقر عليها، نكمل تشغيلها من نفس المكان
