@@ -5,13 +5,12 @@ import 'package:music_app/services/user_service.dart';
 import 'package:music_app/models/user_model.dart';
 
 class UserViewModel extends GetxController {
-  var isLoading = false.obs; // لتحديد ما إذا كانت البيانات في التحميل
-  var user =
-      Rx<User?>(null); // لتخزين بيانات المستخدم، نوع البيانات هو Rx<User>
+  var isLoading = false.obs;
+  var user = Rx<User?>(null);
 
-  var errorMessage = ''.obs; // لتخزين أي رسالة خطأ إذا حدثت
+  var errorMessage = ''.obs;
 
-  var likedSongs = <Song?>[].obs; // لتخزين قائمة الأغاني المعجبة
+  var likedSongs = <Song?>[].obs;
 
   List<Song> get likedSongsList =>
       likedSongs.where((song) => song != null).cast<Song>().toList();
@@ -24,10 +23,9 @@ class UserViewModel extends GetxController {
 
   // Method to fetch user profile from the server
   Future<void> fetchUserProfile(String token) async {
-    isLoading(true); // بدء التحميل
+    isLoading(true);
     try {
-      var response = await UserService()
-          .getUserProfile(token); // الحصول على البروفايل باستخدام الخدمة
+      var response = await UserService().getUserProfile(token);
       if (response != null) {
         user.value = User(
             id: response.id,
@@ -44,7 +42,7 @@ class UserViewModel extends GetxController {
     } catch (e) {
       errorMessage.value = 'Error: $e';
     } finally {
-      isLoading(false); // إيقاف التحميل
+      isLoading(false);
     }
   }
 
@@ -81,7 +79,7 @@ class UserViewModel extends GetxController {
     try {
       var response = await UserService().getUserLikes(token);
       if (response.isNotEmpty) {
-        likedSongs.value = response; // تحديث قائمة الأغاني المعجبة
+        likedSongs.value = response;
         print(
             "likedSongsssssssssssssssssssssssssssssssssssss $likedSongs ${likedSongs.value}");
       } else {
@@ -90,7 +88,7 @@ class UserViewModel extends GetxController {
     } catch (e) {
       errorMessage.value = 'Error fetching liked songs: $e';
     } finally {
-      isLoading(false); // إيقاف التحميل
+      isLoading(false);
     }
   }
 
@@ -99,9 +97,9 @@ class UserViewModel extends GetxController {
       var response = await UserService().toggleLike(songId, token, like);
       if (response.isNotEmpty) {
         debugPrint("Number of songs: ${likedSongs.length}");
-        debugPrint("Nugs: ${likedSongs[0]!.title}");
+        // debugPrint("Nugs: ${likedSongs[0]!.title}");
 
-        likedSongs.value = response; // تحديث قائمة الأغاني المعجبة
+        likedSongs.value = response;
         print("likedSongsssssssssssssssssssssssssssssssssssss $likedSongs");
       } else {
         errorMessage.value = 'no songs';

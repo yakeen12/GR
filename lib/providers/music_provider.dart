@@ -32,6 +32,8 @@ class MusicProvider with ChangeNotifier {
   // تشغيل الأغنية الحالية
   Future<void> playSong() async {
     if (currentSongUrl != null) {
+      print("currentSongId $currentSongId");
+
       await _audioPlayer.setUrl(currentSongUrl!);
       _audioPlayer.play();
       _audioPlayer.durationStream.listen((duration) {

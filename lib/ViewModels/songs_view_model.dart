@@ -5,22 +5,21 @@ import 'package:music_app/Services/song_services.dart';
 import 'package:music_app/Models/song_model.dart';
 
 class SongViewModel extends GetxController {
-  var isLoading = false.obs; // لتحديد ما إذا كانت البيانات في التحميل
-  var songs =
-      Rx<List<Song>?>(null); // لتخزين بيانات المستخدم، نوع البيانات هو Rx<User>
+  var isLoading = false.obs;
+  var songs = Rx<List<Song>?>(null);
 
-  var errorMessage = ''.obs; // لتخزين أي رسالة خطأ إذا حدثت
+  var errorMessage = ''.obs;
 
   // Method to fetch user profile from the server
   Future<void> getAllSongs() async {
-    isLoading(true); // بدء التحميل
+    isLoading(true);
     try {
       var response = await SongService().fetchallSongs();
       if (response.isNotEmpty) {
         List<Song> songsList = [];
         for (var songJson in response) {
           Song song = Song.fromJson(songJson);
-          songsList.add(song); // إضافة الأغنية المحوّلة إلى القائمة
+          songsList.add(song);
         }
         songs.value = songsList;
 
@@ -33,19 +32,19 @@ class SongViewModel extends GetxController {
     } catch (e) {
       errorMessage.value = 'meaw: $e';
     } finally {
-      isLoading(false); // إيقاف التحميل
+      isLoading(false);
     }
   }
 
   Future<void> getLatestSongs() async {
-    isLoading(true); // بدء التحميل
+    isLoading(true);
     try {
       var response = await SongService().fetchLatestSongs();
       if (response.isNotEmpty) {
         List<Song> songsList = [];
         for (var songJson in response) {
           Song song = Song.fromJson(songJson);
-          songsList.add(song); // إضافة الأغنية المحوّلة إلى القائمة
+          songsList.add(song);
         }
         songs.value = songsList;
 
@@ -58,7 +57,7 @@ class SongViewModel extends GetxController {
     } catch (e) {
       errorMessage.value = 'meaw: $e';
     } finally {
-      isLoading(false); // إيقاف التحميل
+      isLoading(false);
     }
   }
 

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/Views/music/musicPlayer.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/createplaylist.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/likes.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/playlistinside.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/myplaylistinside.dart';
+import 'package:music_app/providers/music_provider.dart';
+import 'package:music_app/utils/local_storage_service.dart';
+import 'package:provider/provider.dart';
 
 class PlayLists extends StatelessWidget {
   @override
@@ -170,65 +175,14 @@ class PlayLists extends StatelessWidget {
 }
 
 class PlaylistsTab extends StatelessWidget {
-  final List<Map<String, String>> playlists = [
-    {
-      'name': 'playlist1',
-      'image':
-          'https://i.scdn.co/image/ab67616d0000b273ee0f38410382a255e4fb15f4',
-      'songs': '25 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSja2eRhSlJnA_GwaOwAaaUDLj1SiZzJ5lXXg&s',
-      'songs': '25 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://upload.wikimedia.org/wikipedia/ar/f/f6/Taylor_Swift_-_1989.png',
-      'songs': '11 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://i.scdn.co/image/ab67616d0000b273ee0f38410382a255e4fb15f4',
-      'songs': '25 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://img.youm7.com/ArticleImgs/2022/10/23/60146-%D8%A7%D9%84%D8%A8%D9%88%D9%85-%D8%AA%D8%A7%D9%8A%D9%84%D9%88%D8%B1-%D8%B3%D9%88%D9%8A%D9%81%D8%AA.jpeg',
-      'songs': '79 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://upload.wikimedia.org/wikipedia/ar/f/f6/Taylor_Swift_-_1989.png',
-      'songs': '23 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://i.scdn.co/image/ab67616d0000b273ee0f38410382a255e4fb15f4',
-      'songs': '25 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg',
-      'songs': '25 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://i.scdn.co/image/ab67616d0000b273dbb3dd82da45b7d7f31b1b42',
-      'songs': '215 song'
-    },
-  ];
+  final PlaylistViewModel playlistViewModel = Get.put(PlaylistViewModel());
+  final token = LocalStorageService().getToken();
 
   @override
   Widget build(BuildContext context) {
+    // final musicProvider = Provider.of<MusicProvider>(context, listen: false);
+
+    playlistViewModel.fetchUserPlaylists(token!);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
@@ -239,21 +193,21 @@ class PlaylistsTab extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                height: 80,
-                width: MediaQuery.sizeOf(context).width * 0.47,
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(15)),
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Likes()));
-                      },
-                      child: Column(
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Likes()));
+                },
+                child: Container(
+                  height: 80,
+                  width: MediaQuery.sizeOf(context).width * 0.47,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Column(
+                    children: [
+                      Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
@@ -268,9 +222,9 @@ class PlaylistsTab extends StatelessWidget {
                             ),
                           ),
                         ],
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
               InkWell(
@@ -307,72 +261,92 @@ class PlaylistsTab extends StatelessWidget {
             height: 15,
           ),
           SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.49,
-            child: ListView.builder(
-              itemCount: playlists.length,
-              itemBuilder: (context, index) {
-                final playlist = playlists[index];
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => Playlistinside(),
-                        ));
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 15),
-                    child: Row(
-                      children: [
-                        // صورة البلاي ليست
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            playlist['image']!,
-                            width: 70,
-                            height: 70,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Flex(direction: Axis.vertical, children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+              height: MediaQuery.sizeOf(context).height * 0.49,
+              child: Obx(() {
+                if (playlistViewModel.isLoading.value) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                // else if (playlistViewModel.errorMessage.isNotEmpty) {
+                //   return Text(
+                //     '${playlistViewModel.errorMessage}',
+                //     style: TextStyle(color: Colors.white),
+                //   );
+                // }
+                else if (playlistViewModel.playlists.isEmpty) {
+                  return Center(
+                      child: Text(
+                    'You did not make any playList yet :)',
+                    style: TextStyle(color: Colors.white),
+                  ));
+                } else {
+                  return ListView.builder(
+                    itemCount: playlistViewModel.playlists.length,
+                    itemBuilder: (context, index) {
+                      final playlist = playlistViewModel.playlists[index];
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MyPlaylistinside(),
+                              ));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 15),
+                          child: Row(
                             children: [
-                              Text(
-                                playlist['name']!,
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                playlist['songs']!,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
+                              // صورة البلاي ليست
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  (playlist.songs.isNotEmpty)
+                                      ? playlist.songs.first.img
+                                      : "https://www.tuaw.com/wp-content/uploads/2024/08/Apple-Music.jpg",
+                                  width: 70,
+                                  height: 70,
+                                  fit: BoxFit.cover,
                                 ),
+                              ),
+                              SizedBox(width: 10),
+                              Flex(direction: Axis.vertical, children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      playlist.name,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      "${playlist.songs.length} songs",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                              Spacer(),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.more_vert,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {},
                               ),
                             ],
                           ),
-                        ]),
-                        Spacer(),
-                        IconButton(
-                          icon: Icon(
-                            Icons.more_vert,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {},
                         ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+                      );
+                    },
+                  );
+                }
+              })),
         ],
       ),
     );

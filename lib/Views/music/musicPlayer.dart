@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/CustomWidgets/likeButton.dart';
+import 'package:music_app/CustomWidgets/select-playList.dart';
+import 'package:music_app/Models/playList_model.dart';
 import 'package:music_app/Models/song_model.dart';
+import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/utils/local_storage_service.dart';
@@ -62,27 +65,98 @@ class _MusicPlayerState extends State<MusicPlayer> {
               // color: Colors.amber,
 
               width: MediaQuery.sizeOf(context).width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    musicProvider.currentSongTitle!,
-                    style: TextStyle(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        musicProvider.currentSongTitle!,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        musicProvider.currentSongArtist!,
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  PopupMenuButton<String>(
+                    color: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(15), // جعل الحواف مستديرة
+                    ),
+                    // child: Container(color: Colors.white),
+                    iconSize: 36,
+                    icon: Icon(
+                      Icons.more_vert,
                       color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    musicProvider.currentSongArtist!,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    onSelected: (value) async {
+                      if (value == 'Share Song') {
+                        // مشاركة الأغنية
+                        // shareSong(
+                        //     song); // نفذ عملية المشاركة (يمكنك استخدام مكتبة مثل share_plus)
+                      } else if (value == 'Add to Playlist') {
+                        final selectedPlaylistId = await showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return PlaylistSelectionDialog(
+                              songId: musicProvider.currentSongId!,
+                            );
+                          },
+                        );
+
+                        Navigator.of(context)
+                            .pop(); // اغلق الحوار وعد للميوزيك بلاير
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 'Share Song',
+                        child: Container(
+                            margin: EdgeInsets.only(
+                              top: 10,
+                            ),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white)),
+                            width: MediaQuery.sizeOf(context).width,
+                            padding: EdgeInsets.all(15),
+                            child: Text(
+                              'Share Song',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      ),
+                      PopupMenuItem(
+                        value: 'Add to Playlist',
+                        child: Container(
+                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white)),
+                            width: MediaQuery.sizeOf(context).width,
+                            padding: EdgeInsets.all(15),
+                            child: Text(
+                              'Add Song to Playlist',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      ),
+                    ],
                   ),
                 ],
               ),

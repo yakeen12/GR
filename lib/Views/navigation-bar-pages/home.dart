@@ -157,7 +157,7 @@ class Home extends StatelessWidget {
                         return InkWell(
                           onTap: () {
                             // تعيين قائمة الأغاني في البروفايدر
-
+                            
                             musicProvider.setPlaylist(songs);
 
                             // إذا كانت الأغنية الحالية هي نفسها الأغنية التي نقر عليها، نكمل تشغيلها من نفس المكان

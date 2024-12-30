@@ -3,7 +3,7 @@ import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/Views/music/musicPlayer.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/artist.dart';
 
-class Playlistinside extends StatelessWidget {
+class MyPlaylistinside extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -13,45 +13,6 @@ class Playlistinside extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: NetworkImage(
-                      'https://via.placeholder.com/150'), // Replace with actual image URL
-                ),
-                SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Ranoosh',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      'rania',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      '1h 25min',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
             SizedBox(height: 24),
             Row(
               children: [
