@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/CustomWidgets/customSongCard.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
 import 'package:music_app/Views/music/musicPlayer.dart';
 import 'package:music_app/providers/music_provider.dart';
@@ -30,13 +31,12 @@ class Likes extends StatelessWidget {
             itemCount: userViewModel.likedSongsList.length,
             itemBuilder: (context, index) {
               final song = userViewModel.likedSongsList[index];
-              return InkWell(
+              return CustomSongCardPlayList(
                 onTap: () {
                   // تعيين قائمة الأغاني في البروفايدر
                   musicProvider.setPlaylist(userViewModel.likedSongsList);
                   // إذا كانت الأغنية الحالية هي نفسها الأغنية التي نقر عليها، نكمل تشغيلها من نفس المكان
-                  if (musicProvider.currentSongId ==
-                      userViewModel.likedSongsList[index].id) {
+                  if (musicProvider.currentSongId == song.id) {
                     if (musicProvider.isPlaying) {
                       printError(info: "is playing");
                     } else {
@@ -59,55 +59,7 @@ class Likes extends StatelessWidget {
                     },
                   );
                 },
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                  child: Row(
-                    children: [
-                      // صورة البلاي ليست
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          song.img,
-                          width: 70,
-                          height: 70,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Flex(direction: Axis.vertical, children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              song.title,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              song.artist.name,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ]),
-                      Spacer(),
-                      IconButton(
-                        icon: Icon(
-                          Icons.more_vert,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
+                song: song,
               );
             },
           );
