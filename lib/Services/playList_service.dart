@@ -124,13 +124,20 @@ class PlaylistService {
   // حذف أغنية من البلاي ليست
   Future<Playlist> removeSongFromPlaylist(
       token, String playlistId, String songId) async {
-    final response =
-        await http.delete(Uri.parse('$baseUrl/playlists/$playlistId'), body: {
-      "songId": songId
-    }, headers: {
+    final headers = {
+      'Authorization': "$token",
       'Content-Type': 'application/json',
-      'Authorization': token,
+    };
+    final body = jsonEncode({
+      'songId': songId,
     });
+
+    final response = await http.put(
+      Uri.parse('$baseUrl/$playlistId/remove-song'),
+
+      headers: headers,
+      body: body, // تأكد من إرسال البيانات بشكل صحيح
+    );
 
     if (response.statusCode == 200) {
       return Playlist.fromJson(json.decode(response.body));

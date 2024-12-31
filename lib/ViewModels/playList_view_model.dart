@@ -122,7 +122,7 @@ class PlaylistViewModel extends GetxController {
       errorMessage.value = '';
 
       final updatedPlaylist = await _playlistService.removeSongFromPlaylist(
-          playlistId, songId, token);
+          token, playlistId, songId);
       playlists.assignAll(playlists.map((playlist) {
         return playlist.id == updatedPlaylist.id ? updatedPlaylist : playlist;
       }).toList());

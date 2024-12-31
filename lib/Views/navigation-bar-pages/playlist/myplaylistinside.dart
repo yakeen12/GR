@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/CustomWidgets/customSongCard.dart';
 import 'package:music_app/Models/playList_model.dart';
+import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/Views/music/musicPlayer.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/artist.dart';
 import 'package:music_app/providers/music_provider.dart';
+import 'package:music_app/utils/local_storage_service.dart';
 import 'package:provider/provider.dart';
 
 class MyPlaylistinside extends StatefulWidget {
@@ -50,13 +52,12 @@ class _MyPlaylistinsideState extends State<MyPlaylistinside> {
                 itemCount: widget.songlist.songs.length,
                 itemBuilder: (context, index) {
                   return CustomSongCardPlayList(
+                    playListId: widget.songlist.id,
                     song: widget.songlist.songs[index],
                     onTap: () {
                       // تعيين قائمة الأغاني في البروفايدر
                       musicProvider.setPlaylist(widget.songlist.songs);
                       // إذا كانت الأغنية الحالية هي نفسها الأغنية التي نقر عليها، نكمل تشغيلها من نفس المكان
-                      print(
-                          "musicProvider.currentSongId == widget.songlist.songs[index].id ${musicProvider.currentSongId == widget.songlist.songs[index].id}  ${musicProvider.currentSongId} ${widget.songlist.songs[index].id}");
 
                       if (musicProvider.currentSongId ==
                           widget.songlist.songs[index].id) {
@@ -82,6 +83,22 @@ class _MyPlaylistinsideState extends State<MyPlaylistinside> {
                           return MusicPlayer(); // صفحة الـ MusicPlayer
                         },
                       );
+                    },
+                    moreOnTap: () async {
+                      final PlaylistViewModel playlistViewModel =
+                          PlaylistViewModel();
+
+                      await playlistViewModel.removeSongFromPlaylist(
+                          widget.songlist.id,
+                          widget.songlist.songs[index].id,
+                          LocalStorageService().getToken()!); // أرسل الطلب
+                      print(playlistViewModel.errorMessage.value);
+                      if (!playlistViewModel.isLoading.value) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Song removed from playList')));
+                        return;
+                      }
+                      setState(() {});
                     },
                   );
                 }),
