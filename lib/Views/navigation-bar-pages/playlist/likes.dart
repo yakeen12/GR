@@ -35,6 +35,7 @@ class Likes extends StatelessWidget {
                 onTap: () {
                   // تعيين قائمة الأغاني في البروفايدر
                   musicProvider.setPlaylist(userViewModel.likedSongsList);
+                  
                   // إذا كانت الأغنية الحالية هي نفسها الأغنية التي نقر عليها، نكمل تشغيلها من نفس المكان
                   if (musicProvider.currentSongId == song.id) {
                     if (musicProvider.isPlaying) {

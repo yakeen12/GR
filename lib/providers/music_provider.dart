@@ -29,12 +29,18 @@ class MusicProvider with ChangeNotifier {
     notifyListeners();
   }
 
+// playlist song index
+  void setCurrentIndex(int index) {
+    currentIndex = index;
+    notifyListeners();
+  }
+
   // تشغيل الأغنية الحالية
   Future<void> playSong() async {
     if (currentSongUrl != null) {
       print("currentSongId $currentSongId");
 
-      await _audioPlayer.setUrl(currentSongUrl!);
+      await _audioPlayer.setUrl(playlist[currentIndex].url);
       _audioPlayer.play();
       _audioPlayer.durationStream.listen((duration) {
         totalDuration = duration ?? Duration.zero;

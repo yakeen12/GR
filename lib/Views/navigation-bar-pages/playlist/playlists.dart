@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/ViewModels/playList_view_model.dart';
-import 'package:music_app/Views/music/musicPlayer.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
-import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/createplaylist.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/likes.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/myplaylistinside.dart';
-import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/utils/local_storage_service.dart';
-import 'package:provider/provider.dart';
 
 class PlayLists extends StatelessWidget {
   @override
@@ -288,7 +284,8 @@ class PlaylistsTab extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => MyPlaylistinside(),
+                                builder: (_) =>
+                                    MyPlaylistinside(songlist: playlist),
                               ));
                         },
                         child: Container(
