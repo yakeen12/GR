@@ -157,25 +157,29 @@ class Home extends StatelessWidget {
                           onTap: () {
                             // تعيين قائمة الأغاني في البروفايدر
 
-                            musicProvider.setPlaylist(songs);
+                            // musicProvider.setPlaylist(songs);
 
-                            // إذا كانت الأغنية الحالية هي نفسها الأغنية التي نقر عليها، نكمل تشغيلها من نفس المكان
-                            if (musicProvider.currentSongId ==
-                                songs[index].id) {
-                              if (musicProvider.isPlaying) {
-                                printError(info: "is playing");
-                              } else {
-                                printError(info: "resume");
-                                musicProvider.resumeSong();
-                              } // لا نقوم بإعادة تشغيل الأغنية إذا كانت بالفعل قيد التشغيل
-                            } else {
-                              musicProvider.currentIndex =
-                                  index; // تحديث مؤشر الأغنية
-                              // تشغيل أول أغنية تلقائيًا
+                            // // إذا كانت الأغنية الحالية هي نفسها الأغنية التي نقر عليها، نكمل تشغيلها من نفس المكان
+                            // if (musicProvider.currentSongId ==
+                            //     songs[index].id) {
+                            //   if (musicProvider.isPlaying) {
+                            //     printError(info: "is playing");
+                            //   } else {
+                            //     printError(info: "resume");
+                            //     musicProvider.resumeSong();
+                            //   } // لا نقوم بإعادة تشغيل الأغنية إذا كانت بالفعل قيد التشغيل
+                            // } else {
+                            //   musicProvider.currentIndex =
+                            //       index; // تحديث مؤشر الأغنية
+                            //   // تشغيل أول أغنية تلقائيًا
 
-                              musicProvider.playSong();
-                            }
+                            //   musicProvider.playSong();
+                            // }
 
+                            musicProvider.setPlaylistAndSong(
+                              songs, // البلاي ليست الحالية
+                              index, // الـ Index للأغنية
+                            );
                             // استدعاء MusicPlayer كـ BottomSheet
                             showModalBottomSheet(
                               context: context,

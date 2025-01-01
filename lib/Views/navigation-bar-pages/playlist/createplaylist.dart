@@ -8,6 +8,8 @@ class CreatePlaylist extends StatelessWidget {
   TextEditingController playListsNameController = TextEditingController();
   final PlaylistViewModel playlistViewModel = Get.put(PlaylistViewModel());
   final token = LocalStorageService().getToken();
+
+  CreatePlaylist({super.key});
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -17,7 +19,7 @@ class CreatePlaylist extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              const Text(
                 'Give your playlist a name',
                 style: TextStyle(
                   color: Colors.white,
@@ -25,13 +27,13 @@ class CreatePlaylist extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: playListsNameController,
                 cursorColor: Colors.white,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 18),
-                decoration: InputDecoration(
+                style: const TextStyle(color: Colors.white, fontSize: 18),
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Color.fromARGB(110, 91, 9, 9),
                   hintText: 'PlayLists name',
@@ -39,14 +41,14 @@ class CreatePlaylist extends StatelessWidget {
                   border: InputBorder.none,
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
                     onPressed: () {
                       FocusScope.of(context).unfocus(); // إخفاء لوحة المفاتيح
-                      Future.delayed(Duration(milliseconds: 200), () {
+                      Future.delayed(const Duration(milliseconds: 200), () {
                         Navigator.pop(context);
                       });
                     },
@@ -56,9 +58,9 @@ class CreatePlaylist extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                          const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Cancel',
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
@@ -69,7 +71,7 @@ class CreatePlaylist extends StatelessWidget {
 
                       if (playlistName.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                               content: Text('Playlist name cannot be empty')),
                         );
                         return;
@@ -81,24 +83,24 @@ class CreatePlaylist extends StatelessWidget {
                       );
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                             content: Text('Playlist created successfully!')),
                       );
 
                       FocusScope.of(context).unfocus(); // إخفاء لوحة المفاتيح
-                      Future.delayed(Duration(milliseconds: 200), () {
+                      Future.delayed(const Duration(milliseconds: 200), () {
                         Navigator.pop(context);
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 95, 14, 14),
+                      backgroundColor: const Color.fromARGB(255, 95, 14, 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                          const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Create',
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),

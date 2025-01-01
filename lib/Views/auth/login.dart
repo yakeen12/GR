@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/CustomTextField.dart';
 import 'package:music_app/CustomWidgets/custom-Button.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
@@ -9,6 +10,8 @@ import 'package:music_app/homePage.dart';
 import 'package:music_app/methods.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -38,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (isValid == "Login Successful") {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign in successful!')),
+        const SnackBar(content: Text('Sign in successful!')),
       );
       // Navigate to another screen here
 
@@ -47,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       setState(() {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('login in failed. Please try again.')),
+          const SnackBar(content: Text('login in failed. Please try again.')),
         );
       });
     }
@@ -133,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _icon() {
     return Container(
       padding: EdgeInsets.zero,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           //border: Border.all(color: const Color.fromARGB(255, 2, 2, 2),width: 2),
           shape: BoxShape.circle),
       child: Center(
@@ -164,19 +167,20 @@ class _LoginPageState extends State<LoginPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Not yet signed in?',
               style: TextStyle(color: Colors.grey),
             ),
             TextButton(
                 onPressed: () {
+                  
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const SignInView()));
                 },
                 style: TextButton.styleFrom(foregroundColor: Colors.grey),
-                child: Text(
+                child: const Text(
                   "sign in now",
                   style: TextStyle(decoration: TextDecoration.underline),
                 ))

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/CustomTextField.dart';
 import 'package:music_app/CustomWidgets/custom-Button.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
@@ -36,21 +35,21 @@ class _SignInViewState extends State<SignInView> {
     // Validate the email and passwords
     if (!isEmailValid(email)) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter a valid email address')));
+          const SnackBar(content: Text('Please enter a valid email address')));
       return;
     }
 
     if (userName.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter a valid user name')));
+          const SnackBar(content: Text('Please enter a valid user name')));
       return;
     }
     if (!doPasswordsMatch(password, confirmPassword)) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Passwords do not match')));
+          .showSnackBar(const SnackBar(content: Text('Passwords do not match')));
       return;
     }
-    AuthModel model = new AuthModel(
+    AuthModel model = AuthModel(
         username: userName,
         email: email,
         password: password,
@@ -60,14 +59,14 @@ class _SignInViewState extends State<SignInView> {
 
     if (isValid == "تم تسجيل المستخدم بنجاح") {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign in successful!')),
+        const SnackBar(content: Text('Sign in successful!')),
       );
       // Navigate to another screen here
       Navigator.pop(context);
     } else {
       setState(() {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Sign in failed. Please try again.')),
+          const SnackBar(content: Text('Sign in failed. Please try again.')),
         );
       });
     }
@@ -102,7 +101,7 @@ class _SignInViewState extends State<SignInView> {
                     hintText: "Confirm Password",
                     controller: confirmPasswordController),
                 //====
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.only(
                       bottom: 5, right: 30, left: 30, top: 6),
@@ -110,7 +109,7 @@ class _SignInViewState extends State<SignInView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // Cancel Button
-                      Container(
+                      SizedBox(
                           width: MediaQuery.sizeOf(context).width * 0.3,
                           child: CustomButton(
                             onPressed: () {
@@ -120,7 +119,7 @@ class _SignInViewState extends State<SignInView> {
                           )),
 
                       // Save Button
-                      Container(
+                      SizedBox(
                           width: MediaQuery.sizeOf(context).width * 0.3,
                           child: CustomButton(
                             text: "save",

@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:music_app/Models/song_model.dart';
 
 class SongService {
   final String baseUrl =
@@ -10,12 +8,13 @@ class SongService {
   Future<List<dynamic>> fetchallSongs() async {
     final response = await http.get(Uri.parse('$baseUrl/'));
     if (response.statusCode == 200) {
+      print("fetchallSongs ${response.body}");
       final data = json.decode(response.body);
 
       if (data['songs'] is List) {
         // print(" Listtttt it is                              $data['songs']");
 
-        // print("Type of data['songs']: ${data['songs'].runtimeType}");
+        print("Type of data['songs']: ${data['songs'].runtimeType}");
 
         return data['songs'];
       } else {
@@ -25,6 +24,7 @@ class SongService {
       throw Exception('Failed to load songs: ${response.statusCode}');
     }
   }
+
   Future<List<dynamic>> fetchLatestSongs() async {
     final response = await http.get(Uri.parse('$baseUrl/latest'));
     if (response.statusCode == 200) {
@@ -43,5 +43,4 @@ class SongService {
       throw Exception('Failed to load songs: ${response.statusCode}');
     }
   }
-
 }

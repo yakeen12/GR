@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
 
@@ -8,8 +7,8 @@ class LikeButton extends StatelessWidget {
   final UserViewModel userViewModel;
   final String token; // التوكين الخاص بالمستخدم
 
-  LikeButton(
-      {required this.songId, required this.userViewModel, required this.token});
+  const LikeButton(
+      {super.key, required this.songId, required this.userViewModel, required this.token});
 
   @override
   Widget build(BuildContext context) {

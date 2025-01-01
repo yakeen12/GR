@@ -31,6 +31,7 @@ class PlaylistViewModel extends GetxController {
       errorMessage.value = '';
 
       var response = await _playlistService.getUserPlaylists(token: token);
+      print("hereeeeeeeeeeeeeeeeeeeeeeeeeeee::::::::::;; ${response}");
       if (response.isNotEmpty) {
         List<Playlist> playListsList = [];
         for (var playlistJson in response) {
@@ -45,6 +46,7 @@ class PlaylistViewModel extends GetxController {
       }
     } catch (error) {
       isLoading.value = false;
+      print(error);
       errorMessage.value = 'Error fetching user playlists: $error';
     }
   }

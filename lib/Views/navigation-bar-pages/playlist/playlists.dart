@@ -10,162 +10,151 @@ import 'package:music_app/Views/navigation-bar-pages/playlist/myplaylistinside.d
 import 'package:music_app/utils/local_storage_service.dart';
 
 class PlayLists extends StatelessWidget {
-  @override
+  const PlayLists({super.key});
+
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body: Column(children: [
-        SizedBox(
-          height: 50,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Row(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.7,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: TextField(
-                  enabled: false,
-                  onTap: () {},
-                  style: TextStyle(color: Colors.black),
-                  // onChanged: _filterItems,
-                  decoration: InputDecoration(
-                    labelText:
-                        'Search in your playlists...', // Use confirmation text as label if provided, else use default label text
-                    labelStyle:
-                        TextStyle(color: Colors.black), // Set accent color
-
-                    prefixIcon: Icon(Icons.search),
-
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.black, width: 1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.black, width: 2),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.black, width: 1),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(child: SizedBox()),
-              InkWell(
-                child: SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: Icon(
-                    Icons.card_giftcard_outlined,
-                    color: Colors.white,
-                    size: 33.2,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Gift()));
-                },
-              ),
-              SizedBox(
-                width: 22,
-              ), //
-              InkWell(
-                child: SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: CircleAvatar(
-                    maxRadius: 40,
-                    backgroundColor: Colors.amberAccent,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Meeye()));
-                },
-              )
-            ],
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 50,
           ),
-        ),
-        SizedBox(
-          height: 19,
-        ),
-        Expanded(
-          // height: MediaQuery.sizeOf(context).height * 0.8,
-          child: DefaultTabController(
-            length: 2,
-            child: Flex(
-                direction: Axis.vertical,
-                // height: MediaQuery.sizeOf(context).height * 0.7,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: TextField(
+                    enabled: false,
+                    onTap: () {},
+                    style: const TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      labelText: 'Search in your playlists...',
+                      labelStyle: const TextStyle(color: Colors.black),
+                      prefixIcon: const Icon(Icons.search),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 2),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 1),
+                      ),
+                    ),
+                  ),
+                ),
+                const Expanded(child: SizedBox()),
+                InkWell(
+                  child: const SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: Icon(
+                      Icons.card_giftcard_outlined,
+                      color: Colors.white,
+                      size: 33.2,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Gift()));
+                  },
+                ),
+                const SizedBox(width: 22),
+                InkWell(
+                  child: const SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CircleAvatar(
+                      maxRadius: 40,
+                      backgroundColor: Colors.amberAccent,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Meeye()));
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 19,
+          ),
+          Expanded(
+            child: DefaultTabController(
+              length: 2,
+              child: Column(
                 children: [
-                  SingleChildScrollView(
-                    padding: EdgeInsets.zero,
-                    child: Column(
+                  // TabBar داخل الـ Scaffold
+                  TabBar(
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.grey,
+                    indicator: const UnderlineTabIndicator(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                        width: 2.0,
+                      ),
+                      insets: EdgeInsets.symmetric(horizontal: 30.0),
+                    ),
+                    unselectedLabelStyle: const TextStyle(
+                      fontSize: 16,
+                    ),
+                    labelStyle: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    indicatorSize: TabBarIndicatorSize.label,
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 20),
+                    tabs: [
+                      Tab(
+                        child: Container(
+                          height: 35,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Music',
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        child: Container(
+                          height: 35,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Podcast',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // TabBarView يحتاج إلى أن يشغل المساحة المتبقية بالكامل
+                  Expanded(
+                    child: TabBarView(
                       children: [
-                        // TabBar داخل الـ Scaffold
-                        TabBar(
-                          labelColor: Colors.white,
-                          unselectedLabelColor: Colors.grey,
-                          indicator: UnderlineTabIndicator(
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 2.0,
-                            ),
-                            insets: EdgeInsets.symmetric(horizontal: 30.0),
-                          ),
-                          unselectedLabelStyle: TextStyle(
-                            fontSize: 16,
-                          ),
-                          labelStyle: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          indicatorSize: TabBarIndicatorSize.label,
-                          labelPadding: EdgeInsets.symmetric(horizontal: 20),
-                          tabs: [
-                            Tab(
-                              child: Container(
-                                height: 35,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Music',
-                                ),
-                              ),
-                            ),
-                            Tab(
-                              child: Container(
-                                height: 35,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Podcast',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.7,
-                          child: TabBarView(
-                            children: [
-                              PlaylistsTab(),
-                              PodcastTab(),
-                            ],
-                          ),
-                        ),
+                        PlaylistsTab(),
+                        PodcastTab(),
                       ],
                     ),
                   ),
-                ]),
+                ],
+              ),
+            ),
           ),
-        )
-      ]),
+        ],
+      ),
     );
   }
 }
@@ -173,6 +162,8 @@ class PlayLists extends StatelessWidget {
 class PlaylistsTab extends StatelessWidget {
   final PlaylistViewModel playlistViewModel = Get.put(PlaylistViewModel());
   final token = LocalStorageService().getToken();
+
+  PlaylistsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +174,7 @@ class PlaylistsTab extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Row(
@@ -197,18 +188,18 @@ class PlaylistsTab extends StatelessWidget {
                 child: Container(
                   height: 80,
                   width: MediaQuery.sizeOf(context).width * 0.47,
-                  padding: EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                       color: Colors.grey,
                       borderRadius: BorderRadius.circular(15)),
-                  child: Column(
+                  child: const Column(
                     children: [
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.favorite,
-                            color: const Color.fromARGB(255, 172, 18, 7),
+                            color: Color.fromARGB(255, 172, 18, 7),
                           ),
                           Text(
                             "Likes",
@@ -236,11 +227,12 @@ class PlaylistsTab extends StatelessWidget {
                   height: 80,
                   width: MediaQuery.sizeOf(context).width * 0.47,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 158, 158, 158),
+                    color: const Color.fromARGB(255, 158, 158, 158),
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                  child: Center(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                  child: const Center(
                     child: Text(
                       "+ NEW PLAYLIST",
                       style: TextStyle(
@@ -253,97 +245,96 @@ class PlaylistsTab extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.49,
-              child: Obx(() {
-                if (playlistViewModel.isLoading.value) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                // else if (playlistViewModel.errorMessage.isNotEmpty) {
-                //   return Text(
-                //     '${playlistViewModel.errorMessage}',
-                //     style: TextStyle(color: Colors.white),
-                //   );
-                // }
-                else if (playlistViewModel.playlists.isEmpty) {
-                  return Center(
-                      child: Text(
-                    'You did not make any playList yet :)',
-                    style: TextStyle(color: Colors.white),
-                  ));
-                } else {
-                  return ListView.builder(
-                    itemCount: playlistViewModel.playlists.length,
-                    itemBuilder: (context, index) {
-                      final playlist = playlistViewModel.playlists[index];
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    MyPlaylistinside(songlist: playlist),
-                              ));
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: 15),
-                          child: Row(
-                            children: [
-                              // صورة البلاي ليست
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(
-                                  (playlist.songs.isNotEmpty)
-                                      ? playlist.songs.first.img
-                                      : "https://www.tuaw.com/wp-content/uploads/2024/08/Apple-Music.jpg",
-                                  width: 70,
-                                  height: 70,
-                                  fit: BoxFit.cover,
-                                ),
+          Expanded(child: SizedBox(
+            // height: MediaQuery.sizeOf(context).height * 0.3,
+            child: Obx(() {
+              if (playlistViewModel.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (playlistViewModel.errorMessage.isNotEmpty) {
+                return Text(
+                  '${playlistViewModel.errorMessage}',
+                  style: TextStyle(color: Colors.white),
+                );
+              } else if (playlistViewModel.playlists.isEmpty) {
+                return const Center(
+                    child: Text(
+                  'You did not make any playList yet :)',
+                  style: TextStyle(color: Colors.white),
+                ));
+              } else {
+                return ListView.builder(
+                  itemCount: playlistViewModel.playlists.length,
+                  itemBuilder: (context, index) {
+                    final playlist = playlistViewModel.playlists[index];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  MyPlaylistinside(songlist: playlist),
+                            ));
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 15),
+                        child: Row(
+                          children: [
+                            // صورة البلاي ليست
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                (playlist.songs.isNotEmpty)
+                                    ? playlist.songs.first.img
+                                    : "https://www.tuaw.com/wp-content/uploads/2024/08/Apple-Music.jpg",
+                                width: 70,
+                                height: 70,
+                                fit: BoxFit.cover,
                               ),
-                              SizedBox(width: 10),
-                              Flex(direction: Axis.vertical, children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      playlist.name,
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                      overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(width: 10),
+                            Flex(direction: Axis.vertical, children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    playlist.name,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    "${playlist.songs.length} songs",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
                                     ),
-                                    SizedBox(height: 5),
-                                    Text(
-                                      "${playlist.songs.length} songs",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ]),
-                              Spacer(),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.more_vert,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {},
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ]),
+                            const Spacer(),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.more_vert,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                  );
-                }
-              })),
+                      ),
+                    );
+                  },
+                );
+              }
+            }),
+          )),
         ],
       ),
     );
@@ -352,6 +343,8 @@ class PlaylistsTab extends StatelessWidget {
 
 // محتوى تبويب البودكاست
 class PodcastTab extends StatelessWidget {
+  const PodcastTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -359,8 +352,8 @@ class PodcastTab extends StatelessWidget {
       itemBuilder: (context, index) {
         return Center(
             child: Container(
-          padding: EdgeInsets.all(16),
-          margin: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: const Color.fromARGB(69, 158, 158, 158),
             borderRadius: BorderRadius.circular(16),
@@ -381,12 +374,12 @@ class PodcastTab extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           '321B-Viking Legends: The Peacemaker',
                           style: TextStyle(
                             color: Colors.white,
@@ -396,7 +389,7 @@ class PodcastTab extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           'Myths and Legends',
                           style: TextStyle(
@@ -407,13 +400,13 @@ class PodcastTab extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.more_vert,
                     color: Colors.white,
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Description
               Text(
                 'On his quest to help princess Ingigerd, Hrolf has become enslaved by the wily Wi...',
@@ -424,7 +417,7 @@ class PodcastTab extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Progress bar and time left
               Row(
                 children: [
@@ -435,7 +428,7 @@ class PodcastTab extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Text(
                     '53min left',
                     style: TextStyle(
@@ -445,9 +438,9 @@ class PodcastTab extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               // Save and more options
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Icon(

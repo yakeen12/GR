@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/CustomWidgets/custom-Button.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
-import 'package:music_app/Views/navigation-bar-pages/me/edit/editPorf.dart';
 
 class Me extends StatefulWidget {
+  const Me({super.key});
+
   @override
   _MeState createState() => _MeState();
 }
@@ -15,13 +15,13 @@ class _MeState extends State<Me> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           // Profile Header
           Container(
-            padding: EdgeInsets.all(20),
-            child: Row(
+            padding: const EdgeInsets.all(20),
+            child: const Row(
               children: [
                 // Profile Picture
                 CircleAvatar(
@@ -53,7 +53,7 @@ class _MeState extends State<Me> {
               ],
             ),
           ),
-          Divider(),
+          const Divider(),
           // Stats Row
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -66,12 +66,12 @@ class _MeState extends State<Me> {
               ],
             ),
           ),
-          Divider(),
+          const Divider(),
           // Posts Grid
           Expanded(
             child: GridView.builder(
-              padding: EdgeInsets.all(16),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
@@ -93,7 +93,7 @@ class _MeState extends State<Me> {
       children: [
         Text(
           count,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -101,7 +101,7 @@ class _MeState extends State<Me> {
         ),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
             color: Colors.grey,
           ),
@@ -121,7 +121,7 @@ class _MeState extends State<Me> {
         children: [
           Expanded(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.black,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
               ),
@@ -134,20 +134,20 @@ class _MeState extends State<Me> {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.favorite,
                       color: Colors.red,
                       size: 16,
                     ),
-                    SizedBox(width: 4),
+                    const SizedBox(width: 4),
                     Text(likes),
                   ],
                 ),

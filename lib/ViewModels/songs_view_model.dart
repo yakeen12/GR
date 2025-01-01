@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:music_app/Models/artist_model.dart';
 import 'package:music_app/Services/song_services.dart';
 import 'package:music_app/Models/song_model.dart';
 
@@ -15,6 +14,7 @@ class SongViewModel extends GetxController {
     isLoading(true);
     try {
       var response = await SongService().fetchallSongs();
+      print("meaw $response");
       if (response.isNotEmpty) {
         List<Song> songsList = [];
         for (var songJson in response) {

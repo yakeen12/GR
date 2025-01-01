@@ -8,9 +8,9 @@ class PlaylistSelectionDialog extends StatefulWidget {
   final String songId;
 
   const PlaylistSelectionDialog({
-    Key? key,
+    super.key,
     required this.songId,
-  }) : super(key: key);
+  });
 
   @override
   State<PlaylistSelectionDialog> createState() =>
@@ -38,11 +38,11 @@ class _PlaylistSelectionDialogState extends State<PlaylistSelectionDialog> {
 
     return AlertDialog(
       backgroundColor: Colors.black,
-      title: Text(
+      title: const Text(
         'Select a Playlist',
         style: TextStyle(color: Colors.white),
       ),
-      content: Container(
+      content: SizedBox(
         width: double.maxFinite,
         height: 300,
         child: FutureBuilder(
@@ -50,9 +50,9 @@ class _PlaylistSelectionDialogState extends State<PlaylistSelectionDialog> {
               playListViewModel, LocalStorageService().getToken()!),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (playListViewModel.playlists.isEmpty) {
-              return Center(
+              return const Center(
                   child: Text('You did not make any playlist yet :)',
                       style: TextStyle(color: Colors.white)));
             } else {
@@ -68,7 +68,7 @@ class _PlaylistSelectionDialogState extends State<PlaylistSelectionDialog> {
                       });
                     },
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 15),
+                      margin: const EdgeInsets.only(bottom: 15),
                       child: Row(
                         children: [
                           ClipRRect(
@@ -76,33 +76,34 @@ class _PlaylistSelectionDialogState extends State<PlaylistSelectionDialog> {
                             child: Image.network(
                               (playlist.songs.isNotEmpty)
                                   ? playlist.songs.first.img
-                                  : "https://www.tuaw.com/wp-content/uploads/2024/08/Apple-Music.jpg",
+                                  : 
+                                  "https://www.tuaw.com/wp-content/uploads/2024/08/Apple-Music.jpg",
                               width: 70,
                               height: 70,
                               fit: BoxFit.cover,
                             ),
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 playlist.name,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Text(
                                 "${playlist.songs.length} songs",
                                 style:
-                                    TextStyle(fontSize: 14, color: Colors.grey),
+                                    const TextStyle(fontSize: 14, color: Colors.grey),
                               ),
                             ],
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Radio<String>(
                             activeColor: const Color.fromARGB(255, 149, 37, 29),
                             fillColor: MaterialStateProperty.all(Colors.white),
@@ -130,13 +131,13 @@ class _PlaylistSelectionDialogState extends State<PlaylistSelectionDialog> {
           onPressed: () {
             Navigator.of(context).pop(); // إغلاق الحوار بدون اختيار
           },
-          child: Text('Cancel',
+          child: const Text('Cancel',
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         ),
         selectedPlaylistId != null
             ? Container(
-                margin: EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 10),
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white)),
@@ -154,19 +155,19 @@ class _PlaylistSelectionDialogState extends State<PlaylistSelectionDialog> {
                         Navigator.of(context)
                             .pop(); // اغلق الحوار وعد للميوزيك بلاير
                         ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Song added to playList')));
+                            const SnackBar(content: Text('Song added to playList')));
                         return;
                       }
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     'Done',
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                 ),
               )
-            : SizedBox(),
+            : const SizedBox(),
       ],
     );
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 
 class Communities extends StatelessWidget {
+  const Communities({super.key});
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -24,8 +26,8 @@ class Communities extends StatelessWidget {
           ),
 
           // Tab Section
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Row(
               children: [
                 Text('My feed',
@@ -38,7 +40,7 @@ class Communities extends StatelessWidget {
 
           // Post Input Section
 
-          SizedBox(height: 14),
+          const SizedBox(height: 14),
 
           // Post List Section
           Expanded(
@@ -67,10 +69,10 @@ class Communities extends StatelessWidget {
           CircleAvatar(
             radius: 30,
             backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-            child: Icon(icon, color: Color.fromARGB(255, 181, 16, 16)),
+            child: Icon(icon, color: const Color.fromARGB(255, 181, 16, 16)),
           ),
-          SizedBox(height: 8),
-          Text(title, style: TextStyle(fontSize: 11)),
+          const SizedBox(height: 8),
+          Text(title, style: const TextStyle(fontSize: 11)),
         ],
       ),
     );
@@ -83,7 +85,7 @@ class Communities extends StatelessWidget {
     required String content,
   }) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -96,19 +98,19 @@ class Communities extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16)),
                     Text(location,
-                        style: TextStyle(color: Colors.grey, fontSize: 14)),
+                        style: const TextStyle(color: Colors.grey, fontSize: 14)),
                   ],
                 ),
                 Text(community,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.purple, fontWeight: FontWeight.bold)),
               ],
             ),
-            SizedBox(height: 8),
-            Text(content, style: TextStyle(fontSize: 14)),
+            const SizedBox(height: 8),
+            Text(content, style: const TextStyle(fontSize: 14)),
           ],
         ),
       ),

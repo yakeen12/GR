@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:music_app/Models/artist_model.dart';
 import 'package:music_app/Models/song_model.dart';
 
 class MusicProvider with ChangeNotifier {
@@ -9,6 +10,8 @@ class MusicProvider with ChangeNotifier {
   Duration currentPosition = Duration.zero;
   Duration totalDuration = Duration.zero;
   bool isRepeat = false;
+  Song? currentSong; // الأغنية الحالية
+  bool isPlayingBool = false; // حالة التشغيل
 
   String? get currentSongImg =>
       playlist.isNotEmpty ? playlist[currentIndex].img : null;
@@ -16,8 +19,10 @@ class MusicProvider with ChangeNotifier {
       playlist.isNotEmpty ? playlist[currentIndex].id : null;
   String? get currentSongTitle =>
       playlist.isNotEmpty ? playlist[currentIndex].title : null;
-  String? get currentSongArtist =>
+  String? get currentSongArtistName =>
       playlist.isNotEmpty ? playlist[currentIndex].artist.name : null;
+  Artist? get currentSongArtist =>
+      playlist.isNotEmpty ? playlist[currentIndex].artist : null;
   String? get currentSongUrl =>
       playlist.isNotEmpty ? playlist[currentIndex].url : null;
 
@@ -26,7 +31,31 @@ class MusicProvider with ChangeNotifier {
   // تحميل قائمة الأغاني
   void setPlaylist(List<Song> songs) {
     playlist = songs;
+
     notifyListeners();
+  }
+
+  // تحديث الأغنية والبلاي ليست إذا كانت مختلفة
+  void setPlaylistAndSong(List<Song> newplaylist, int index) {
+    // إذا كانت الأغنية هي نفسها الأغنية الحالية، لا تفعل شيئًا
+    if (playlist == newplaylist && currentSong?.id == newplaylist[index].id) {
+      resumeSong();
+      return;
+    } else if (currentSong?.id == newplaylist[index].id) {
+      playlist = newplaylist;
+      currentIndex = index;
+      resumeSong();
+      return;
+    }
+
+    // تحديث الأغنية والبلاي ليست
+    playlist = newplaylist;
+    currentIndex = index;
+    currentSong = playlist[index];
+    isPlayingBool = true;
+
+    playSong();
+    notifyListeners(); // تحديث الواجهة
   }
 
 // playlist song index

@@ -1,20 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:music_app/Providers/music_provider.dart'; // استيراد MusicProvider
+// استيراد MusicProvider
 import 'package:music_app/Views/music/musicPlayer.dart';
+import 'package:music_app/providers/music_provider.dart';
 import 'package:provider/provider.dart';
 
 class NowPlaying extends StatelessWidget {
-  final musicProvider;
   const NowPlaying({
-    required this.musicProvider,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    MusicProvider musicProvider = Provider.of<MusicProvider>(
+      context,
+    );
     return musicProvider.currentSongTitle != null
-        ? InkWell(
+        ? GestureDetector(
+            onVerticalDragEnd: (details) {
+              // عندما ينتهي السحب
+              if (details.velocity.pixelsPerSecond.dy < 0) {
+                if (!musicProvider.isPlaying) {
+                  musicProvider.resumeSong();
+                }
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) {
+                    return const MusicPlayer(); // صفحة الـ MusicPlayer
+                  },
+                );
+                print("المستخدم أكمل السحب للأعلى");
+              }
+            },
             onTap: () {
               if (!musicProvider.isPlaying) {
                 musicProvider.resumeSong();
@@ -23,12 +40,12 @@ class NowPlaying extends StatelessWidget {
                 context: context,
                 isScrollControlled: true,
                 builder: (context) {
-                  return MusicPlayer(); // صفحة الـ MusicPlayer
+                  return const MusicPlayer(); // صفحة الـ MusicPlayer
                 },
               );
             },
             child: Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               color: Colors.black, // لون خلفية الميني بلاير
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -44,7 +61,7 @@ class NowPlaying extends StatelessWidget {
                         fit: BoxFit.cover),
                   ),
                   // اسم الأغنية واسم الفنان
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   SizedBox(
@@ -54,15 +71,15 @@ class NowPlaying extends StatelessWidget {
                       children: [
                         Text(
                           musicProvider.currentSongTitle!,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          musicProvider.currentSongArtist!,
-                          style: TextStyle(
+                          musicProvider.currentSongArtistName!,
+                          style: const TextStyle(
                             color: Colors.white70,
                             fontSize: 14,
                           ),
@@ -70,12 +87,13 @@ class NowPlaying extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   // أزرار التشغيل والتوقف والنقل بين الأغاني
                   Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.skip_previous, color: Colors.white),
+                        icon: const Icon(Icons.skip_previous,
+                            color: Colors.white),
                         onPressed: musicProvider.skipPrevious,
                       ),
                       IconButton(
@@ -95,7 +113,7 @@ class NowPlaying extends StatelessWidget {
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.skip_next, color: Colors.white),
+                        icon: const Icon(Icons.skip_next, color: Colors.white),
                         onPressed: musicProvider.skipNext,
                       ),
                     ],
@@ -104,7 +122,7 @@ class NowPlaying extends StatelessWidget {
               ),
             ),
           )
-        : SizedBox(
+        : const SizedBox(
             height: 0,
           );
   }

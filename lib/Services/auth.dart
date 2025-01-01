@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:music_app/Models/auth_model.dart';
@@ -99,7 +97,7 @@ class AuthService {
 
         // حذف التوكن من التخزين المحلي
         await LocalStorageService().clearToken();
-        Get.offAll(LoginPage()); // تأكد أن "/login" معرف كروت في GetX
+        Get.offAll(const LoginPage()); // تأكد أن "/login" معرف كروت في GetX
       } else {
         throw Exception('Failed to log out: ${response.body}');
       }

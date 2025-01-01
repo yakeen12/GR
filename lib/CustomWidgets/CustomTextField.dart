@@ -24,9 +24,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     widget.isPassword = widget.isPassword ?? false;
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: TextField(
-        cursorColor: Color.fromARGB(52, 158, 158, 158),
+        cursorColor: const Color.fromARGB(52, 158, 158, 158),
         style: const TextStyle(color: Colors.white),
         controller: widget.controller,
         decoration: InputDecoration(

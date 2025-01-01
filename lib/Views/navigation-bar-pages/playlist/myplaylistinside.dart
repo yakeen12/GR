@@ -5,7 +5,6 @@ import 'package:music_app/CustomWidgets/customSongCard.dart';
 import 'package:music_app/Models/playList_model.dart';
 import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/Views/music/musicPlayer.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/artist.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/utils/local_storage_service.dart';
 import 'package:provider/provider.dart';
@@ -23,30 +22,37 @@ class MyPlaylistinside extends StatefulWidget {
 class _MyPlaylistinsideState extends State<MyPlaylistinside> {
   @override
   Widget build(BuildContext context) {
-    final musicProvider = Provider.of<MusicProvider>(context, listen: false);
+    final musicProvider = Provider.of<MusicProvider>(
+      context,
+    );
+
+    // musicProvider.setPlaylist(widget.songlist.songs);
+    // musicProvider.setCurrentIndex(0);
 
     return CustomScaffold(
-      title: '${widget.songlist.name}',
+      title: widget.songlist.name,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
           Row(
             children: [
-              Icon(Icons.add_outlined, color: Color.fromARGB(255, 100, 28, 11)),
-              SizedBox(width: 14),
-              Icon(Icons.edit, color: Color.fromARGB(255, 114, 12, 12)),
-              SizedBox(width: 14),
-              Icon(Icons.shuffle, color: Color.fromARGB(255, 114, 12, 12)),
-              Spacer(),
+              const Icon(Icons.add_outlined,
+                  color: Color.fromARGB(255, 100, 28, 11)),
+              const SizedBox(width: 14),
+              const Icon(Icons.edit, color: Color.fromARGB(255, 114, 12, 12)),
+              const SizedBox(width: 14),
+              const Icon(Icons.shuffle,
+                  color: Color.fromARGB(255, 114, 12, 12)),
+              const Spacer(),
               IconButton(
-                icon: Icon(Icons.play_circle_fill,
+                icon: const Icon(Icons.play_circle_fill,
                     color: Color.fromARGB(255, 94, 17, 13), size: 48),
                 onPressed: () {},
               ),
             ],
           ),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
           Expanded(
             child: ListView.builder(
                 itemCount: widget.songlist.songs.length,
@@ -55,32 +61,41 @@ class _MyPlaylistinsideState extends State<MyPlaylistinside> {
                     playListId: widget.songlist.id,
                     song: widget.songlist.songs[index],
                     onTap: () {
+                      musicProvider.setPlaylistAndSong(
+                        widget.songlist.songs, // البلاي ليست الحالية
+                        index, // الـ Index للأغنية
+                      );
                       // تعيين قائمة الأغاني في البروفايدر
-                      musicProvider.setPlaylist(widget.songlist.songs);
+                      // musicProvider.setCurrentIndex(0);
                       // إذا كانت الأغنية الحالية هي نفسها الأغنية التي نقر عليها، نكمل تشغيلها من نفس المكان
+                      // musicProvider.setCurrentIndex(index);
+                      // if (musicProvider.currentSongId ==
+                      //     widget.songlist.songs[index].id) {
+                      //   print(
+                      //       "${musicProvider.currentSongId} == ${widget.songlist.songs[index].id}");
+                      //   musicProvider.setPlaylist(widget.songlist.songs);
 
-                      if (musicProvider.currentSongId ==
-                          widget.songlist.songs[index].id) {
-                        if (musicProvider.isPlaying) {
-                          printError(info: "is playing");
-                        } else {
-                          printError(info: "resume");
-                          musicProvider.resumeSong();
-                        } // لا نقوم بإعادة تشغيل الأغنية إذا كانت بالفعل قيد التشغيل
-                      } else {
-                        musicProvider.currentIndex =
-                            index; // تحديث مؤشر الأغنية
-                        // تشغيل أول أغنية تلقائيًا
+                      //   if (musicProvider.isPlaying) {
+                      //     printError(info: "is playing");
+                      //   } else {
+                      //     printError(info: "resume");
+                      //     musicProvider.resumeSong();
+                      //   } // لا نقوم بإعادة تشغيل الأغنية إذا كانت بالفعل قيد التشغيل
+                      // } else {
+                      //   musicProvider.setPlaylist(widget.songlist.songs);
+                      //   musicProvider.currentIndex =
+                      //       index; // تحديث مؤشر الأغنية
+                      //   // تشغيل أول أغنية تلقائيًا
 
-                        musicProvider.playSong();
-                      }
+                      //   musicProvider.playSong();
+                      // }
 
                       // استدعاء MusicPlayer كـ BottomSheet
                       showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
                         builder: (context) {
-                          return MusicPlayer(); // صفحة الـ MusicPlayer
+                          return const MusicPlayer(); // صفحة الـ MusicPlayer
                         },
                       );
                     },
@@ -94,8 +109,9 @@ class _MyPlaylistinsideState extends State<MyPlaylistinside> {
                           LocalStorageService().getToken()!); // أرسل الطلب
                       print(playlistViewModel.errorMessage.value);
                       if (!playlistViewModel.isLoading.value) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Song removed from playList')));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Song removed from playList')));
                         return;
                       }
                       setState(() {});

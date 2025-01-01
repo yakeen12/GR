@@ -1,13 +1,10 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/CustomWidgets/likeButton.dart';
 import 'package:music_app/CustomWidgets/select-playList.dart';
-import 'package:music_app/Models/playList_model.dart';
-import 'package:music_app/Models/song_model.dart';
-import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/artist.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/utils/local_storage_service.dart';
 import 'package:provider/provider.dart';
@@ -27,15 +24,18 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    final musicProvider = Provider.of<MusicProvider>(context);
+    final musicProvider = Provider.of<MusicProvider>(
+      context,
+    );
     // bool isLiked = userViewModel.likedSongs
     //     .any((likedSong) => likedSong?.id == musicProvider.currentSongId);
     return CustomScaffold(
+      showNowPlaying: false,
       // backgroundColor: Colors.greenAccent.shade100, // Background color
       body: Container(
         height: MediaQuery.sizeOf(context).height,
         // width: 300, // Adjust the width to match your design
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           // color: Colors.black,
           borderRadius: BorderRadius.circular(20),
@@ -43,7 +43,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(height: 100),
+            const SizedBox(height: 100),
             // Album Cover
             ClipRRect(
               borderRadius: BorderRadius.circular(15),
@@ -57,11 +57,11 @@ class _MusicPlayerState extends State<MusicPlayer> {
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
 
             // Song Info
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               // color: Colors.amber,
 
               width: MediaQuery.sizeOf(context).width,
@@ -72,26 +72,37 @@ class _MusicPlayerState extends State<MusicPlayer> {
                     children: [
                       Text(
                         musicProvider.currentSongTitle!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      Text(
-                        musicProvider.currentSongArtist!,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ArtistPage(
+                                    artistID:
+                                        musicProvider.currentSongArtist!.id),
+                              ));
+                        },
+                        child: Text(
+                          musicProvider.currentSongArtistName!,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   PopupMenuButton<String>(
                     color: Colors.black,
                     shape: RoundedRectangleBorder(
@@ -100,7 +111,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                     ),
                     // child: Container(color: Colors.white),
                     iconSize: 36,
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.more_vert,
                       color: Colors.white,
                     ),
@@ -127,14 +138,14 @@ class _MusicPlayerState extends State<MusicPlayer> {
                       PopupMenuItem(
                         value: 'Share Song',
                         child: Container(
-                            margin: EdgeInsets.only(
+                            margin: const EdgeInsets.only(
                               top: 10,
                             ),
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.white)),
                             width: MediaQuery.sizeOf(context).width,
-                            padding: EdgeInsets.all(15),
-                            child: Text(
+                            padding: const EdgeInsets.all(15),
+                            child: const Text(
                               'Share Song',
                               style: TextStyle(
                                   color: Colors.white,
@@ -144,12 +155,12 @@ class _MusicPlayerState extends State<MusicPlayer> {
                       PopupMenuItem(
                         value: 'Add to Playlist',
                         child: Container(
-                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                            margin: const EdgeInsets.only(top: 10, bottom: 10),
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.white)),
                             width: MediaQuery.sizeOf(context).width,
-                            padding: EdgeInsets.all(15),
-                            child: Text(
+                            padding: const EdgeInsets.all(15),
+                            child: const Text(
                               'Add Song to Playlist',
                               style: TextStyle(
                                   color: Colors.white,
@@ -161,7 +172,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             // Progress Bar
             Column(
               children: [
@@ -180,14 +191,14 @@ class _MusicPlayerState extends State<MusicPlayer> {
                   children: [
                     Text(
                       _formatDuration(musicProvider.currentPosition),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 14,
                       ),
                     ),
                     Text(
                       _formatDuration(musicProvider.totalDuration),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 14,
                       ),
@@ -196,7 +207,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             // Playback Controls
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -206,11 +217,11 @@ class _MusicPlayerState extends State<MusicPlayer> {
                     userViewModel: userViewModel,
                     token: LocalStorageService().getToken()!),
                 InkWell(
-                  child:
-                      Icon(Icons.skip_previous, color: Colors.white, size: 42),
                   onTap: musicProvider.currentIndex > 0
                       ? musicProvider.skipPrevious
                       : null,
+                  child: const Icon(Icons.skip_previous,
+                      color: Colors.white, size: 42),
                 ),
                 InkWell(
                   onTap: () {
@@ -226,11 +237,12 @@ class _MusicPlayerState extends State<MusicPlayer> {
                       size: 58),
                 ),
                 InkWell(
-                  child: Icon(Icons.skip_next, color: Colors.white, size: 42),
                   onTap: musicProvider.currentIndex <
                           musicProvider.playlist.length - 1
                       ? musicProvider.skipNext
                       : null,
+                  child: const Icon(Icons.skip_next,
+                      color: Colors.white, size: 42),
                 ),
                 InkWell(
                   child: Icon(
@@ -244,7 +256,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                 ),
               ],
             ),
-            Spacer(),
+            const Spacer(),
 
             // Devices Available
           ],

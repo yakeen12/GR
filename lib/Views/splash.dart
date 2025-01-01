@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/Views/auth/login.dart';
 
-import 'package:music_app/Views/navigation-bar-pages/home.dart';
 import 'package:music_app/homePage.dart';
 import 'package:music_app/utils/local_storage_service.dart';
 
@@ -19,15 +18,15 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 2), () async {
+    Future.delayed(const Duration(seconds: 2), () async {
       final token = LocalStorageService().getToken();
       if (token != null && token.isNotEmpty) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) => HomePage(),
+          builder: (_) => const HomePage(),
         ));
       } else {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) => LoginPage(),
+          builder: (_) => const LoginPage(),
         ));
       }
     });
@@ -36,13 +35,13 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body: Center(
+      body: const Center(
         child: GlitchText(
           text: "ЯG",
           style: TextStyle(
             fontSize: 150,
             fontWeight: FontWeight.bold,
-            color: const Color.fromARGB(255, 0, 0, 0),
+            color: Color.fromARGB(255, 0, 0, 0),
           ),
         ),
       ),
