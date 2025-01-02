@@ -35,6 +35,14 @@ class MusicProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void stop() {
+    print("Stopping music...");
+    currentSong = null; // فقط إيقاف التشغيل دون مسح القائمة
+    _audioPlayer.stop();
+
+    notifyListeners();
+  }
+
   // تحديث الأغنية والبلاي ليست إذا كانت مختلفة
   void setPlaylistAndSong(List<Song> newplaylist, int index) {
     // إذا كانت الأغنية هي نفسها الأغنية الحالية، لا تفعل شيئًا

@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/Models/episode_model.dart';
+import 'package:music_app/ViewModels/episode_view_model.dart';
 import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/createplaylist.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/likes.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/myplaylistinside.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/music/createplaylist.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/music/likes.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/music/myplaylistinside.dart';
+import 'package:music_app/Views/players/podcast/podcastPlayer.dart';
+import 'package:music_app/providers/music_provider.dart';
+import 'package:music_app/providers/podcast_provider.dart';
 import 'package:music_app/utils/local_storage_service.dart';
+import 'package:provider/provider.dart';
 
 class PlayLists extends StatelessWidget {
   const PlayLists({super.key});
@@ -342,117 +348,132 @@ class PlaylistsTab extends StatelessWidget {
 }
 
 // محتوى تبويب البودكاست
-class PodcastTab extends StatelessWidget {
+class PodcastTab extends StatefulWidget {
   const PodcastTab({super.key});
 
   @override
+  State<PodcastTab> createState() => _PodcastTabState();
+}
+
+class _PodcastTabState extends State<PodcastTab> {
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 8,
-      itemBuilder: (context, index) {
+    PodcastProvider podcastProvider =
+        Provider.of<PodcastProvider>(context, listen: false);
+
+    EpisodeViewModel episodeViewModel = EpisodeViewModel();
+    episodeViewModel.getAllEpisodes();
+
+    return Obx(() {
+      if (episodeViewModel.isLoading.value) {
         return Center(
-            child: Container(
-          padding: const EdgeInsets.all(16),
-          margin: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(69, 158, 158, 158),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Header with title and subtitle
-              Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      'https://yt3.googleusercontent.com/ytc/AIdro_knm8C6-aj25mYqJ01I6WoeJY1ctxQeswGLqO6xxV-ltA=s900-c-k-c0x00ffffff-no-rj', // Replace with your image URL
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            child: CircularProgressIndicator(
+          color: Colors.white,
+        )); // تحميل
+      } else if (episodeViewModel.errorMessage.isNotEmpty) {
+        return Center(
+            child: Text(
+          episodeViewModel.errorMessage.value,
+          style: TextStyle(color: Colors.white),
+        )); // خطأ
+      } else if (!episodeViewModel.hasEpisodes) {
+        return Center(child: Text("No Episodes available.")); // فارغة
+      } else {
+        var episodes = episodeViewModel.episodes.value;
+        return ListView.builder(
+          itemCount: episodes!.length,
+          itemBuilder: (context, index) {
+            var episode = episodes[index];
+            MusicProvider musicProvider =
+                Provider.of<MusicProvider>(context, listen: false);
+            return InkWell(
+              onTap: () {
+                musicProvider.stop();
+                podcastProvider.setEpisode(
+                  episode,
+                );
+                // استدعاء PodcastPlayer كـ BottomSheet
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) {
+                    return PodcastPlayer(); // صفحة الـ MusicPlayer
+                  },
+                );
+              },
+              child: Center(
+                  child: Container(
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(69, 158, 158, 158),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Header with title and subtitle
+                    Row(
                       children: [
-                        const Text(
-                          '321B-Viking Legends: The Peacemaker',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            episode.podcast.img,
+                            width: 70,
+                            height: 70,
+                            fit: BoxFit.cover,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Myths and Legends',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 14,
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${episode.episodeNumber} ${episode.title}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                episode.podcast.title,
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  const Icon(
-                    Icons.more_vert,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              // Description
-              Text(
-                'On his quest to help princess Ingigerd, Hrolf has become enslaved by the wily Wi...',
-                style: TextStyle(
-                  color: Colors.grey[300],
-                  fontSize: 14,
+                    const SizedBox(height: 16),
+                    // Description
+                    Text(
+                      episode.description,
+                      style: TextStyle(
+                        color: Colors.grey[300],
+                        fontSize: 14,
+                      ),
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Save and more options
+                  ],
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 16),
-              // Progress bar and time left
-              Row(
-                children: [
-                  Expanded(
-                    child: LinearProgressIndicator(
-                      value: 0.5, // Example progress value
-                      backgroundColor: Colors.grey[800],
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '53min left',
-                    style: TextStyle(
-                      color: Colors.grey[400],
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              // Save and more options
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(
-                    Icons.bookmark_border,
-                    color: Colors.white,
-                  ),
-                ],
-              )
-            ],
-          ),
-        ));
-      },
-    );
+              )),
+            );
+          },
+        );
+      }
+    });
   }
 }

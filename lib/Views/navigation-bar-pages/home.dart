@@ -3,20 +3,28 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/CustomWidgets/custom_song_card.dart';
+import 'package:music_app/ViewModels/episode_view_model.dart';
 import 'package:music_app/ViewModels/songs_view_model.dart';
-import 'package:music_app/Views/music/musicPlayer.dart';
+import 'package:music_app/Views/players/music/musicPlayer.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
+import 'package:music_app/Views/players/podcast/podcastPlayer.dart';
 import 'package:music_app/providers/music_provider.dart';
+import 'package:music_app/providers/podcast_provider.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
   final SongViewModel songViewModel = Get.put(SongViewModel());
+  final EpisodeViewModel episodeViewModel = Get.put(EpisodeViewModel());
 
   @override
   Widget build(BuildContext context) {
     final musicProvider = Provider.of<MusicProvider>(context, listen: false);
+    final podcastProvider =
+        Provider.of<PodcastProvider>(context, listen: false);
+
     songViewModel.getLatestSongs();
+    episodeViewModel.getLatestepisodes();
 
     return CustomScaffold(
       body: ListView(
@@ -155,27 +163,8 @@ class Home extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            // تعيين قائمة الأغاني في البروفايدر
-
-                            // musicProvider.setPlaylist(songs);
-
-                            // // إذا كانت الأغنية الحالية هي نفسها الأغنية التي نقر عليها، نكمل تشغيلها من نفس المكان
-                            // if (musicProvider.currentSongId ==
-                            //     songs[index].id) {
-                            //   if (musicProvider.isPlaying) {
-                            //     printError(info: "is playing");
-                            //   } else {
-                            //     printError(info: "resume");
-                            //     musicProvider.resumeSong();
-                            //   } // لا نقوم بإعادة تشغيل الأغنية إذا كانت بالفعل قيد التشغيل
-                            // } else {
-                            //   musicProvider.currentIndex =
-                            //       index; // تحديث مؤشر الأغنية
-                            //   // تشغيل أول أغنية تلقائيًا
-
-                            //   musicProvider.playSong();
-                            // }
-
+                            podcastProvider.stop();
+                            
                             musicProvider.setPlaylistAndSong(
                               songs, // البلاي ليست الحالية
                               index, // الـ Index للأغنية
@@ -202,20 +191,123 @@ class Home extends StatelessWidget {
           SizedBox(height: 20),
 
           // Recent Added Group Section
-          _buildSectionHeader('Recent Added Group', () {}),
+          _buildSectionHeader('Latest Podcast Episodes', () {}),
           SizedBox(height: 10),
           SizedBox(
-            height: 120,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _buildGroupCard('Bunkface', 'Rock',
-                    'https://mrwallpaper.com/images/hd/summer-vibes-aesthetic-h515jny4z31mjulw.jpg'),
-                _buildGroupCard('Barasuara', 'Alternative',
-                    'https://mrwallpaper.com/images/hd/summer-vibes-aesthetic-h515jny4z31mjulw.jpg'),
-              ],
-            ),
-          ),
+              height: 360,
+              child: Obx(() {
+                if (episodeViewModel.isLoading.value) {
+                  return Center(
+                      child: CircularProgressIndicator(
+                    color: Colors.white,
+                  )); // تحميل
+                }
+                // else if (episodeViewModel.errorMessage.isNotEmpty) {
+                //   return Center(
+                //       child: Text(
+                //     episodeViewModel.errorMessage.value,
+                //     style: TextStyle(color: Colors.white),
+                //   )); // خطأ
+                // }
+                else if (!episodeViewModel.hasEpisodes) {
+                  return Center(child: Text("No Episodes available.")); // فارغة
+                } else {
+                  var episodes = episodeViewModel.episodes.value;
+                  return ListView.builder(
+                      itemCount: episodes!.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        var episode = episodes[index];
+                        return InkWell(
+                            onTap: () {
+                              musicProvider.stop();
+                              podcastProvider.setEpisode(
+                                episode,
+                              );
+                              // استدعاء PodcastPlayer كـ BottomSheet
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (context) {
+                                  return PodcastPlayer(); // صفحة الـ MusicPlayer
+                                },
+                              );
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(10),
+                              width: 250,
+                              height: 360,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1C1C1C),
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 4,
+                                    offset: Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(8),
+                                      topRight: Radius.circular(8),
+                                    ),
+                                    child: Image.network(
+                                      episode.podcast.img,
+                                      fit: BoxFit.cover,
+                                      height: 130,
+                                      width: double.infinity,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: SizedBox(
+                                      height: 180,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${episode.episodeNumber}  ${episode.title}",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          SizedBox(height: 4),
+                                          Text(
+                                            episode.description,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey[400],
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          Spacer(),
+                                          Text(
+                                            episode.podcast.title,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey[500],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )); // استدعاء العنصر حسب الفهرس
+                      });
+                  // ,
+                }
+              })),
         ],
       ),
     );

@@ -4,7 +4,7 @@ import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/CustomWidgets/likeButton.dart';
 import 'package:music_app/CustomWidgets/select-playList.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/artist.dart';
+import 'package:music_app/Views/players/music/artist.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/utils/local_storage_service.dart';
 import 'package:provider/provider.dart';

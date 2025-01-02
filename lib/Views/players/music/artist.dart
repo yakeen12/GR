@@ -4,7 +4,7 @@ import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/CustomWidgets/customSongCard.dart';
 import 'package:music_app/Models/artist_model.dart';
 import 'package:music_app/ViewModels/artist_view_model.dart';
-import 'package:music_app/Views/music/musicPlayer.dart';
+import 'package:music_app/Views/players/music/musicPlayer.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -130,25 +130,7 @@ class _ArtistPageState extends State<ArtistPage> {
                       return CustomSongCardPlayList(
                           song: artist.songs![index],
                           onTap: () {
-                            // // تعيين قائمة الأغاني في البروفايدر
-                            // musicProvider.setPlaylist(artist.songs!);
-                            // // إذا كانت الأغنية الحالية هي نفسها الأغنية التي نقر عليها، نكمل تشغيلها من نفس المكان
-
-                            // if (musicProvider.currentSongId ==
-                            //     artist.songs![index].id) {
-                            //   if (musicProvider.isPlaying) {
-                            //     printError(info: "is playing");
-                            //   } else {
-                            //     printError(info: "resume");
-                            //     musicProvider.resumeSong();
-                            //   } // لا نقوم بإعادة تشغيل الأغنية إذا كانت بالفعل قيد التشغيل
-                            // } else {
-                            //   musicProvider.currentIndex =
-                            //       index; // تحديث مؤشر الأغنية
-                            //   // تشغيل أول أغنية تلقائيًا
-
-                            //   musicProvider.playSong();
-                            // }
+                           
                             musicProvider.setPlaylistAndSong(
                               artist.songs!, // البلاي ليست الحالية
                               index, // الـ Index للأغنية

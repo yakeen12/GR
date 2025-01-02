@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/CustomWidgets/now_playing.dart';
+import 'package:music_app/Views/players/now_playing.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:provider/provider.dart';
 
