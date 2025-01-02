@@ -160,10 +160,15 @@ class _PodcastPlayerState extends State<PodcastPlayer> {
                 ),
                 InkWell(
                   onTap: () {
-                    podcastProvider.seekTo(Duration(
-                        seconds:
-                            podcastProvider.currentPosition.inSeconds.toInt() -
-                                30));
+                    if (podcastProvider.currentPosition.inSeconds.toInt() >
+                        30) {
+                      podcastProvider.seekTo(Duration(
+                          seconds: podcastProvider.currentPosition.inSeconds
+                                  .toInt() -
+                              30));
+                    } else {
+                      podcastProvider.seekTo(Duration(seconds: 0));
+                    }
                   },
                   child: const Icon(Icons.replay_30,
                       color: Colors.white, size: 42),
@@ -185,10 +190,13 @@ class _PodcastPlayerState extends State<PodcastPlayer> {
                 ),
                 InkWell(
                   onTap: () {
-                    podcastProvider.seekTo(Duration(
-                        seconds:
-                            podcastProvider.currentPosition.inSeconds.toInt() +
-                                30));
+                    if (podcastProvider.currentPosition.inSeconds.toInt() <
+                        podcastProvider.totalDuration.inSeconds.toInt() - 30) {
+                      podcastProvider.seekTo(Duration(
+                          seconds: podcastProvider.currentPosition.inSeconds
+                                  .toInt() +
+                              30));
+                    }
                   },
                   child: const Icon(Icons.forward_30_outlined,
                       color: Colors.white, size: 42),

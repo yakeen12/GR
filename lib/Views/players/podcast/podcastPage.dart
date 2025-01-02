@@ -107,14 +107,6 @@ class _PodcastPageState extends State<PodcastPage> {
                           podcastProvider.setEpisode(
                             episode,
                           );
-                          // استدعاء PodcastPlayer كـ BottomSheet
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (context) {
-                              return PodcastPlayer(); // صفحة الـ MusicPlayer
-                            },
-                          );
                         },
                         child: Container(
                             padding: EdgeInsets.all(15),

@@ -135,14 +135,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               artist.songs!, // البلاي ليست الحالية
                               index, // الـ Index للأغنية
                             );
-                            // استدعاء MusicPlayer كـ BottomSheet
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) {
-                                return const MusicPlayer(); // صفحة الـ MusicPlayer
-                              },
-                            );
+                           
                           });
                     },
                   ),
