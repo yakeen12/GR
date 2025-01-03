@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
-import 'package:music_app/CustomWidgets/post_widget.dart';
+import 'package:music_app/CustomWidgets/post_episode_widget.dart';
+import 'package:music_app/CustomWidgets/post_song_widget.dart';
 import 'package:music_app/Models/post_model.dart';
 import 'package:music_app/ViewModels/post_view_model.dart';
 import 'package:music_app/utils/local_storage_service.dart';
@@ -115,6 +116,14 @@ class _CommunitiesState extends State<Communities> {
                     color: Colors.white,
                   )),
                 ); // تحميل
+              } else if (postViewModel.errorMessage.isNotEmpty) {
+                return Expanded(
+                  child: Center(
+                      child: Text(
+                    postViewModel.errorMessage.value,
+                    style: TextStyle(color: Colors.white),
+                  )),
+                ); // لا يوجد بوستات
               } else if (!postViewModel.hasPosts) {
                 return Expanded(
                   child: Center(
@@ -129,16 +138,7 @@ class _CommunitiesState extends State<Communities> {
                     itemCount: postViewModel.posts.value!.length,
                     itemBuilder: (context, index) {
                       final post = postViewModel.posts.value![index];
-                      return PostWidget(
-                        communityName: post.community,
-                        userName: post.user.username,
-                        userAvatarUrl: post.user.profilePicture!,
-                        content: post.content,
-                        songTitle: post.song?.title ?? "",
-                        artistName: post.song?.artist.name ?? "",
-                        songCoverUrl: post.song?.img ?? "",
-                        createdAt: DateTime.now(),
-                      );
+                      return PostEpisodeWidget(post: post);
                     },
                   ),
                 );

@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:music_app/CustomWidgets/custom-Button.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/Models/episode_model.dart';
 import 'package:music_app/Models/song_model.dart';
 import 'package:music_app/ViewModels/post_view_model.dart';
 import 'package:music_app/utils/local_storage_service.dart';
 
 class CreatePostPage extends StatefulWidget {
-  final Song song;
-  const CreatePostPage({Key? key, required this.song}) : super(key: key);
+  final Song? song;
+  final Episode? episode;
+  const CreatePostPage({Key? key, this.episode, this.song}) : super(key: key);
 
   @override
   _CreatePostPageState createState() => _CreatePostPageState();
@@ -101,11 +103,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
                                   return;
                                 } else {
                                   postViewModel.createPost(
-                                      selectedCommunity!,
-                                      _contentController.text,
-                                      widget.song.id,
-                                      null,
-                                      LocalStorageService().getToken()!);
+                                      community: selectedCommunity!,
+                                      content: _contentController.text,
+                                      songId: widget.song?.id,
+                                      episodeId: widget.episode?.id,
+                                      token: LocalStorageService().getToken()!);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content: Text(
@@ -164,7 +166,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(6.0),
                           child: Image.network(
-                            widget.song.img,
+                            widget.song != null
+                                ? widget.song!.img
+                                : widget.episode!.podcast.img,
                             height: 60,
                             width: 60,
                             fit: BoxFit.cover,
@@ -185,7 +189,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.song.title,
+                            widget.song != null
+                                ? widget.song!.title
+                                : widget.episode!.title,
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 14.0,
@@ -196,7 +202,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
                           ),
                           const SizedBox(height: 4.0),
                           Text(
-                            widget.song.artist.name,
+                            widget.song != null
+                                ? widget.song!.artist.name
+                                : widget.episode!.podcast.title,
                             style: const TextStyle(
                               color: Colors.white54,
                               fontSize: 12.0,

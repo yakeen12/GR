@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PostWidget extends StatelessWidget {
+class PostSongWidget extends StatelessWidget {
   final String communityName;
   final String userName;
   final String userAvatarUrl;
@@ -10,7 +10,7 @@ class PostWidget extends StatelessWidget {
   final String songCoverUrl;
   final DateTime createdAt;
 
-  const PostWidget({
+  const PostSongWidget({
     Key? key,
     required this.communityName,
     required this.userName,

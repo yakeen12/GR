@@ -12,18 +12,19 @@ class Post {
   final List<dynamic> likes;
   final List<dynamic> comments;
   final bool hasLiked;
+  final DateTime createdAt;
 
-  Post({
-    required this.id,
-    required this.content,
-    required this.user,
-    required this.hasLiked,
-    this.song,
-    this.episode,
-    required this.community,
-    required this.likes,
-    required this.comments,
-  });
+  Post(
+      {required this.id,
+      required this.content,
+      required this.user,
+      required this.hasLiked,
+      this.song,
+      this.episode,
+      required this.community,
+      required this.likes,
+      required this.comments,
+      required this.createdAt});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     // List<String> dummy = [];
@@ -37,6 +38,7 @@ class Post {
       likes: List<dynamic>.from(json['likes']),
       hasLiked: json['hasLiked'],
       comments: List<dynamic>.from(json['comments']),
+      createdAt: DateTime.parse(json['createdAt']), // تحويل النص إلى DateTime
     );
   }
 

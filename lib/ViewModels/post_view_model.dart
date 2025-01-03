@@ -16,6 +16,8 @@ class PostViewModel extends GetxController {
 
   // جلب البوستات الخاصة بالكوميونيتي
   Future<void> getPostsByCommunity(String communityName, String token) async {
+    errorMessage.value = '';
+
     posts = Rx<List<Post>?>(null);
     isLoading(true);
     try {
@@ -26,17 +28,27 @@ class PostViewModel extends GetxController {
         List<Post> postsList = [];
         for (var postJson in fetchedPosts) {
           Post post = Post(
-              id: postJson['_id'],
-              content: postJson['content'],
-              user: User(
-                  id: postJson['user']['_id'],
-                  username: postJson['user']['username'],
-                  profilePicture: postJson['user']['profilePicture']),
-              hasLiked: postJson['hasLiked'],
-              community: postJson['community'],
-              likes: postJson['likes'],
-              comments: postJson['comments'],
-              song: Song.fromJson(postJson['song']));
+            id: postJson['_id'],
+            content: postJson['content'],
+            user: User(
+                id: postJson['user']['_id'],
+                username: postJson['user']['username'],
+                profilePicture: postJson['user']['profilePicture']),
+            hasLiked: postJson['hasLiked'],
+            community: postJson['community'],
+            createdAt: DateTime.parse(
+                postJson['createdAt']), // تحويل النص إلى DateTime
+            likes: postJson['likes'],
+            comments: postJson['comments'],
+            song: postJson['song'] != null &&
+                    postJson['song'] is Map<String, dynamic>
+                ? Song.fromJson(postJson['song'])
+                : null,
+            episode: postJson['episode'] != null &&
+                    postJson['episode'] is Map<String, dynamic>
+                ? Episode.fromJson(postJson['episode'])
+                : null,
+          );
           postsList.add(post);
         }
         posts.value = postsList;
@@ -55,24 +67,45 @@ class PostViewModel extends GetxController {
 
   // جلب جميع البوستات
   Future<void> getAllPosts(String token) async {
+    print(token);
+    errorMessage.value = '';
+    posts = Rx<List<Post>?>(null);
+
     isLoading(true);
     try {
       final fetchedPosts = await _postService.getAllPosts(token);
       if (fetchedPosts.isNotEmpty) {
         List<Post> postsList = [];
         for (var postJson in fetchedPosts) {
+          // "song: ${postJson['song'] != null} && ${postJson['song'] is Map}");
+          // print("${Song.fromJson(postJson['song'])}");
+          // print(
+          //     "episode: ${postJson['episode'] != null} && ${postJson['episode'] is Map}");
+          // print("${Episode.fromJson(postJson['episode'])}");
+
           Post post = Post(
-              id: postJson['_id'],
-              content: postJson['content'],
-              user: User(
-                  id: postJson['user']['_id'],
-                  username: postJson['user']['username'],
-                  profilePicture: postJson['user']['profilePicture']),
-              hasLiked: postJson['hasLiked'],
-              community: postJson['community'],
-              likes: postJson['likes'],
-              comments: postJson['comments'],
-              song: Song.fromJson(postJson['song']));
+            id: postJson['_id'],
+            content: postJson['content'],
+            user: User(
+                id: postJson['user']['_id'],
+                username: postJson['user']['username'],
+                profilePicture: postJson['user']['profilePicture']),
+            hasLiked: postJson['hasLiked'],
+            community: postJson['community'],
+            createdAt: DateTime.parse(
+                postJson['createdAt']), // تحويل النص إلى DateTime
+            likes: postJson['likes'],
+            comments: postJson['comments'],
+            song: postJson['song'] != null &&
+                    postJson['song'] is Map<String, dynamic>
+                ? Song.fromJson(postJson['song'])
+                : null,
+            episode: postJson['episode'] != null &&
+                    postJson['episode'] is Map<String, dynamic>
+                ? Episode.fromJson(postJson['episode'])
+                : null,
+          );
+          print(post.community);
           postsList.add(post);
         }
         posts.value = postsList;
@@ -83,6 +116,8 @@ class PostViewModel extends GetxController {
         errorMessage.value = 'No posts available.';
       }
     } catch (error) {
+      printError(info: error.toString());
+      print(error);
       errorMessage.value = 'Error fetching all posts: $error';
     } finally {
       isLoading(false);
@@ -91,6 +126,8 @@ class PostViewModel extends GetxController {
 
   // تغيير حالة اللايك
   Future<void> toggleLike(String postId, String token) async {
+    errorMessage.value = '';
+
     isLoading(true);
     try {
       final response = await _postService.toggleLike(postId, token);
@@ -111,8 +148,14 @@ class PostViewModel extends GetxController {
   }
 
   // إضافة بوست جديد
-  Future<void> createPost(String community, String content, String? songId,
-      String? episodeId, String token) async {
+  Future<void> createPost(
+      {required String community,
+      required String content,
+      String? songId,
+      String? episodeId,
+      required String token}) async {
+    errorMessage.value = '';
+
     isLoading(true);
     try {
       final newPostResponse = await _postService.createPost(

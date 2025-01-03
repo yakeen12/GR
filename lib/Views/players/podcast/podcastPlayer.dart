@@ -5,6 +5,7 @@ import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/CustomWidgets/likeButton.dart';
 import 'package:music_app/CustomWidgets/select-playList.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
+import 'package:music_app/Views/navigation-bar-pages/communities/create_post.dart';
 import 'package:music_app/Views/players/music/artist.dart';
 import 'package:music_app/Views/players/podcast/podcastPage.dart';
 import 'package:music_app/providers/music_provider.dart';
@@ -219,6 +220,15 @@ class _PodcastPlayerState extends State<PodcastPlayer> {
                       // shareSong(
                       //     song); // نفذ عملية المشاركة (يمكنك استخدام مكتبة مثل share_plus)
                     }
+                    if (value == 'Post to Community') {
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CreatePostPage(
+                                    episode: podcastProvider.currentEpisode,
+                                  )));
+                    }
                   },
                   itemBuilder: (context) => [
                     PopupMenuItem(
@@ -233,6 +243,23 @@ class _PodcastPlayerState extends State<PodcastPlayer> {
                           padding: const EdgeInsets.all(15),
                           child: const Text(
                             'Share Song',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                    PopupMenuItem(
+                      value: 'Post to Community',
+                      child: Container(
+                          margin: const EdgeInsets.only(
+                            top: 10,
+                          ),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white)),
+                          width: MediaQuery.sizeOf(context).width,
+                          padding: const EdgeInsets.all(15),
+                          child: const Text(
+                            'Post to Community',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
