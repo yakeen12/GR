@@ -89,7 +89,7 @@ class _MeeyeState extends State<Meeye> {
               _buildSettingsTile(
                 icon: Icons.person,
                 title: 'Email',
-                subtitle: user.email,
+                subtitle: user.email ?? "",
               ),
               _buildSettingsTile(
                 icon: Icons.lock,

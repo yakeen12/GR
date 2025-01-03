@@ -5,6 +5,7 @@ import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/CustomWidgets/custom_song_card.dart';
 import 'package:music_app/ViewModels/episode_view_model.dart';
 import 'package:music_app/ViewModels/songs_view_model.dart';
+import 'package:music_app/Views/navigation-bar-pages/communities/create_post.dart';
 import 'package:music_app/Views/players/music/musicPlayer.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
@@ -85,10 +86,7 @@ class Home extends StatelessWidget {
                       size: 33.2,
                     ),
                   ),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Gift()));
-                  },
+                  onTap: () {},
                 ),
                 SizedBox(
                   width: 20,
@@ -164,7 +162,7 @@ class Home extends StatelessWidget {
                         return InkWell(
                           onTap: () {
                             podcastProvider.stop();
-                            
+
                             musicProvider.setPlaylistAndSong(
                               songs, // البلاي ليست الحالية
                               index, // الـ Index للأغنية

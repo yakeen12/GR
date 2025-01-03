@@ -1,47 +1,51 @@
+import 'package:music_app/Models/episode_model.dart';
+import 'package:music_app/Models/song_model.dart';
+import 'package:music_app/models/user_model.dart';
+
 class Post {
   final String id;
-  final String title;
-  final String description;
-  final String author;
-  final String? song;
-  final String? podcast;
+  final String content;
+  final User user;
+  final Song? song;
+  final Episode? episode;
   final String community;
-  final List<String> likes;
-  final List<String> comments;
+  final List<dynamic> likes;
+  final List<dynamic> comments;
+  final bool hasLiked;
 
   Post({
     required this.id,
-    required this.title,
-    required this.description,
-    required this.author,
+    required this.content,
+    required this.user,
+    required this.hasLiked,
     this.song,
-    this.podcast,
+    this.episode,
     required this.community,
     required this.likes,
     required this.comments,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) {
+    // List<String> dummy = [];
     return Post(
       id: json['_id'],
-      title: json['title'],
-      description: json['description'],
-      author: json['author'],
-      song: json['song'],
-      podcast: json['podcast'],
+      content: json['content'],
+      user: User.fromJson(json['user']),
+      song: Song.fromJson(json['song']),
+      episode: Episode.fromJson(json['episode']),
       community: json['community'],
-      likes: List<String>.from(json['likes']),
-      comments: List<String>.from(json['comments']),
+      likes: List<dynamic>.from(json['likes']),
+      hasLiked: json['hasLiked'],
+      comments: List<dynamic>.from(json['comments']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'title': title,
-      'description': description,
-      'author': author,
+      'content': content,
+      'user': user,
       'song': song,
-      'podcast': podcast,
+      'podcast': episode,
       'community': community,
       'likes': likes,
       'comments': comments,

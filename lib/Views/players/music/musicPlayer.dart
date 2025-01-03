@@ -4,6 +4,7 @@ import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/CustomWidgets/likeButton.dart';
 import 'package:music_app/CustomWidgets/select-playList.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
+import 'package:music_app/Views/navigation-bar-pages/communities/create_post.dart';
 import 'package:music_app/Views/players/music/artist.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/utils/local_storage_service.dart';
@@ -132,6 +133,14 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
                         Navigator.of(context)
                             .pop(); // اغلق الحوار وعد للميوزيك بلاير
+                      } else if (value == "Post to Community") {
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CreatePostPage(
+                                  song: musicProvider.currentSong!),
+                            ));
                       }
                     },
                     itemBuilder: (context) => [
@@ -162,6 +171,21 @@ class _MusicPlayerState extends State<MusicPlayer> {
                             padding: const EdgeInsets.all(15),
                             child: const Text(
                               'Add Song to Playlist',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      ),
+                      PopupMenuItem(
+                        value: 'Post to Community',
+                        child: Container(
+                            margin: const EdgeInsets.only(top: 10, bottom: 10),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white)),
+                            width: MediaQuery.sizeOf(context).width,
+                            padding: const EdgeInsets.all(15),
+                            child: const Text(
+                              'Post to Community',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),

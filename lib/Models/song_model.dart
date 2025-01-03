@@ -4,7 +4,7 @@ class Song {
   final String id;
   final String title;
   final Artist artist;
-  final String genre;
+  final String? genre;
   final String url;
   final String img;
 
@@ -14,7 +14,7 @@ class Song {
     required this.id,
     required this.title,
     required this.artist,
-    required this.genre,
+    this.genre,
     required this.url,
     required this.img,
     required this.likes,
@@ -25,7 +25,7 @@ class Song {
       id: json['_id'],
       title: json['title'],
       artist: Artist.fromJson(json['artist']),
-      genre: json['genre'],
+      genre: json['genre'] ?? "",
       url: json['url'],
       img: json['img'],
       likes: List<String>.from(json['likes']),
@@ -36,7 +36,7 @@ class Song {
     return {
       'title': title,
       'artist': artist,
-      'genre': genre,
+      'genre': genre ?? "",
       'url': url,
       'likes': likes,
       'img': img

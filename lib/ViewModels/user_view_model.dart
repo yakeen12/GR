@@ -30,12 +30,12 @@ class UserViewModel extends GetxController {
         user.value = User(
             id: response.id,
             username: response.username,
-            email: response.email,
-            likedSongs: response.likedSongs,
-            likedPosts: response.likedPosts,
-            comments: response.comments,
+            email: response.email ?? "",
+            likedSongs: response.likedSongs ?? [],
+            likedPosts: response.likedPosts ?? [],
+            comments: response.comments ?? [],
             profilePicture: response.profilePicture,
-            secretGifts: response.secretGifts);
+            secretGifts: response.secretGifts ?? []);
       } else {
         errorMessage.value = 'Failed to load profile.';
       }
