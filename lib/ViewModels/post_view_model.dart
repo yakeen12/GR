@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:music_app/Models/artist_model.dart';
 import 'package:music_app/Models/episode_model.dart';
 import 'package:music_app/Models/post_model.dart';
 import 'package:music_app/Models/song_model.dart';
@@ -213,7 +212,8 @@ class PostViewModel extends GetxController {
 
     isLoading(true);
     try {
-      final newPostResponse = await _postService.createPost(
+      // final newPostResponse =
+      await _postService.createPost(
           community, content, songId, episodeId, token);
       // final newPost = Post.fromJson(newPostResponse);
       if (posts.value == null) {

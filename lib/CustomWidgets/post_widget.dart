@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:music_app/Models/post_model.dart';
 import 'package:music_app/ViewModels/post_view_model.dart';
 import 'package:music_app/Views/navigation-bar-pages/communities/post_inside.dart';
-import 'package:music_app/Views/players/music/musicPlayer.dart';
 import 'package:music_app/Views/players/podcast/podcastPlayer.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/providers/podcast_provider.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class PostWidget extends StatefulWidget {
   Post post;
 
@@ -38,7 +38,7 @@ class _PostWidgetState extends State<PostWidget> {
       },
       child: Card(
         color: Colors.grey[900],
-        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
         child: Padding(
@@ -92,14 +92,6 @@ class _PostWidgetState extends State<PostWidget> {
                         musicProvider.setPlaylistAndSong(
                           [post.song!],
                           0, // الـ Index للأغنية
-                        );
-                        // استدعاء MusicPlayer كـ BottomSheet
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (context) {
-                            return MusicPlayer(); // صفحة الـ MusicPlayer
-                          },
                         );
                       },
                       child: Container(
