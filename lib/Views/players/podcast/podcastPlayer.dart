@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marquee/marquee.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
-import 'package:music_app/CustomWidgets/likeButton.dart';
+import 'package:music_app/CustomWidgets/likeSongButton.dart';
 import 'package:music_app/CustomWidgets/select-playList.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
 import 'package:music_app/Views/navigation-bar-pages/communities/create_post.dart';

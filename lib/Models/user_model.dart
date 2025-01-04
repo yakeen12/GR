@@ -22,17 +22,19 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    List<Comment> comments = [];
+    List<String> likes = [];
     return User(
       id: json['_id'],
       username: json['username'] ?? "",
       email: json['email'] ?? "",
       profilePicture: json['profilePicture'] ?? "",
-      likedSongs: List<String>.from(json['likedSongs']),
-      likedPosts: List<String>.from(json['likedPosts']),
+      likedSongs: List<String>.from(json['likedSongs']) ?? likes,
+      likedPosts: List<String>.from(json['likedPosts']) ?? likes,
       comments:
           (json['comments'] as List).map((e) => Comment.fromJson(e)).toList() ??
-              [],
-      secretGifts: List<String>.from(json['secretGifts'] ?? []),
+              comments,
+      secretGifts: List<String>.from(json['secretGifts'] ?? likes),
     );
   }
 

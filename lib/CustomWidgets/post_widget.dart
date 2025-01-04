@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/Models/post_model.dart';
+import 'package:music_app/ViewModels/post_view_model.dart';
 import 'package:music_app/Views/navigation-bar-pages/communities/post_inside.dart';
 import 'package:music_app/Views/players/music/musicPlayer.dart';
 import 'package:music_app/Views/players/podcast/podcastPlayer.dart';
@@ -7,22 +8,24 @@ import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/providers/podcast_provider.dart';
 import 'package:provider/provider.dart';
 
-class PostEpisodeWidget extends StatefulWidget {
-  final Post post;
+class PostWidget extends StatefulWidget {
+  Post post;
 
-  const PostEpisodeWidget({Key? key, required this.post}) : super(key: key);
+  PostWidget({Key? key, required this.post}) : super(key: key);
 
   @override
-  State<PostEpisodeWidget> createState() => _PostEpisodeWidgetState();
+  State<PostWidget> createState() => _PostWidgetState();
 }
 
-class _PostEpisodeWidgetState extends State<PostEpisodeWidget> {
+class _PostWidgetState extends State<PostWidget> {
   @override
   Widget build(BuildContext context) {
+    PostViewModel postViewModel = PostViewModel();
     final musicProvider = Provider.of<MusicProvider>(context, listen: false);
     final podcastProvider =
         Provider.of<PodcastProvider>(context, listen: false);
     Post post = widget.post;
+    int postLikes = int.parse(widget.post.likesCount);
 
     return InkWell(
       onTap: () {
@@ -45,7 +48,7 @@ class _PostEpisodeWidgetState extends State<PostEpisodeWidget> {
             children: [
               // Community name
               Text(
-                post.community ?? "",
+                post.community,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18.0,
@@ -72,7 +75,7 @@ class _PostEpisodeWidgetState extends State<PostEpisodeWidget> {
 
               // Post content
               Text(
-                post.content ?? "",
+                post.content,
                 style: const TextStyle(color: Colors.white, fontSize: 14.0),
                 maxLines: 4,
                 overflow: TextOverflow.ellipsis,
@@ -192,7 +195,7 @@ class _PostEpisodeWidgetState extends State<PostEpisodeWidget> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(6.0),
                                   child: Image.network(
-                                    post.episode!.podcast.img ?? "",
+                                    post.episode!.podcast.img,
                                     height: 60,
                                     width: 60,
                                     fit: BoxFit.cover,
@@ -245,18 +248,45 @@ class _PostEpisodeWidgetState extends State<PostEpisodeWidget> {
                 child: Row(
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: postViewModel.isLoading.value
+                          ? null
+                          : () async {
+                              //// like post
+
+                              Post post = await postViewModel
+                                  .toggleLike(widget.post.id);
+                              setState(() {
+                                widget.post = post;
+                              });
+                            },
                       child: Icon(
-                        Icons.favorite_border,
-                        color: Colors.white,
+                        post.hasLiked ? Icons.favorite : Icons.favorite_border,
+                        color: post.hasLiked
+                            ? const Color.fromARGB(255, 119, 19, 12)
+                            : Colors.white,
                         size: 30,
                       ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "$postLikes",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       width: 20,
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PostPage(
+                                      post: post,
+                                    )));
+                      },
                       child: Icon(
                         Icons.mode_comment_outlined,
                         color: Colors.white,

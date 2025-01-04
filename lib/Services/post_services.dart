@@ -1,5 +1,11 @@
 import 'package:http/http.dart' as http;
+import 'package:music_app/Models/episode_model.dart';
+import 'package:music_app/Models/post_model.dart';
+import 'package:music_app/Models/song_model.dart';
+import 'package:music_app/models/user_model.dart';
 import 'dart:convert';
+
+import 'package:music_app/utils/local_storage_service.dart';
 
 class PostService {
   final String baseUrl =
@@ -92,14 +98,83 @@ class PostService {
   // }
 
   // تغيير حالة اللايك
-  Future<Map<String, dynamic>> toggleLike(String postId, token) async {
+  Future<Post?> toggleLike(String postId) async {
     final url = Uri.parse('$baseUrl/$postId/like');
     final response = await http.post(url, headers: {
-      'Authorization': token, // ارسال الـ Token للتوثيق
+      'Authorization':
+          LocalStorageService().getToken()!, // ارسال الـ Token للتوثيق
     });
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      print(response.body);
+      Post post = Post(
+        id: json.decode(response.body)['_id'],
+        content: json.decode(response.body)['content'],
+        user: User(
+            id: json.decode(response.body)['user']['_id'],
+            username: json.decode(response.body)['user']['username'],
+            profilePicture: json.decode(response.body)['user']
+                ['profilePicture']),
+        hasLiked: json.decode(response.body)['hasLiked'],
+        community: json.decode(response.body)['community'],
+        createdAt: DateTime.parse(
+            json.decode(response.body)['createdAt']), // تحويل النص إلى DateTime
+        likesCount: json.decode(response.body)['likesCount'],
+        comments: json.decode(response.body)['comments'],
+        song: json.decode(response.body)['song'] != null &&
+                json.decode(response.body)['song'] is Map<String, dynamic>
+            ? Song.fromJson(json.decode(response.body)['song'])
+            : null,
+        episode: json.decode(response.body)['episode'] != null &&
+                json.decode(response.body)['episode'] is Map<String, dynamic>
+            ? Episode.fromJson(json.decode(response.body)['episode'])
+            : null,
+      );
+      print("post.hasLiked");
+      print(post.hasLiked);
+      return post;
+    } else {
+      throw Exception('Failed to toggle like');
+    }
+  }
+
+// تغيير حالة اللايك
+  Future<Post?> getPostById(String postId) async {
+    print("postId :${postId}");
+    final url = Uri.parse('$baseUrl/post/$postId');
+    final response = await http.get(url, headers: {
+      'Authorization':
+          LocalStorageService().getToken()!, // ارسال الـ Token للتوثيق
+    });
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      Post post = Post(
+        id: json.decode(response.body)['_id'],
+        content: json.decode(response.body)['content'],
+        hasLiked: json.decode(response.body)['hasLiked'],
+        community: json.decode(response.body)['community'],
+        likesCount: json.decode(response.body)['likesCount'],
+        comments: json.decode(response.body)['comments'],
+        song: json.decode(response.body)['song'] != null &&
+                json.decode(response.body)['song'] is Map<String, dynamic>
+            ? Song.fromJson(json.decode(response.body)['song'])
+            : null,
+        episode: json.decode(response.body)['episode'] != null &&
+                json.decode(response.body)['episode'] is Map<String, dynamic>
+            ? Episode.fromJson(json.decode(response.body)['episode'])
+            : null,
+        user: User(
+            id: json.decode(response.body)['user']['_id'],
+            username: json.decode(response.body)['user']['username'],
+            profilePicture: json.decode(response.body)['user']
+                ['profilePicture']),
+        createdAt: DateTime.parse(
+            json.decode(response.body)['createdAt']), // تحويل النص إلى DateTime
+      );
+      print("post.hasLiked");
+      print(post.hasLiked);
+      return post;
     } else {
       throw Exception('Failed to toggle like');
     }

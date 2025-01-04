@@ -9,7 +9,7 @@ class Post {
   final Song? song;
   final Episode? episode;
   final String community;
-  final List<dynamic> likes;
+  final String likesCount;
   final List<dynamic> comments;
   final bool hasLiked;
   final DateTime createdAt;
@@ -22,7 +22,7 @@ class Post {
       this.song,
       this.episode,
       required this.community,
-      required this.likes,
+      required this.likesCount,
       required this.comments,
       required this.createdAt});
 
@@ -35,7 +35,7 @@ class Post {
       song: Song.fromJson(json['song']),
       episode: Episode.fromJson(json['episode']),
       community: json['community'],
-      likes: List<dynamic>.from(json['likes']),
+      likesCount: json['likesCount'],
       hasLiked: json['hasLiked'],
       comments: List<dynamic>.from(json['comments']),
       createdAt: DateTime.parse(json['createdAt']), // تحويل النص إلى DateTime
@@ -49,7 +49,7 @@ class Post {
       'song': song,
       'podcast': episode,
       'community': community,
-      'likes': likes,
+      'likesCount': likesCount,
       'comments': comments,
     };
   }

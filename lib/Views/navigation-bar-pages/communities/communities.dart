@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
-import 'package:music_app/CustomWidgets/post_episode_widget.dart';
-import 'package:music_app/CustomWidgets/post_song_widget.dart';
-import 'package:music_app/Models/post_model.dart';
+import 'package:music_app/CustomWidgets/post_widget.dart';
 import 'package:music_app/ViewModels/post_view_model.dart';
 import 'package:music_app/utils/local_storage_service.dart';
 
@@ -52,7 +50,9 @@ class _CommunitiesState extends State<Communities> {
           color: Colors.black,
           child: ListView(children: [
             ListTile(
-              title: Text("Home", style: const TextStyle(color: Colors.white)),
+              title: Text("Home",
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
               onTap: () {
                 updateFeed("Home"); // تغيير الفيد إلى Home
                 Navigator.pop(context); // إغلاق القائمة
@@ -102,9 +102,19 @@ class _CommunitiesState extends State<Communities> {
                 children: [
                   Text(
                     selectedFeed,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
                   ),
-                  const Icon(Icons.arrow_drop_down, color: Colors.white),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  const Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.white,
+                    size: 35,
+                  ),
                 ],
               ),
             ),
@@ -138,7 +148,7 @@ class _CommunitiesState extends State<Communities> {
                     itemCount: postViewModel.posts.value!.length,
                     itemBuilder: (context, index) {
                       final post = postViewModel.posts.value![index];
-                      return PostEpisodeWidget(post: post);
+                      return PostWidget(post: post);
                     },
                   ),
                 );

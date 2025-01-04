@@ -38,7 +38,7 @@ class PostViewModel extends GetxController {
             community: postJson['community'],
             createdAt: DateTime.parse(
                 postJson['createdAt']), // تحويل النص إلى DateTime
-            likes: postJson['likes'],
+            likesCount: postJson['likesCount'],
             comments: postJson['comments'],
             song: postJson['song'] != null &&
                     postJson['song'] is Map<String, dynamic>
@@ -94,7 +94,7 @@ class PostViewModel extends GetxController {
             community: postJson['community'],
             createdAt: DateTime.parse(
                 postJson['createdAt']), // تحويل النص إلى DateTime
-            likes: postJson['likes'],
+            likesCount: postJson['likesCount'],
             comments: postJson['comments'],
             song: postJson['song'] != null &&
                     postJson['song'] is Map<String, dynamic>
@@ -125,25 +125,80 @@ class PostViewModel extends GetxController {
   }
 
   // تغيير حالة اللايك
-  Future<void> toggleLike(String postId, String token) async {
-    errorMessage.value = '';
+  Future<Post> toggleLike(String postId) async {
+    errorMessage.value = ''; // مسح رسالة الخطأ السابقة
 
-    isLoading(true);
+    isLoading(true); // تشغيل مؤشر التحميل
     try {
-      final response = await _postService.toggleLike(postId, token);
-      final updatedPost = Post.fromJson(response);
-      if (posts.value != null) {
-        posts.value = posts.value!.map((post) {
-          if (post.id == updatedPost.id) {
-            return updatedPost;
-          }
-          return post;
-        }).toList();
+      final updatedPost =
+          await _postService.toggleLike(postId); // طلب من الخدمة
+
+      if (updatedPost != null) {
+        // تحديث البوست في القائمة إذا تم إرجاع بوست جديد
+        if (posts.value != null) {
+          posts.value = posts.value!.map((post) {
+            if (post.id == updatedPost.id) {
+              return updatedPost;
+            }
+            return post;
+          }).toList();
+        }
+        return updatedPost; // إعادة البوست المحدث
+      } else {
+        // إذا لم يتم إرجاع بوست محدث، إعادة البوست القديم من القائمة
+        final oldPost = posts.value?.firstWhere((post) => post.id == postId,
+            orElse: () => throw Exception("Post not found"));
+        return oldPost!;
       }
     } catch (error) {
+      // إذا حدث خطأ أثناء الطلب
       errorMessage.value = 'Error toggling like: $error';
+
+      // إعادة البوست القديم من القائمة في حال الخطأ
+      final oldPost = posts.value?.firstWhere((post) => post.id == postId,
+          orElse: () => throw Exception("Post not found"));
+      return oldPost!;
     } finally {
-      isLoading(false);
+      isLoading(false); // إيقاف مؤشر التحميل
+    }
+  }
+
+  // by post ID
+  Future<Post> getPostById(String postId) async {
+    errorMessage.value = ''; // مسح رسالة الخطأ السابقة
+
+    isLoading(true); // تشغيل مؤشر التحميل
+    try {
+      final updatedPost =
+          await _postService.getPostById(postId); // طلب من الخدمة
+
+      if (updatedPost != null) {
+        // تحديث البوست في القائمة إذا تم إرجاع بوست جديد
+        if (posts.value != null) {
+          posts.value = posts.value!.map((post) {
+            if (post.id == updatedPost.id) {
+              return updatedPost;
+            }
+            return post;
+          }).toList();
+        }
+        return updatedPost; // إعادة البوست المحدث
+      } else {
+        // إذا لم يتم إرجاع بوست محدث، إعادة البوست القديم من القائمة
+        final oldPost = posts.value?.firstWhere((post) => post.id == postId,
+            orElse: () => throw Exception("Post not found"));
+        return oldPost!;
+      }
+    } catch (error) {
+      // إذا حدث خطأ أثناء الطلب
+      errorMessage.value = 'Error commenting bruh: $error';
+
+      // إعادة البوست القديم من القائمة في حال الخطأ
+      final oldPost = posts.value?.firstWhere((post) => post.id == postId,
+          orElse: () => throw Exception("Post not found"));
+      return oldPost!;
+    } finally {
+      isLoading(false); // إيقاف مؤشر التحميل
     }
   }
 
