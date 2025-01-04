@@ -98,7 +98,7 @@ class _PostPageState extends State<PostPage> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey[850],
+                              color: const Color.fromARGB(84, 0, 0, 0),
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             padding: const EdgeInsets.all(8.0),
