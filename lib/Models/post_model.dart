@@ -31,14 +31,22 @@ class Post {
     return Post(
       id: json['_id'],
       content: json['content'],
-      user: User.fromJson(json['user']),
-      song: Song.fromJson(json['song']),
-      episode: Episode.fromJson(json['episode']),
-      community: json['community'],
-      likesCount: json['likesCount'],
+      user: User(
+          id: json['user']['_id'],
+          username: json['user']['username'],
+          profilePicture: json['user']['profilePicture']),
       hasLiked: json['hasLiked'],
-      comments: List<dynamic>.from(json['comments']),
+      community: json['community'],
       createdAt: DateTime.parse(json['createdAt']), // تحويل النص إلى DateTime
+      likesCount: json['likesCount'],
+      comments: json['comments'],
+      song: json['song'] != null && json['song'] is Map<String, dynamic>
+          ? Song.fromJson(json['song'])
+          : null,
+      episode:
+          json['episode'] != null && json['episode'] is Map<String, dynamic>
+              ? Episode.fromJson(json['episode'])
+              : null,
     );
   }
 

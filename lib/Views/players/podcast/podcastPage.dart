@@ -84,7 +84,22 @@ class _PodcastPageState extends State<PodcastPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 50),
+                SizedBox(
+                  height: 40,
+                ),
+                SizedBox(
+                  height: 100,
+                  child: SingleChildScrollView(
+                    child: Text(
+                      podcast.description!,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
                 Text(
                   'Episodes:',
                   style: TextStyle(

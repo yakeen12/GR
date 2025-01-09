@@ -26,28 +26,7 @@ class PostViewModel extends GetxController {
       if (fetchedPosts.isNotEmpty) {
         List<Post> postsList = [];
         for (var postJson in fetchedPosts) {
-          Post post = Post(
-            id: postJson['_id'],
-            content: postJson['content'],
-            user: User(
-                id: postJson['user']['_id'],
-                username: postJson['user']['username'],
-                profilePicture: postJson['user']['profilePicture']),
-            hasLiked: postJson['hasLiked'],
-            community: postJson['community'],
-            createdAt: DateTime.parse(
-                postJson['createdAt']), // تحويل النص إلى DateTime
-            likesCount: postJson['likesCount'],
-            comments: postJson['comments'],
-            song: postJson['song'] != null &&
-                    postJson['song'] is Map<String, dynamic>
-                ? Song.fromJson(postJson['song'])
-                : null,
-            episode: postJson['episode'] != null &&
-                    postJson['episode'] is Map<String, dynamic>
-                ? Episode.fromJson(postJson['episode'])
-                : null,
-          );
+          Post post = Post.fromJson(postJson);
           postsList.add(post);
         }
         posts.value = postsList;
@@ -76,34 +55,7 @@ class PostViewModel extends GetxController {
       if (fetchedPosts.isNotEmpty) {
         List<Post> postsList = [];
         for (var postJson in fetchedPosts) {
-          // "song: ${postJson['song'] != null} && ${postJson['song'] is Map}");
-          // print("${Song.fromJson(postJson['song'])}");
-          // print(
-          //     "episode: ${postJson['episode'] != null} && ${postJson['episode'] is Map}");
-          // print("${Episode.fromJson(postJson['episode'])}");
-
-          Post post = Post(
-            id: postJson['_id'],
-            content: postJson['content'],
-            user: User(
-                id: postJson['user']['_id'],
-                username: postJson['user']['username'],
-                profilePicture: postJson['user']['profilePicture']),
-            hasLiked: postJson['hasLiked'],
-            community: postJson['community'],
-            createdAt: DateTime.parse(
-                postJson['createdAt']), // تحويل النص إلى DateTime
-            likesCount: postJson['likesCount'],
-            comments: postJson['comments'],
-            song: postJson['song'] != null &&
-                    postJson['song'] is Map<String, dynamic>
-                ? Song.fromJson(postJson['song'])
-                : null,
-            episode: postJson['episode'] != null &&
-                    postJson['episode'] is Map<String, dynamic>
-                ? Episode.fromJson(postJson['episode'])
-                : null,
-          );
+          Post post = Post.fromJson(postJson);
           print(post.community);
           postsList.add(post);
         }
