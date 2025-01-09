@@ -1,10 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:music_app/Models/episode_model.dart';
 import 'package:music_app/Models/post_model.dart';
-import 'package:music_app/Models/song_model.dart';
 import 'package:music_app/Services/post_services.dart';
-import 'package:music_app/models/user_model.dart';
 
 class PostViewModel extends GetxController {
   var isLoading = false.obs; // حالة التحميل
@@ -70,6 +67,34 @@ class PostViewModel extends GetxController {
       printError(info: error.toString());
       print(error);
       errorMessage.value = 'Error fetching all posts: $error';
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  // Posts by user ID
+  Future<void> getPostsByUserId(String userId) async {
+    errorMessage.value = '';
+    posts = Rx<List<Post>?>(null);
+
+    isLoading(true);
+    try {
+      final fetchedPosts = await _postService.getPostsByUserId(userId);
+      if (fetchedPosts.isNotEmpty) {
+        List<Post> postsList = [];
+        for (var postJson in fetchedPosts) {
+          Post post = Post.fromJson(postJson);
+          print(post.community);
+          postsList.add(post);
+        }
+        posts.value = postsList;
+      } else {
+        errorMessage.value = 'No posts available.';
+      }
+      // } catch (error) {
+      //   printError(info: error.toString());
+      //   print(error);
+      //   errorMessage.value = 'Error fetching all posts: $error';
     } finally {
       isLoading(false);
     }

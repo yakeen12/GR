@@ -1,6 +1,6 @@
 import 'package:music_app/Models/episode_model.dart';
 import 'package:music_app/Models/song_model.dart';
-import 'package:music_app/models/user_model.dart';
+import 'package:music_app/Models/user_model.dart';
 
 class Post {
   final String id;

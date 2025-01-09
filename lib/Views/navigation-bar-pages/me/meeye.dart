@@ -43,7 +43,10 @@ class _MeeyeState extends State<Meeye> {
           ); // عرض مؤشر التحميل
         } else if (userViewModel.errorMessage.isNotEmpty) {
           return Center(
-              child: Text(userViewModel.errorMessage.value)); // عرض رسالة خطأ
+              child: Text(
+            userViewModel.errorMessage.value,
+            style: TextStyle(color: Colors.white),
+          )); // عرض رسالة خطأ
         } else {
           var user = userViewModel.user.value;
           return Column(

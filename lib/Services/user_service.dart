@@ -51,7 +51,15 @@ class UserService {
     print(response.body);
     if (response.statusCode == 200) {
       // إذا كانت الاستجابة ناجحة، قم بتحليل البيانات
-      return User.fromJson(jsonDecode(response.body));
+      Map<String, dynamic> json = jsonDecode(response.body);
+      return User(
+        id: json['_id'],
+        username: json['username'] ?? "",
+        email: json['email'] ?? "",
+        profilePicture: json['profilePicture'] ?? "",
+        likedSongs: List<String>.from(json['likedSongs']),
+        secretGifts: List<String>.from(json['secretGifts']),
+      );
     } else {
       // إذا كانت الاستجابة فشلت، إرجاع null
       return null;

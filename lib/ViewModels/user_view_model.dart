@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:music_app/Models/song_model.dart';
 import 'package:music_app/services/user_service.dart';
-import 'package:music_app/models/user_model.dart';
+import 'package:music_app/Models/user_model.dart';
 
 class UserViewModel extends GetxController {
   var isLoading = false.obs;
@@ -15,32 +15,17 @@ class UserViewModel extends GetxController {
   List<Song> get likedSongsList =>
       likedSongs.where((song) => song != null).cast<Song>().toList();
 
-  // var isLiked = false.obs;
-
-  // void toggleLike() {
-  //   isLiked.value = !isLiked.value; // عكس حالة الإعجاب
-  // }
-
   // Method to fetch user profile from the server
   Future<void> fetchUserProfile(String token) async {
     isLoading(true);
     try {
       var response = await UserService().getUserProfile(token);
       if (response != null) {
-        user.value = User(
-            id: response.id,
-            username: response.username,
-            email: response.email ?? "",
-            likedSongs: response.likedSongs ?? [],
-            likedPosts: response.likedPosts ?? [],
-            comments: response.comments ?? [],
-            profilePicture: response.profilePicture,
-            secretGifts: response.secretGifts ?? []);
-      } else {
-        errorMessage.value = 'Failed to load profile.';
+        user.value = response;
       }
     } catch (e) {
       errorMessage.value = 'Error: $e';
+      printError(info: "$e");
     } finally {
       isLoading(false);
     }

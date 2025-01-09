@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:music_app/Models/episode_model.dart';
 import 'package:music_app/Models/post_model.dart';
 import 'package:music_app/Models/song_model.dart';
-import 'package:music_app/models/user_model.dart';
+import 'package:music_app/Models/user_model.dart';
 import 'dart:convert';
 
 import 'package:music_app/utils/local_storage_service.dart';
@@ -83,19 +83,28 @@ class PostService {
     }
   }
 
-  // // جلب جميع البوستات الخاصة باليوزر
-  // Future<List<Map<String, dynamic>>> getPostsByUserId( token) async {
-  //   final url = Uri.parse('$baseUrl/user/');
-  //   final response = await http.get(url, headers: {
-  //     'Authorization': token,  // ارسال الـ Token للتوثيق
-  //   });
+  // جلب جميع البوستات الخاصة باليوزر
+  Future<List<dynamic>> getPostsByUserId(String userId) async {
+    final url = Uri.parse('$baseUrl/$userId/posts');
+    final response = await http.get(url, headers: {
+      'Authorization':
+          LocalStorageService().getToken()!, // ارسال الـ Token للتوثيق
+    });
 
-  //   if (response.statusCode == 200) {
-  //     return List<Map<String, dynamic>>.from(json.decode(response.body));
-  //   } else {
-  //     throw Exception('Failed to fetch posts');
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data is List) {
+        print(data);
+        return data;
+      } else {
+        throw Exception('Unexpected response format');
+      }
+    } else {
+      print(response.body);
+
+      throw Exception('Failed to fetch user posts ${response.body}');
+    }
+  }
 
   // تغيير حالة اللايك
   Future<Post?> toggleLike(String postId) async {
