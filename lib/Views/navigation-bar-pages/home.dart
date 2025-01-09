@@ -7,6 +7,7 @@ import 'package:music_app/ViewModels/episode_view_model.dart';
 import 'package:music_app/ViewModels/search_view_model.dart';
 import 'package:music_app/ViewModels/songs_view_model.dart';
 import 'package:music_app/Views/navigation-bar-pages/communities/post_inside.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/me_outside_user_search.dart';
 import 'package:music_app/Views/players/music/artist.dart';
 import 'package:music_app/Views/players/music/musicPlayer.dart';
 import 'package:music_app/Views/players/podcast/podcastPage.dart';
@@ -503,41 +504,50 @@ class _HomeState extends State<Home> {
                       ),
 
                     ..._searchViewModel.users.map((user) {
-                      return Container(
-                        margin: EdgeInsets.all(5),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        height: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Color.fromARGB(44, 255, 255, 255),
-                        ),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Image.network(
-                                user.profilePicture!,
-                                fit: BoxFit.cover,
-                                height: 50,
-                                width: 50,
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MeOutSide(user: user),
+                              ));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Color.fromARGB(44, 255, 255, 255),
+                          ),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(
+                                  user.profilePicture!,
+                                  fit: BoxFit.cover,
+                                  height: 50,
+                                  width: 50,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.sizeOf(context).width - 180,
-                              child: Text(
-                                user.username,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              SizedBox(
+                                width: 15,
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                width: MediaQuery.sizeOf(context).width - 180,
+                                child: Text(
+                                  user.username,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     }).toList(),

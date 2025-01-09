@@ -1,4 +1,5 @@
 import 'package:music_app/Models/song_model.dart';
+import 'package:music_app/Models/user_model.dart';
 
 class Playlist {
   String id;
@@ -7,7 +8,8 @@ class Playlist {
   bool allowEditing;
   List<Song> songs;
   // User createdBy;
-  String createdBy;
+  User createdBy;
+
 
   Playlist({
     required this.id,
@@ -27,7 +29,10 @@ class Playlist {
       allowEditing: json['allowEditing'] ?? false,
       songs: List<Song>.from(json['songs'].map((x) => Song.fromJson(x))),
       // createdBy: User.fromJson(json['createdBy']),
-      createdBy: json['createdBy'],
+      createdBy: User(
+          id: json['createdBy']['_id'],
+          username: json['createdBy']['username'],
+          profilePicture: json['createdBy']['profilePicture']),
     );
   }
 

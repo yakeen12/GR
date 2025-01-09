@@ -8,7 +8,7 @@ import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/music/createplaylist.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/music/likes.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/music/myplaylistinside.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/myplaylistinside.dart';
 import 'package:music_app/Views/players/podcast/podcastPlayer.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/providers/podcast_provider.dart';

@@ -5,7 +5,7 @@ import 'package:music_app/CustomWidgets/post_widget.dart';
 import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/ViewModels/post_view_model.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/music/myplaylistinside.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/myplaylistinside.dart';
 import 'package:music_app/utils/local_storage_service.dart';
 
 class Me extends StatefulWidget {

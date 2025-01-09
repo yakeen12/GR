@@ -3,16 +3,6 @@ import 'package:get/get.dart';
 import 'package:music_app/Models/playList_model.dart';
 import 'package:music_app/Services/playList_service.dart';
 
-// // جلب البلاي ليستات العامة
-// Future<void> fetchPublicPlaylists() async {
-//   try {
-//     playlists = await _playlistService.getPublicPlaylists();
-//     notifyListeners();
-//   } catch (error) {
-//     print('Error fetching public playlists: $error');
-//   }
-// }
-
 class PlaylistViewModel extends GetxController {
   final PlaylistService _playlistService = PlaylistService();
 
@@ -21,6 +11,39 @@ class PlaylistViewModel extends GetxController {
   var playlists = <Playlist>[].obs;
 
   var errorMessage = ''.obs;
+
+// جلب البلاي ليستات العامة
+  Future<void> fetchPublicPlaylists(String userId) async {
+    try {
+      isLoading.value = true;
+      errorMessage.value = '';
+
+      var response = await _playlistService.getPublicPlaylists(userId);
+
+      if (response.isNotEmpty) {
+        List<Playlist> playListsList = [];
+        for (var playlistJson in response) {
+          Playlist playlist = Playlist.fromJson(playlistJson);
+          playListsList.add(playlist);
+        }
+        playlists.value = playListsList;
+
+        isLoading.value = false;
+      } else {
+        print("empty");
+      }
+    } catch (error) {
+      isLoading.value = false;
+      print(error);
+      errorMessage.value = 'Error fetching user playlists: $error';
+    }
+
+    //   playlists = await _playlistService.getPublicPlaylists(userId);
+    //   notifyListeners();
+    // } catch (error) {
+    //   print('Error fetching public playlists: $error');
+    // }
+  }
 
   // جلب البلاي ليستات المستخدم
   Future<void> fetchUserPlaylists(String token) async {

@@ -7,17 +7,25 @@ class PlaylistService {
   final String baseUrl =
       'https://music-app-server-1-h4hl.onrender.com/api/playlists';
 
-  // // جلب البلاي ليستات العامة
-  // Future<List<Playlist>> getPublicPlaylists() async {
-  //   final response = await http.get(Uri.parse('$apiUrl/playlists/public'));
+  // جلب البلاي ليستات العامة
+  Future<List<dynamic>> getPublicPlaylists(String userId) async {
+    final response = await http.get(Uri.parse('$baseUrl/public/$userId'));
 
-  //   if (response.statusCode == 200) {
-  //     List<dynamic> data = json.decode(response.body);
-  //     return data.map((item) => Playlist.fromJson(item)).toList();
-  //   } else {
-  //     throw Exception('Failed to load public playlists');
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load public playlists');
+    }
+    // if (response.statusCode == 200) {
+    //   // final List<dynamic> playlistsJson = json.decode(response.body);
+    //   print("Response playlistsJson: ${response.body}");
+
+    //   return json.decode(response.body);
+    //   // playlistsJson.map((json) => Playlist.fromJson(json)).toList();
+    // } else {
+    //   throw Exception('Failed to load user playlists');
+    // }
+  }
 
   // // جلب بلاي ليستات المستخدم
   // Future<List<Playlist>> getUserPlaylists(String userId) async {
