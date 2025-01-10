@@ -1,8 +1,5 @@
 import 'package:get/get.dart';
-import 'package:music_app/Models/artist_model.dart';
-import 'package:music_app/Models/episode_model.dart';
 import 'package:music_app/Models/podcast_model.dart';
-import 'package:music_app/Services/artist_service.dart';
 import 'package:music_app/Services/podcast_services.dart';
 
 class PodcastViewModel extends GetxController {
@@ -17,15 +14,6 @@ class PodcastViewModel extends GetxController {
       var response = await PodcastService().getPodcastDetails(podcastID);
       if (response != null) {
         podcast.value = response;
-        // podcast.value = Podcast(
-        //     id: response.id,
-        //     img: response.img,
-        //     title: response.title,
-        //     description: response.description,
-        //     episodes: response.episodes != null
-        //   ? List<Episode>.from(response.episodes!.map((x) => Episode.fromJson(x)))
-        //   : [],
-        //     host: response.host);
         print("podcast.value!.episodes![0]");
 
         print(podcast.value!.episodes![0]);

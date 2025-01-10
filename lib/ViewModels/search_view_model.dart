@@ -10,6 +10,8 @@ import 'package:music_app/Services/search_service.dart';
 class SearchViewModel extends GetxController {
   var posts = <Post>[].obs;
   var songs = <Song>[].obs;
+  var songsGift = <Song>[].obs;
+
   var episodes = <Episode>[].obs;
   var users = <User>[].obs;
   var artists = <Artist>[].obs;
@@ -23,6 +25,10 @@ class SearchViewModel extends GetxController {
         users.isNotEmpty ||
         artists.isNotEmpty ||
         podcasts.isNotEmpty;
+  }
+
+  bool get hasSongs {
+    return songsGift.isNotEmpty;
   }
 
   final SearchService _searchService = SearchService();
@@ -64,11 +70,29 @@ class SearchViewModel extends GetxController {
     }
   }
 
+  void searchSongs(String query) async {
+    isLoading.value = true;
+    try {
+      var result = await _searchService.searchSongs(query);
+
+      songsGift.assignAll((result['songs'] as List)
+          .map((songJson) => Song.fromJson(songJson))
+          .toList());
+      print(songsGift);
+    } catch (e) {
+      errorMessage.value = e.toString();
+      print(e);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   //    خلص عاد زهقت من الشرح واضحة
   void clearResults() {
     posts.clear();
     songs.clear();
     episodes.clear();
+    songsGift.clear();
     users.clear();
     artists.clear();
     podcasts.clear();

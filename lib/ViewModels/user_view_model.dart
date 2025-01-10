@@ -66,7 +66,7 @@ class UserViewModel extends GetxController {
       if (response.isNotEmpty) {
         likedSongs.value = response;
         print(
-            "likedSongsssssssssssssssssssssssssssssssssssss $likedSongs ${likedSongs.value}");
+            "likedSongsssssssssssssssssssssssssssssssssssss $likedSongs ${likedSongs}");
       } else {
         errorMessage.value = 'no songs';
       }

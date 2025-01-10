@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
-import 'package:music_app/Models/episode_model.dart';
 import 'package:music_app/ViewModels/episode_view_model.dart';
 import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';

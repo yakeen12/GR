@@ -6,6 +6,7 @@ import 'package:music_app/Models/user_model.dart';
 import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/ViewModels/post_view_model.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/sendGift_from_pf.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/myplaylistinside.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/outUser/playList_inside_outUser.dart';
 import 'package:music_app/utils/local_storage_service.dart';
@@ -35,7 +36,6 @@ class _MeOutSideState extends State<MeOutSide> {
             child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        
         const SizedBox(
           height: 20,
         ),
@@ -57,6 +57,45 @@ class _MeOutSideState extends State<MeOutSide> {
         SizedBox(
           height: 30,
         ),
+        InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SendGiftFromPF(user: widget.user),
+                  ));
+            },
+            child: Container(
+              height: 100,
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: const Color.fromARGB(18, 255, 255, 255),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.wallet_giftcard_rounded,
+                    color: Colors.white,
+                    size: 40,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    "Send secret gift to ${widget.user.username}?",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            )),
+        SizedBox(
+          height: 30,
+        ),
         _buildSectionHeader("PlayLists:", () {}),
         SizedBox(
           height: 15,
@@ -66,11 +105,11 @@ class _MeOutSideState extends State<MeOutSide> {
             child: Obx(() {
               if (playlistViewModel.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
-              } else if (playlistViewModel.errorMessage.isNotEmpty) {
-                return Text(
-                  '${playlistViewModel.errorMessage}',
-                  style: TextStyle(color: Colors.white),
-                );
+                // } else if (playlistViewModel.errorMessage.isNotEmpty) {
+                //   return Text(
+                //     '${playlistViewModel.errorMessage}',
+                //     style: TextStyle(color: Colors.white),
+                //   );
               } else if (playlistViewModel.playlists.isEmpty) {
                 return const Center(
                     child: Text(
@@ -149,7 +188,7 @@ class _MeOutSideState extends State<MeOutSide> {
               postViewModel.posts.value!.isEmpty) {
             return const Center(
                 child: Text(
-              'You did not post anything yet :)',
+              'this user did not post anything yet :)',
               style: TextStyle(color: Colors.white),
             ));
           } else {

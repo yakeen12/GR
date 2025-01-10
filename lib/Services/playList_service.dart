@@ -16,29 +16,10 @@ class PlaylistService {
     } else {
       throw Exception('Failed to load public playlists');
     }
-    // if (response.statusCode == 200) {
-    //   // final List<dynamic> playlistsJson = json.decode(response.body);
-    //   print("Response playlistsJson: ${response.body}");
-
-    //   return json.decode(response.body);
-    //   // playlistsJson.map((json) => Playlist.fromJson(json)).toList();
-    // } else {
-    //   throw Exception('Failed to load user playlists');
-    // }
+  
   }
 
-  // // جلب بلاي ليستات المستخدم
-  // Future<List<Playlist>> getUserPlaylists(String userId) async {
-  //   final response =
-  //       await http.get(Uri.parse('$apiUrl/playlists/user/$userId'));
-
-  //   if (response.statusCode == 200) {
-  //     List<dynamic> data = json.decode(response.body);
-  //     return data.map((item) => Playlist.fromJson(item)).toList();
-  //   } else {
-  //     throw Exception('Failed to load user playlists');
-  //   }
-  // }
+ 
 
   // جلب بلاي ليستات اليوزر
   Future<List<dynamic>> getUserPlaylists({

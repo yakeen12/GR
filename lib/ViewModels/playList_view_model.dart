@@ -30,6 +30,9 @@ class PlaylistViewModel extends GetxController {
 
         isLoading.value = false;
       } else {
+        playlists.value = [];
+
+        isLoading.value = false;
         print("empty");
       }
     } catch (error) {
@@ -62,7 +65,6 @@ class PlaylistViewModel extends GetxController {
           playListsList.add(playlist);
         }
         playlists.value = playListsList;
-        debugPrint("playlists.value ${playlists.value}");
         isLoading.value = false;
       } else {
         print("empty");
