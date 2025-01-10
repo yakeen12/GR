@@ -5,6 +5,7 @@ import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/Services/auth.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/editPorf.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/my_gifts.dart';
 import 'package:music_app/utils/local_storage_service.dart';
 
 class Meeye extends StatefulWidget {
@@ -107,10 +108,16 @@ class _MeeyeState extends State<Meeye> {
                 },
               ),
               _buildSettingsTile(
-                icon: Icons.card_giftcard,
-                title: 'Secret Gifts',
-                subtitle: 'Ones you got',
-              ),
+                  icon: Icons.card_giftcard,
+                  title: 'Secret Gifts',
+                  subtitle: 'Ones you got',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyGifts(),
+                        ));
+                  }),
               _buildSettingsTile(
                 icon: Icons.share_outlined,
                 title: 'Share Profile',

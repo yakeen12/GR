@@ -64,6 +64,7 @@ class CommentViewModel extends GetxController {
       // محاولة الحصول على التعليق المحدث من الخدمة
       final response = await _commentService.likeComment(commentId);
 
+      // ignore: unnecessary_null_comparison
       if (response != null) {
         final updatedComment = response;
 

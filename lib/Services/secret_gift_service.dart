@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:music_app/utils/local_storage_service.dart';
 
 class SecretGiftService {
   final String baseUrl =
@@ -27,17 +29,24 @@ class SecretGiftService {
   }
 
   Future<List<dynamic>> getGifts() async {
-    final response = await http.get(Uri.parse('$baseUrl/send'));
+    final response = await http.get(
+      Uri.parse('$baseUrl/received'),
+      headers: {
+        'Authorization': LocalStorageService().getToken()!,
+        'Content-Type': 'application/json',
+      },
+    );
+
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-
-      if (data['receivedGifts'] is List) {
-        return data['receivedGifts'];
+      if (data is List) {
+        print("List");
+        return data;
       } else {
         throw Exception('Unexpected response format');
       }
     } else {
-      throw Exception('Failed to load gifts: ${response.statusCode}');
+      throw Exception('Failed to load gifts: ${response.body}');
     }
   }
 }

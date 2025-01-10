@@ -20,7 +20,7 @@ class SecretGiftViewModel extends GetxController {
         songList,
         content,
       );
-      
+
       if (response == true) {
         errorMessage.value = "Gift sent successfully";
       } else {
@@ -39,21 +39,31 @@ class SecretGiftViewModel extends GetxController {
     try {
       var response = await SecretGiftService().getGifts();
       print("meaw $response");
+
       if (response.isNotEmpty) {
         List<SecretGift> giftList = [];
+
         for (var giftJson in response) {
-          SecretGift gift = SecretGift.fromJson(giftJson);
-          giftList.add(gift);
+          try {
+            SecretGift gift = SecretGift.fromJson(giftJson);
+            giftList.add(gift);
+          } catch (e) {
+            print("Error parsing gift: $e");
+          }
         }
+
         gifts.value = giftList;
       } else {
         errorMessage.value = 'Failed to load gifts.';
       }
       // print(response);
     } catch (e) {
+      print(e);
       errorMessage.value = 'meaw: $e';
     } finally {
       isLoading(false);
     }
   }
+
+  bool get hasGifts => gifts.value != null && gifts.value!.isNotEmpty;
 }
