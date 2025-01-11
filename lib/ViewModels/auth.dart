@@ -4,11 +4,12 @@ import 'package:music_app/utils/local_storage_service.dart';
 import '../Services/auth.dart';
 import '../Models/auth_model.dart';
 
-class AuthViewModel extends ChangeNotifier {
+class AuthViewModel extends GetxController {
   final AuthService _authService = AuthService();
   bool _isAuthenticated = false;
 
-  RxBool isLoading = false.obs;
+  var isLoading = false.obs;
+
   RxString errorMessage = ''.obs;
   RxString token = ''.obs;
 
@@ -16,6 +17,7 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<String> registerUser(AuthModel user,
       {String? profileImagePath}) async {
+    isLoading(true);
     try {
       final response = await _authService.register(
         user,
@@ -33,6 +35,8 @@ class AuthViewModel extends ChangeNotifier {
       _isAuthenticated = false;
       debugPrint("Error during registration: $e");
       return "حدث خطأ أثناء التسجيل: $e"; // إرجاع رسالة خطأ واضحة
+    } finally {
+      isLoading(false);
     }
   }
 

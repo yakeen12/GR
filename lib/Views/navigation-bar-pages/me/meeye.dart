@@ -149,6 +149,11 @@ class _MeeyeState extends State<Meeye> {
                               onPressed: () {
                                 // Add logout logic here
                                 Navigator.pop(context); // Close dialog
+                                // تصفير بيانات ViewModel
+                                final UserViewModel logOutuserViewModel =
+                                    UserViewModel();
+
+                                logOutuserViewModel.clearUser();
                                 AuthService().logout();
                               },
                               child: const Text('Logout'),

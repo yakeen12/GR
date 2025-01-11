@@ -52,6 +52,8 @@ class PlaylistViewModel extends GetxController {
   Future<void> fetchUserPlaylists(String token) async {
     debugPrint("fetchUserPlaylists");
 
+    playlists = <Playlist>[].obs;
+
     try {
       isLoading.value = true;
       errorMessage.value = '';

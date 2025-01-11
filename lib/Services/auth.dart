@@ -97,6 +97,8 @@ class AuthService {
 
         // حذف التوكن من التخزين المحلي
         await LocalStorageService().clearToken();
+
+        
         Get.offAll(const LoginPage()); // تأكد أن "/login" معرف كروت في GetX
       } else {
         throw Exception('Failed to log out: ${response.body}');

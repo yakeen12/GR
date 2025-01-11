@@ -15,6 +15,11 @@ class UserViewModel extends GetxController {
   List<Song> get likedSongsList =>
       likedSongs.where((song) => song != null).cast<Song>().toList();
 
+  void clearUser() {
+    user = Rx<User?>(null);
+    
+  }
+
   // Method to fetch user profile from the server
   Future<void> fetchUserProfile(String token) async {
     isLoading(true);

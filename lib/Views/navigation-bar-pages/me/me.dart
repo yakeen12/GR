@@ -84,11 +84,11 @@ class _MeState extends State<Me> {
                 child: Obx(() {
                   if (playlistViewModel.isLoading.value) {
                     return const Center(child: CircularProgressIndicator());
-                  } else if (playlistViewModel.errorMessage.isNotEmpty) {
-                    return Text(
-                      '${playlistViewModel.errorMessage}',
-                      style: TextStyle(color: Colors.white),
-                    );
+                    // } else if (playlistViewModel.errorMessage.isNotEmpty) {
+                    //   return Text(
+                    //     '${playlistViewModel.errorMessage}',
+                    //     style: TextStyle(color: Colors.white),
+                    //   );
                   } else if (playlistViewModel.playlists.isEmpty) {
                     return const Center(
                         child: Text(

@@ -86,6 +86,7 @@ class _HomeState extends State<Home> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
                 filled: true,
                 fillColor: Colors.white,
                 hintText: "Search...",

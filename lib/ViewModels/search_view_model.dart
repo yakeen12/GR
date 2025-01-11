@@ -89,7 +89,6 @@ class SearchViewModel extends GetxController {
       users.assignAll((res['users'] as List)
           .map((userJson) => User.fromJson(userJson))
           .toList());
-          
     } catch (error) {
       errorMessage.value = error.toString();
     } finally {

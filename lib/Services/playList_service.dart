@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:music_app/Models/playList_model.dart';
+import 'package:music_app/utils/local_storage_service.dart';
 
 class PlaylistService {
   final String baseUrl =
@@ -16,10 +17,7 @@ class PlaylistService {
     } else {
       throw Exception('Failed to load public playlists');
     }
-  
   }
-
- 
 
   // جلب بلاي ليستات اليوزر
   Future<List<dynamic>> getUserPlaylists({
@@ -28,10 +26,11 @@ class PlaylistService {
     debugPrint("getUserPlaylists");
 
     final response = await http.get(Uri.parse(baseUrl), headers: {
-      'Authorization': token,
+      'Authorization': LocalStorageService().getToken()!,
       'Content-Type': 'application/json',
     });
 
+    print(token);
     if (response.statusCode == 200) {
       // final List<dynamic> playlistsJson = json.decode(response.body);
       print("Response playlistsJson: ${response.body}");
