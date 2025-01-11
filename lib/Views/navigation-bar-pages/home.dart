@@ -6,14 +6,18 @@ import 'package:music_app/CustomWidgets/custom_song_card.dart';
 import 'package:music_app/ViewModels/episode_view_model.dart';
 import 'package:music_app/ViewModels/search_view_model.dart';
 import 'package:music_app/ViewModels/songs_view_model.dart';
+import 'package:music_app/ViewModels/user_view_model.dart';
 import 'package:music_app/Views/navigation-bar-pages/communities/post_inside.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/me_outside_user_search.dart';
+import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
 import 'package:music_app/Views/players/music/artist.dart';
 import 'package:music_app/Views/players/music/musicPlayer.dart';
 import 'package:music_app/Views/players/podcast/podcastPage.dart';
 import 'package:music_app/Views/players/podcast/podcastPlayer.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/providers/podcast_provider.dart';
+import 'package:music_app/utils/local_storage_service.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -26,14 +30,14 @@ class _HomeState extends State<Home> {
   final EpisodeViewModel episodeViewModel = Get.put(EpisodeViewModel());
   final SearchViewModel _searchViewModel = Get.put(SearchViewModel());
   final TextEditingController _searchController = TextEditingController();
-
-  bool isSearchPanelVisible = false;
+  final UserViewModel userViewModel = Get.put(UserViewModel());
 
   @override
   Widget build(BuildContext context) {
     final musicProvider = Provider.of<MusicProvider>(context, listen: false);
     final podcastProvider =
         Provider.of<PodcastProvider>(context, listen: false);
+    userViewModel.fetchUserProfile(LocalStorageService().getToken()!);
 
     songViewModel.getLatestSongs();
     episodeViewModel.getLatestepisodes();
@@ -61,8 +65,13 @@ class _HomeState extends State<Home> {
           // مربع البحث
           _buildSearchField(),
 
-          // لوحة نتائج البحث
-          if (isSearchPanelVisible) _buildSearchPanel(),
+          Obx(() {
+            if (_searchViewModel.hasResults)
+              return _buildSearchPanel();
+            else {
+              return SizedBox();
+            }
+          }),
         ],
       ),
     );
@@ -87,14 +96,56 @@ class _HomeState extends State<Home> {
               ),
               onChanged: (query) {
                 if (query.isNotEmpty) {
-                  setState(() => isSearchPanelVisible = true);
                   _searchViewModel.search(query);
-                } else {
-                  setState(() => isSearchPanelVisible = false);
-                }
+                } else {}
               },
             ),
           ),
+          SizedBox(
+            width: 15,
+          ),
+          InkWell(
+            child: const SizedBox(
+              width: 30,
+              height: 30,
+              child: Icon(
+                Icons.card_giftcard_outlined,
+                color: Colors.white,
+                size: 33.2,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const Gift()));
+            },
+          ),
+          const SizedBox(width: 15),
+          Obx(() {
+            if (userViewModel.user.value != null)
+              return InkWell(
+                child: SizedBox(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.network(
+                      userViewModel.user.value!.profilePicture!,
+                      height: 35,
+                      width: 35,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Meeye()));
+                },
+              );
+            else {
+              return SizedBox(
+                height: 30,
+                width: 35,
+              );
+            }
+          })
         ],
       ),
     );

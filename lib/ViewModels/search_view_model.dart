@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:music_app/Models/artist_model.dart';
 import 'package:music_app/Models/episode_model.dart';
+import 'package:music_app/Models/playList_model.dart';
 import 'package:music_app/Models/podcast_model.dart';
 import 'package:music_app/Models/post_model.dart';
 import 'package:music_app/Models/song_model.dart';
@@ -11,11 +12,15 @@ class SearchViewModel extends GetxController {
   var posts = <Post>[].obs;
   var songs = <Song>[].obs;
   var songsGift = <Song>[].obs;
-
   var episodes = <Episode>[].obs;
   var users = <User>[].obs;
   var artists = <Artist>[].obs;
   var podcasts = <Podcast>[].obs;
+
+  // 4 playLists search
+  var playLists = <Playlist>[].obs;
+  var likedSongs = <Song>[].obs;
+  var playlistSongs = <Song>[].obs;
 
 //  عشان اعرف ازا في نتائج او لأ, وازا انمحت يختفي صندوق النتائج الذي بالهوم خلاااااصصصصصصصص يتم الانتحار
   bool get hasResults {
@@ -29,6 +34,12 @@ class SearchViewModel extends GetxController {
 
   bool get hasSongs {
     return songsGift.isNotEmpty;
+  }
+
+  bool get playListsSearch {
+    return likedSongs.isNotEmpty ||
+        playLists.isNotEmpty ||
+        playlistSongs.isNotEmpty;
   }
 
   final SearchService _searchService = SearchService();
@@ -62,6 +73,45 @@ class SearchViewModel extends GetxController {
 
       podcasts.assignAll((result['podcasts'] as List)
           .map((podcastJson) => Podcast.fromJson(podcastJson))
+          .toList());
+    } catch (e) {
+      errorMessage.value = e.toString();
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void searchInUsers(String query) async {
+    isLoading.value = true;
+    try {
+      var res = await _searchService.searchUsers(query);
+
+      users.assignAll((res['users'] as List)
+          .map((userJson) => User.fromJson(userJson))
+          .toList());
+          
+    } catch (error) {
+      errorMessage.value = error.toString();
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void searchInPlayLists(String query) async {
+    isLoading.value = true;
+    try {
+      var result = await _searchService.searchInPlayLists(query);
+
+      playlistSongs.assignAll((result['playlistSongs'] as List)
+          .map((songJson) => Song.fromJson(songJson))
+          .toList());
+
+      likedSongs.assignAll((result['likedSongs'] as List)
+          .map((songJson) => Song.fromJson(songJson))
+          .toList());
+
+      playLists.assignAll((result['playLists'] as List)
+          .map((playListJson) => Playlist.fromJson(playListJson))
           .toList());
     } catch (e) {
       errorMessage.value = e.toString();
