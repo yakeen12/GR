@@ -9,6 +9,7 @@ import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/providers/podcast_provider.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class PostPage extends StatefulWidget {
   Post post; // استلام البوست عبر الكونستراكتور
 
@@ -21,13 +22,9 @@ class PostPage extends StatefulWidget {
 class _PostPageState extends State<PostPage> {
   @override
   Widget build(BuildContext context) {
-    CommentViewModel commentViewModel = CommentViewModel();
-    commentViewModel.getCommentsForPost(widget.post.id);
     final musicProvider = Provider.of<MusicProvider>(context, listen: false);
     final podcastProvider =
         Provider.of<PodcastProvider>(context, listen: false);
-    TextEditingController _commentController = TextEditingController();
-    PostViewModel postViewModel = PostViewModel();
 
     return CustomScaffold(
       title: "",
@@ -230,159 +227,188 @@ class _PostPageState extends State<PostPage> {
                         ),
 
                       SizedBox(height: 20),
-
-                      // 3. عدد الإعجابات والتعليقات
-                      Row(
-                        children: [
-                          Text(
-                            '${widget.post.likesCount} Likes',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(width: 16),
-                          Text(
-                            '${widget.post.comments.length} Comments',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Spacer(),
-                          InkWell(
-                            onTap: postViewModel.isLoading.value
-                                ? null
-                                : () async {
-                                    //// like post
-
-                                    Post post = await postViewModel
-                                        .toggleLike(widget.post.id);
-                                    setState(() {
-                                      widget.post = post;
-                                    });
-                                  },
-                            child: Icon(
-                              widget.post.hasLiked
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: widget.post.hasLiked
-                                  ? const Color.fromARGB(255, 119, 19, 12)
-                                  : Colors.white,
-                              size: 30,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16),
-
-                      // 4. حقل التعليق + زر الإرسال
-                      Obx(() {
-                        return Column(
-                          children: [
-                            if (commentViewModel.isLoading.value)
-                              LinearProgressIndicator(
-                                backgroundColor: Colors.grey[800],
-                                color: Colors.white,
-                                minHeight: 4,
-                              ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    controller: _commentController,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                    decoration: InputDecoration(
-                                      hintText: 'Write a comment...',
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.white),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 8),
-                                IconButton(
-                                  icon: Icon(Icons.send, color: Colors.white),
-                                  onPressed: commentViewModel.isLoading.value
-                                      ? null
-                                      : () async {
-                                          if (_commentController
-                                              .text.isNotEmpty) {
-                                            await commentViewModel.addComment(
-                                              postId: widget.post.id,
-                                              content: _commentController.text,
-                                            );
-
-                                            Post post = await postViewModel
-                                                .getPostById(widget.post.id);
-                                            setState(() {
-                                              widget.post = post;
-                                            });
-                                          }
-                                        },
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-                      }),
+                      CommentsAndLikes(
+                        post: widget.post,
+                      )
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          // // 5. التعليقات
-          // تغليف Obx بـ SliverToBoxAdapter
-          SliverToBoxAdapter(
-            child: Obx(() {
-              if (commentViewModel.isLoading.value) {
-                return const Center(
+        ],
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class CommentsAndLikes extends StatefulWidget {
+  Post post; // استلام البوست عبر الكونستراكتور
+
+  CommentsAndLikes({super.key, required this.post});
+
+  @override
+  State<CommentsAndLikes> createState() => _CommentsAndLikesState();
+}
+
+class _CommentsAndLikesState extends State<CommentsAndLikes> {
+  TextEditingController _commentController = TextEditingController();
+  PostViewModel postViewModel = PostViewModel();
+
+  CommentViewModel commentViewModel = CommentViewModel();
+  @override
+  Widget build(BuildContext context) {
+    commentViewModel.getCommentsForPost(widget.post.id);
+
+    return Column(
+      children: [
+// 3. عدد الإعجابات والتعليقات
+        Row(
+          children: [
+            Text(
+              '${widget.post.likesCount} Likes',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 16),
+            Text(
+              '${widget.post.comments.length} Comments',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            Spacer(),
+            InkWell(
+              onTap: postViewModel.isLoading.value
+                  ? null
+                  : () async {
+                      //// like post
+
+                      Post post =
+                          await postViewModel.toggleLike(widget.post.id);
+                      setState(() {
+                        widget.post = post;
+                      });
+                    },
+              child: Icon(
+                widget.post.hasLiked ? Icons.favorite : Icons.favorite_border,
+                color: widget.post.hasLiked
+                    ? const Color.fromARGB(255, 119, 19, 12)
+                    : Colors.white,
+                size: 30,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 16),
+        // 4. حقل التعليق + زر الإرسال
+        Obx(() {
+          return Column(
+            children: [
+              if (commentViewModel.isLoading.value)
+                LinearProgressIndicator(
+                  backgroundColor: Colors.grey[800],
+                  color: Colors.white,
+                  minHeight: 4,
+                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _commentController,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                      decoration: InputDecoration(
+                        hintText: 'Write a comment...',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  IconButton(
+                    icon: Icon(Icons.send, color: Colors.white),
+                    onPressed: commentViewModel.isLoading.value
+                        ? null
+                        : () async {
+                            if (_commentController.text.isNotEmpty) {
+                              await commentViewModel.addComment(
+                                postId: widget.post.id,
+                                content: _commentController.text,
+                              );
+
+                              Post post = await postViewModel
+                                  .getPostById(widget.post.id);
+                              setState(() {
+                                widget.post = post;
+                                _commentController.text = "";
+                              });
+                            }
+                          },
+                  ),
+                ],
+              ),
+            ],
+          );
+        }),
+        // // 5. التعليقات
+        // تغليف Obx بـ SliverToBoxAdapter
+        // SliverToBoxAdapter(
+        // child:
+        Obx(() {
+          if (commentViewModel.isLoading.value) {
+            return Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                const Center(
                   child: CircularProgressIndicator(
                     color: Colors.white,
                   ),
-                );
-              }
-              // else if (commentViewModel.errorMessage.isNotEmpty) {
-              //   return Center(
-              //     child: SizedBox(
-              //       width: 400,
-              //       child: Text(
-              //         commentViewModel.errorMessage.value,
-              //         style: TextStyle(
-              //             color: Colors.white,
-              //             fontSize: 20,
-              //             fontWeight: FontWeight.bold),
-              //       ),
-              //     ),
-              //   );
-              // }
-              return ListView.builder(
-                shrinkWrap: true,
-                physics:
-                    NeverScrollableScrollPhysics(), // السماح بالتمرير داخل CustomScrollView
-                itemCount: (commentViewModel.hasComments)
-                    ? commentViewModel.comments.value!.length
-                    : 0,
-                itemBuilder: (context, index) {
-                  var comment = commentViewModel.comments.value![index];
-                  return CommentWidget(
-                    comment: comment,
-                  );
-                },
+                ),
+              ],
+            );
+          }
+          // else if (commentViewModel.errorMessage.isNotEmpty) {
+          //   return Center(
+          //     child: SizedBox(
+          //       width: 400,
+          //       child: Text(
+          //         commentViewModel.errorMessage.value,
+          //         style: TextStyle(
+          //             color: Colors.white,
+          //             fontSize: 20,
+          //             fontWeight: FontWeight.bold),
+          //       ),
+          //     ),
+          //   );
+          // }
+          return ListView.builder(
+            shrinkWrap: true,
+            physics:
+                NeverScrollableScrollPhysics(), // السماح بالتمرير داخل CustomScrollView
+            itemCount: (commentViewModel.hasComments)
+                ? commentViewModel.comments.value!.length
+                : 0,
+            itemBuilder: (context, index) {
+              var comment = commentViewModel.comments.value![index];
+              return CommentWidget(
+                comment: comment,
               );
-            }),
-          ),
-        ],
-      ),
+            },
+          );
+        }),
+      ],
     );
   }
 }
