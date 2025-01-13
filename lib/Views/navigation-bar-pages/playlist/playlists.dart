@@ -104,7 +104,7 @@ class _PlayListsState extends State<PlayLists> {
           _buildSearchField(),
 
           Obx(() {
-            if (_searchViewModel.hasResults)
+            if (_searchViewModel.playListsSearch)
               return _buildSearchPanel();
             else {
               return SizedBox();
@@ -195,7 +195,7 @@ class _PlayListsState extends State<PlayLists> {
     final podcastProvider =
         Provider.of<PodcastProvider>(context, listen: false);
     return Obx(() {
-      if (!_searchViewModel.hasResults)
+      if (!_searchViewModel.playListsSearch)
         return SizedBox.shrink(); // إذا لم يكن هناك نتائج، لا نعرض شيء
 
       return Stack(

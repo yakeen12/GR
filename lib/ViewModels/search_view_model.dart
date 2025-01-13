@@ -100,6 +100,7 @@ class SearchViewModel extends GetxController {
     isLoading.value = true;
     try {
       var result = await _searchService.searchInPlayLists(query);
+      print(result);
 
       playlistSongs.assignAll((result['playlistSongs'] as List)
           .map((songJson) => Song.fromJson(songJson))
@@ -109,10 +110,11 @@ class SearchViewModel extends GetxController {
           .map((songJson) => Song.fromJson(songJson))
           .toList());
 
-      playLists.assignAll((result['playLists'] as List)
+      playLists.assignAll((result['playlists'] as List)
           .map((playListJson) => Playlist.fromJson(playListJson))
           .toList());
     } catch (e) {
+      print(e.toString());
       errorMessage.value = e.toString();
     } finally {
       isLoading.value = false;
@@ -145,5 +147,8 @@ class SearchViewModel extends GetxController {
     users.clear();
     artists.clear();
     podcasts.clear();
+    playLists.clear();
+    likedSongs.clear();
+    playlistSongs.clear();
   }
 }
