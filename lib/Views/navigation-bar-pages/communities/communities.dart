@@ -1,114 +1,159 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
+import 'package:music_app/CustomWidgets/post_widget.dart';
+import 'package:music_app/ViewModels/post_view_model.dart';
+import 'package:music_app/utils/local_storage_service.dart';
 
-class Communities extends StatelessWidget {
+class Communities extends StatefulWidget {
+  Communities({super.key});
+
+  @override
+  State<Communities> createState() => _CommunitiesState();
+}
+
+class _CommunitiesState extends State<Communities> {
+  String selectedFeed = "Home"; // الفيد الافتراضي
+  PostViewModel postViewModel = PostViewModel();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchPosts(); // جلب البيانات عند بدء الصفحة
+  }
+
+  // دالة لجلب البيانات بناءً على الفيد المحدد
+  void fetchPosts() {
+    final token = LocalStorageService().getToken()!;
+    if (selectedFeed == "Home") {
+      postViewModel.getAllPosts(token); // جلب كل البوستات
+    } else {
+      postViewModel.getPostsByCommunity(
+          selectedFeed, token); // جلب بوستات الكوميونيتي
+    }
+  }
+
+  // دالة لتحديث الفيد وجلب البيانات الجديدة
+  void updateFeed(String newFeed) {
+    setState(() {
+      selectedFeed = newFeed; // تحديث الفيد
+    });
+    fetchPosts(); // جلب البيانات الجديدة
+  }
+
+  // دالة لإظهار القائمة المنبثقة لاختيار الفيد
+  void _showFeedSelector(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          color: Colors.black,
+          child: ListView(children: [
+            ListTile(
+              title: Text("Home",
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
+              onTap: () {
+                updateFeed("Home"); // تغيير الفيد إلى Home
+                Navigator.pop(context); // إغلاق القائمة
+              },
+            ),
+            ListTile(
+              title: Text("Happy", style: const TextStyle(color: Colors.white)),
+              onTap: () {
+                updateFeed("Happy"); // تغيير الفيد إلى Happy
+                Navigator.pop(context); // إغلاق القائمة
+              },
+            ),
+            ListTile(
+              title: Text("Love", style: const TextStyle(color: Colors.white)),
+              onTap: () {
+                updateFeed("Love"); // تغيير الفيد إلى Love
+                Navigator.pop(context); // إغلاق القائمة
+              },
+            ),
+            ListTile(
+              title: Text("Sad", style: const TextStyle(color: Colors.white)),
+              onTap: () {
+                updateFeed("Sad"); // تغيير الفيد إلى Sad
+                Navigator.pop(context); // إغلاق القائمة
+              },
+            ),
+          ]),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      title: 'Communities',
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Top Section for Community Categories
-          SizedBox(
-            height: 100,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _buildCategoryCard('Love', Icons.self_improvement),
-                _buildCategoryCard('Sad', Icons.palette),
-                _buildCategoryCard('Happy', Icons.medical_services_rounded),
-                _buildCategoryCard('Random', Icons.rate_review_sharp),
-              ],
-            ),
-          ),
-
-          // Tab Section
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Text('My feed',
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                SizedBox(width: 16),
-              ],
-            ),
-          ),
-
-          // Post Input Section
-
-          SizedBox(height: 14),
-
-          // Post List Section
-          Expanded(
-            child: ListView(
-              children: [
-                _buildPostCard(
-                  name: 'Aarav Sharma',
-                  location: 'Bangalore, India',
-                  community: 'Reiki Healing',
-                  content:
-                      '"The whole secret of existence lies in the pursuit of meaning, purpose, and connection. It is a delicate dance between self-discovery, compassion for others, and embracing the ever-unfolding mysteries of life."',
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCategoryCard(String title, IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-            child: Icon(icon, color: Color.fromARGB(255, 181, 16, 16)),
-          ),
-          SizedBox(height: 8),
-          Text(title, style: TextStyle(fontSize: 11)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPostCard({
-    required String name,
-    required String location,
-    required String community,
-    required String content,
-  }) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(name,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
-                    Text(location,
-                        style: TextStyle(color: Colors.grey, fontSize: 14)),
-                  ],
-                ),
-                Text(community,
-                    style: TextStyle(
-                        color: Colors.purple, fontWeight: FontWeight.bold)),
-              ],
+            SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {
+                _showFeedSelector(context); // إظهار قائمة اختيار الفيد
+              },
+              child: Row(
+                children: [
+                  Text(
+                    selectedFeed,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  const Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 8),
-            Text(content, style: TextStyle(fontSize: 14)),
+            Obx(() {
+              if (postViewModel.isLoading.value) {
+                return Expanded(
+                  child: Center(
+                      child: CircularProgressIndicator(
+                    color: Colors.white,
+                  )),
+                ); // تحميل
+              } else if (postViewModel.errorMessage.isNotEmpty) {
+                return Expanded(
+                  child: Center(
+                      child: Text(
+                    postViewModel.errorMessage.value,
+                    style: TextStyle(color: Colors.white),
+                  )),
+                ); // لا يوجد بوستات
+              } else if (!postViewModel.hasPosts) {
+                return Expanded(
+                  child: Center(
+                      child: Text(
+                    "No posts available.",
+                    style: TextStyle(color: Colors.white),
+                  )),
+                ); // لا يوجد بوستات
+              } else {
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: postViewModel.posts.value!.length,
+                    itemBuilder: (context, index) {
+                      final post = postViewModel.posts.value![index];
+                      return PostWidget(post: post);
+                    },
+                  ),
+                );
+              }
+            }),
           ],
         ),
       ),

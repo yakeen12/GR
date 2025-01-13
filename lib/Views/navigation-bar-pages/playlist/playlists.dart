@@ -1,264 +1,495 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
-import 'package:music_app/Views/music/musicPlayer.dart';
+import 'package:music_app/ViewModels/episode_view_model.dart';
+import 'package:music_app/ViewModels/playList_view_model.dart';
+import 'package:music_app/ViewModels/search_view_model.dart';
+import 'package:music_app/ViewModels/user_view_model.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
-import 'package:music_app/Views/navigation-bar-pages/me/me.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/createplaylist.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/likes.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/playlistinside.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/music/createplaylist.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/music/likes.dart';
+import 'package:music_app/Views/navigation-bar-pages/playlist/myplaylistinside.dart';
+import 'package:music_app/Views/players/music/musicPlayer.dart';
+import 'package:music_app/Views/players/podcast/podcastPlayer.dart';
+import 'package:music_app/providers/music_provider.dart';
+import 'package:music_app/providers/podcast_provider.dart';
+import 'package:music_app/utils/local_storage_service.dart';
+import 'package:provider/provider.dart';
 
-class PlayLists extends StatelessWidget {
+class PlayLists extends StatefulWidget {
+  const PlayLists({super.key});
+
   @override
+  State<PlayLists> createState() => _PlayListsState();
+}
+
+class _PlayListsState extends State<PlayLists> {
+  final SearchViewModel _searchViewModel = Get.put(SearchViewModel());
+  final TextEditingController _searchController = TextEditingController();
+  final UserViewModel userViewModel = Get.put(UserViewModel());
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body: Column(children: [
-        SizedBox(
-          height: 50,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Row(
+      body: Stack(
+        children: [
+          Column(
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.7,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: TextField(
-                  enabled: false,
-                  onTap: () {},
-                  style: TextStyle(color: Colors.black),
-                  // onChanged: _filterItems,
-                  decoration: InputDecoration(
-                    labelText:
-                        'Search in your playlists...', // Use confirmation text as label if provided, else use default label text
-                    labelStyle:
-                        TextStyle(color: Colors.black), // Set accent color
-
-                    prefixIcon: Icon(Icons.search),
-
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.black, width: 1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.black, width: 2),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.black, width: 1),
-                    ),
+              const SizedBox(
+                height: 120,
+              ),
+              Expanded(
+                child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: [
+                      // TabBar داخل الـ Scaffold
+                      TabBar(
+                        labelColor: Colors.white,
+                        unselectedLabelColor: Colors.grey,
+                        indicator: const UnderlineTabIndicator(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                            width: 2.0,
+                          ),
+                          insets: EdgeInsets.symmetric(horizontal: 30.0),
+                        ),
+                        unselectedLabelStyle: const TextStyle(
+                          fontSize: 16,
+                        ),
+                        labelStyle: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        indicatorSize: TabBarIndicatorSize.label,
+                        labelPadding:
+                            const EdgeInsets.symmetric(horizontal: 20),
+                        tabs: [
+                          Tab(
+                            child: Container(
+                              height: 35,
+                              alignment: Alignment.center,
+                              child: const Text(
+                                'Music',
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Container(
+                              height: 35,
+                              alignment: Alignment.center,
+                              child: const Text(
+                                'Podcast',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      // TabBarView يحتاج إلى أن يشغل المساحة المتبقية بالكامل
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            PlaylistsTab(),
+                            PodcastTab(),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Expanded(child: SizedBox()),
-              InkWell(
-                child: SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: Icon(
-                    Icons.card_giftcard_outlined,
-                    color: Colors.white,
-                    size: 33.2,
-                  ),
+            ],
+          ),
+
+          // مربع البحث
+          _buildSearchField(),
+
+          Obx(() {
+            if (_searchViewModel.playListsSearch)
+              return _buildSearchPanel();
+            else {
+              return SizedBox();
+            }
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 50, left: 12, right: 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: Colors.white,
+                hintText: "Search...",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.grey, width: 1),
                 ),
-                onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Gift()));
-                },
               ),
-              SizedBox(
-                width: 22,
-              ), //
-              InkWell(
+              onChanged: (query) {
+                if (query.isNotEmpty) {
+                  _searchViewModel.searchInPlayLists(query);
+                } else {}
+              },
+            ),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          InkWell(
+            child: const SizedBox(
+              width: 30,
+              height: 30,
+              child: Icon(
+                Icons.card_giftcard_outlined,
+                color: Colors.white,
+                size: 33.2,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const Gift()));
+            },
+          ),
+          const SizedBox(width: 15),
+          Obx(() {
+            if (userViewModel.user.value != null)
+              return InkWell(
                 child: SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: CircleAvatar(
-                    maxRadius: 40,
-                    backgroundColor: Colors.amberAccent,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.network(
+                      userViewModel.user.value!.profilePicture!,
+                      height: 35,
+                      width: 35,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Meeye()));
+                      MaterialPageRoute(builder: (context) => const Meeye()));
                 },
-              )
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 19,
-        ),
-        Expanded(
-          // height: MediaQuery.sizeOf(context).height * 0.8,
-          child: DefaultTabController(
-            length: 2,
-            child: Flex(
-                direction: Axis.vertical,
-                // height: MediaQuery.sizeOf(context).height * 0.7,
-                children: [
-                  SingleChildScrollView(
-                    padding: EdgeInsets.zero,
-                    child: Column(
-                      children: [
-                        // TabBar داخل الـ Scaffold
-                        TabBar(
-                          labelColor: Colors.white,
-                          unselectedLabelColor: Colors.grey,
-                          indicator: UnderlineTabIndicator(
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 2.0,
-                            ),
-                            insets: EdgeInsets.symmetric(horizontal: 30.0),
-                          ),
-                          unselectedLabelStyle: TextStyle(
-                            fontSize: 16,
-                          ),
-                          labelStyle: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          indicatorSize: TabBarIndicatorSize.label,
-                          labelPadding: EdgeInsets.symmetric(horizontal: 20),
-                          tabs: [
-                            Tab(
-                              child: Container(
-                                height: 35,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Music',
-                                ),
-                              ),
-                            ),
-                            Tab(
-                              child: Container(
-                                height: 35,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Podcast',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+              );
+            else {
+              return SizedBox(
+                height: 30,
+                width: 35,
+              );
+            }
+          })
+        ],
+      ),
+    );
+  }
 
-                        SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.7,
-                          child: TabBarView(
+  Widget _buildSearchPanel() {
+    final musicProvider = Provider.of<MusicProvider>(context, listen: false);
+    final podcastProvider =
+        Provider.of<PodcastProvider>(context, listen: false);
+    return Obx(() {
+      if (!_searchViewModel.playListsSearch)
+        return SizedBox.shrink(); // إذا لم يكن هناك نتائج، لا نعرض شيء
+
+      return Stack(
+        children: [
+          // الخلفية الشفافة التي تغطي الشاشة
+          GestureDetector(
+            onTap: () {
+              _searchViewModel
+                  .clearResults(); // إخفاء النتائج عند النقر خارج الصندوق
+              FocusScope.of(context).unfocus(); // إخفاء لوحة المفاتيح
+            },
+            child: Container(
+              color: Colors.transparent,
+            ),
+          ),
+
+          Positioned(
+            top: 110,
+            left: 12,
+            right: 12,
+            child: Material(
+              elevation: 5,
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+              color: Color.fromARGB(185, 0, 0, 0),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: 300,
+                ),
+                child: ListView(
+                  padding: EdgeInsets.all(8.0),
+                  children: [
+                    //   ------------- like --------------------------
+                    if (_searchViewModel.likedSongs.isNotEmpty)
+                      Text(
+                        "Likes",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+
+                    ..._searchViewModel.likedSongs.map((song) {
+                      return InkWell(
+                        onTap: () {
+                          podcastProvider.stop();
+
+                          musicProvider.setPlaylistAndSong(
+                            [song], // البلاي ليست الحالية
+                            0, // الـ Index للأغنية
+                          );
+                          // استدعاء MusicPlayer كـ BottomSheet
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) {
+                              return MusicPlayer(); // صفحة الـ MusicPlayer
+                            },
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Color.fromARGB(44, 255, 255, 255),
+                          ),
+                          child: Row(
                             children: [
-                              PlaylistsTab(),
-                              PodcastTab(),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(
+                                  song.img,
+                                  fit: BoxFit.cover,
+                                  height: 50,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    song.title,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    song.artist.name,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ]),
+                      );
+                    }).toList(),
+                    // -----------------------   end likes -------------------------
+
+                    //   ------------- playLists songs --------------------------
+                    if (_searchViewModel.playlistSongs.isNotEmpty)
+                      Text(
+                        "Songs in your playLists",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+
+                    ..._searchViewModel.playlistSongs.map((song) {
+                      return InkWell(
+                        onTap: () {
+                          podcastProvider.stop();
+
+                          musicProvider.setPlaylistAndSong(
+                            [song], // البلاي ليست الحالية
+                            0, // الـ Index للأغنية
+                          );
+                          // استدعاء MusicPlayer كـ BottomSheet
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) {
+                              return MusicPlayer(); // صفحة الـ MusicPlayer
+                            },
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Color.fromARGB(44, 255, 255, 255),
+                          ),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(
+                                  song.img,
+                                  fit: BoxFit.cover,
+                                  height: 50,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    song.title,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    song.artist.name,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    // -----------------------   end playLists -------------------------
+
+                    //   ------------- playLists --------------------------
+                    if (_searchViewModel.playLists.isNotEmpty)
+                      Text(
+                        "Your PlayLists",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+
+                    ..._searchViewModel.playLists.map((playList) {
+                      return InkWell(
+                        onTap: () {
+                          // open playList inside
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    MyPlaylistinside(songlist: playList),
+                              ));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Color.fromARGB(44, 255, 255, 255),
+                          ),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(
+                                  (playList.songs.isNotEmpty)
+                                      ? playList.songs.first.img
+                                      : "https://www.tuaw.com/wp-content/uploads/2024/08/Apple-Music.jpg",
+                                  fit: BoxFit.cover,
+                                  height: 50,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                playList.name,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    // -----------------------   end playLists -------------------------
+                  ],
+                ),
+              ),
+            ),
           ),
-        )
-      ]),
-    );
+        ],
+      );
+    });
   }
 }
 
 class PlaylistsTab extends StatelessWidget {
-  final List<Map<String, String>> playlists = [
-    {
-      'name': 'playlist1',
-      'image':
-          'https://i.scdn.co/image/ab67616d0000b273ee0f38410382a255e4fb15f4',
-      'songs': '25 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSja2eRhSlJnA_GwaOwAaaUDLj1SiZzJ5lXXg&s',
-      'songs': '25 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://upload.wikimedia.org/wikipedia/ar/f/f6/Taylor_Swift_-_1989.png',
-      'songs': '11 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://i.scdn.co/image/ab67616d0000b273ee0f38410382a255e4fb15f4',
-      'songs': '25 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://img.youm7.com/ArticleImgs/2022/10/23/60146-%D8%A7%D9%84%D8%A8%D9%88%D9%85-%D8%AA%D8%A7%D9%8A%D9%84%D9%88%D8%B1-%D8%B3%D9%88%D9%8A%D9%81%D8%AA.jpeg',
-      'songs': '79 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://upload.wikimedia.org/wikipedia/ar/f/f6/Taylor_Swift_-_1989.png',
-      'songs': '23 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://i.scdn.co/image/ab67616d0000b273ee0f38410382a255e4fb15f4',
-      'songs': '25 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://upload.wikimedia.org/wikipedia/en/3/35/The_Eminem_Show.jpg',
-      'songs': '25 song'
-    },
-    {
-      'name': 'playlist1',
-      'image':
-          'https://i.scdn.co/image/ab67616d0000b273dbb3dd82da45b7d7f31b1b42',
-      'songs': '215 song'
-    },
-  ];
+  final PlaylistViewModel playlistViewModel = Get.put(PlaylistViewModel());
+  final token = LocalStorageService().getToken();
+
+  PlaylistsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // final musicProvider = Provider.of<MusicProvider>(context, listen: false);
+
+    playlistViewModel.fetchUserPlaylists(token!);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                height: 80,
-                width: MediaQuery.sizeOf(context).width * 0.47,
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(15)),
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Likes()));
-                      },
-                      child: Column(
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Likes()));
+                },
+                child: Container(
+                  height: 80,
+                  width: MediaQuery.sizeOf(context).width * 0.47,
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(15)),
+                  child: const Column(
+                    children: [
+                      Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.favorite,
-                            color: const Color.fromARGB(255, 172, 18, 7),
+                            color: Color.fromARGB(255, 172, 18, 7),
                           ),
                           Text(
                             "Likes",
@@ -268,9 +499,9 @@ class PlaylistsTab extends StatelessWidget {
                             ),
                           ),
                         ],
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
               InkWell(
@@ -286,11 +517,12 @@ class PlaylistsTab extends StatelessWidget {
                   height: 80,
                   width: MediaQuery.sizeOf(context).width * 0.47,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 158, 158, 158),
+                    color: const Color.fromARGB(255, 158, 158, 158),
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                  child: Center(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                  child: const Center(
                     child: Text(
                       "+ NEW PLAYLIST",
                       style: TextStyle(
@@ -303,76 +535,96 @@ class PlaylistsTab extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.55,
-            child: ListView.builder(
-              itemCount: playlists.length,
-              itemBuilder: (context, index) {
-                final playlist = playlists[index];
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => Playlistinside(),
-                        ));
+          Expanded(child: SizedBox(
+            // height: MediaQuery.sizeOf(context).height * 0.3,
+            child: Obx(() {
+              if (playlistViewModel.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+                // } else if (playlistViewModel.errorMessage.isNotEmpty) {
+                //   return Text(
+                //     '${playlistViewModel.errorMessage}',
+                //     style: TextStyle(color: Colors.white),
+                //   );
+              } else if (playlistViewModel.playlists.isEmpty) {
+                return const Center(
+                    child: Text(
+                  'You did not make any playList yet :)',
+                  style: TextStyle(color: Colors.white),
+                ));
+              } else {
+                return ListView.builder(
+                  itemCount: playlistViewModel.playlists.length,
+                  itemBuilder: (context, index) {
+                    final playlist = playlistViewModel.playlists[index];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  MyPlaylistinside(songlist: playlist),
+                            ));
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 15),
+                        child: Row(
+                          children: [
+                            // صورة البلاي ليست
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                (playlist.songs.isNotEmpty)
+                                    ? playlist.songs.first.img
+                                    : "https://www.tuaw.com/wp-content/uploads/2024/08/Apple-Music.jpg",
+                                width: 70,
+                                height: 70,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Flex(direction: Axis.vertical, children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    playlist.name,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    "${playlist.songs.length} songs",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ]),
+                            const Spacer(),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.more_vert,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 15),
-                    child: Row(
-                      children: [
-                        // صورة البلاي ليست
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            playlist['image']!,
-                            width: 70,
-                            height: 70,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Flex(direction: Axis.vertical, children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                playlist['name']!,
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                playlist['songs']!,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ]),
-                        Spacer(),
-                        IconButton(
-                          icon: Icon(
-                            Icons.more_vert,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                  ),
                 );
-              },
-            ),
-          ),
+              }
+            }),
+          )),
         ],
       ),
     );
@@ -380,115 +632,132 @@ class PlaylistsTab extends StatelessWidget {
 }
 
 // محتوى تبويب البودكاست
-class PodcastTab extends StatelessWidget {
+class PodcastTab extends StatefulWidget {
+  const PodcastTab({super.key});
+
+  @override
+  State<PodcastTab> createState() => _PodcastTabState();
+}
+
+class _PodcastTabState extends State<PodcastTab> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 8,
-      itemBuilder: (context, index) {
+    PodcastProvider podcastProvider =
+        Provider.of<PodcastProvider>(context, listen: false);
+
+    EpisodeViewModel episodeViewModel = EpisodeViewModel();
+    episodeViewModel.getAllEpisodes();
+
+    return Obx(() {
+      if (episodeViewModel.isLoading.value) {
         return Center(
-            child: Container(
-          padding: EdgeInsets.all(16),
-          margin: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(69, 158, 158, 158),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Header with title and subtitle
-              Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      'https://yt3.googleusercontent.com/ytc/AIdro_knm8C6-aj25mYqJ01I6WoeJY1ctxQeswGLqO6xxV-ltA=s900-c-k-c0x00ffffff-no-rj', // Replace with your image URL
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            child: CircularProgressIndicator(
+          color: Colors.white,
+        )); // تحميل
+      } else if (episodeViewModel.errorMessage.isNotEmpty) {
+        return Center(
+            child: Text(
+          episodeViewModel.errorMessage.value,
+          style: TextStyle(color: Colors.white),
+        )); // خطأ
+      } else if (!episodeViewModel.hasEpisodes) {
+        return Center(child: Text("No Episodes available.")); // فارغة
+      } else {
+        var episodes = episodeViewModel.episodes.value;
+        return ListView.builder(
+          itemCount: episodes!.length,
+          itemBuilder: (context, index) {
+            var episode = episodes[index];
+            MusicProvider musicProvider =
+                Provider.of<MusicProvider>(context, listen: false);
+            return InkWell(
+              onTap: () {
+                musicProvider.stop();
+                podcastProvider.setEpisode(
+                  episode,
+                );
+                // استدعاء PodcastPlayer كـ BottomSheet
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) {
+                    return PodcastPlayer(); // صفحة الـ MusicPlayer
+                  },
+                );
+              },
+              child: Center(
+                  child: Container(
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(69, 158, 158, 158),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Header with title and subtitle
+                    Row(
                       children: [
-                        Text(
-                          '321B-Viking Legends: The Peacemaker',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            episode.podcast.img,
+                            width: 70,
+                            height: 70,
+                            fit: BoxFit.cover,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Myths and Legends',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 14,
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${episode.episodeNumber} ${episode.title}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                episode.podcast.title,
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  Icon(
-                    Icons.more_vert,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              // Description
-              Text(
-                'On his quest to help princess Ingigerd, Hrolf has become enslaved by the wily Wi...',
-                style: TextStyle(
-                  color: Colors.grey[300],
-                  fontSize: 14,
+                    const SizedBox(height: 16),
+                    // Description
+                    Text(
+                      episode.description,
+                      style: TextStyle(
+                        color: Colors.grey[300],
+                        fontSize: 14,
+                      ),
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Save and more options
+                  ],
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              SizedBox(height: 16),
-              // Progress bar and time left
-              Row(
-                children: [
-                  Expanded(
-                    child: LinearProgressIndicator(
-                      value: 0.5, // Example progress value
-                      backgroundColor: Colors.grey[800],
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    '53min left',
-                    style: TextStyle(
-                      color: Colors.grey[400],
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              // Save and more options
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(
-                    Icons.bookmark_border,
-                    color: Colors.white,
-                  ),
-                ],
-              )
-            ],
-          ),
-        ));
-      },
-    );
+              )),
+            );
+          },
+        );
+      }
+    });
   }
 }

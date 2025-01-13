@@ -1,11 +1,12 @@
+import 'package:music_app/Models/podcast_model.dart';
+
 class Episode {
   final String id;
-  final String podcast;
+  final Podcast podcast;
   final String title;
-  final int episodeNumber;
+  final String episodeNumber;
   final String description;
   final String audioUrl;
-  final DateTime publishDate;
 
   Episode({
     required this.id,
@@ -14,18 +15,16 @@ class Episode {
     required this.episodeNumber,
     required this.description,
     required this.audioUrl,
-    required this.publishDate,
   });
 
   factory Episode.fromJson(Map<String, dynamic> json) {
     return Episode(
       id: json['_id'],
-      podcast: json['podcast'],
+      podcast: Podcast.fromJson(json['podcast']),
       title: json['title'],
       episodeNumber: json['episodeNumber'],
       description: json['description'],
       audioUrl: json['audioUrl'],
-      publishDate: DateTime.parse(json['publishDate']),
     );
   }
 
@@ -36,7 +35,6 @@ class Episode {
       'episodeNumber': episodeNumber,
       'description': description,
       'audioUrl': audioUrl,
-      'publishDate': publishDate.toIso8601String(),
     };
   }
 }

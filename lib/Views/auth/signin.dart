@@ -22,12 +22,12 @@ class _SignInViewState extends State<SignInView> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
+  final authViewModel = AuthViewModel();
+
   String? selectedImagePath;
 
   // bool isObscurePassword = true;
   void signIn() async {
-    final authViewModel = AuthViewModel();
-
     final userName = nameController.text;
     final email = emailController.text;
     final password = passwordController.text;
@@ -36,21 +36,21 @@ class _SignInViewState extends State<SignInView> {
     // Validate the email and passwords
     if (!isEmailValid(email)) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter a valid email address')));
+          const SnackBar(content: Text('Please enter a valid email address')));
       return;
     }
 
     if (userName.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter a valid user name')));
+          const SnackBar(content: Text('Please enter a valid user name')));
       return;
     }
     if (!doPasswordsMatch(password, confirmPassword)) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Passwords do not match')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Passwords do not match')));
       return;
     }
-    AuthModel model = new AuthModel(
+    AuthModel model = AuthModel(
         username: userName,
         email: email,
         password: password,
@@ -60,14 +60,14 @@ class _SignInViewState extends State<SignInView> {
 
     if (isValid == "تم تسجيل المستخدم بنجاح") {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign in successful!')),
+        const SnackBar(content: Text('Sign in successful!')),
       );
       // Navigate to another screen here
       Navigator.pop(context);
     } else {
       setState(() {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Sign in failed. Please try again.')),
+          const SnackBar(content: Text('Sign in failed. Please try again.')),
         );
       });
     }
@@ -77,61 +77,84 @@ class _SignInViewState extends State<SignInView> {
   Widget build(BuildContext context) {
     return CustomScaffold(
         title: "Create Account",
-        body: Container(
-          padding: const EdgeInsets.only(left: 15, top: 20, right: 15),
-          child: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
-            },
-            child: ListView(
-              children: [
-                ProfileImagePicker(
-                    onImageSelected: (path) => selectedImagePath = path),
-                const SizedBox(height: 30),
-                CustomTextField(
-                  hintText: "Name",
-                  controller: nameController,
-                ),
-                CustomTextField(hintText: "Email", controller: emailController),
-                CustomTextField(
-                    isPassword: true,
-                    hintText: "PassWord",
-                    controller: passwordController),
-                CustomTextField(
-                    isPassword: true,
-                    hintText: "Confirm Password",
-                    controller: confirmPasswordController),
-                //====
-                SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 5, right: 30, left: 30, top: 6),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Cancel Button
-                      Container(
-                          width: MediaQuery.sizeOf(context).width * 0.3,
-                          child: CustomButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            text: "Cancel",
-                          )),
+        body: Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 15, top: 20, right: 15),
+              child: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                },
+                child: ListView(
+                  children: [
+                    ProfileImagePicker(
+                        onImageSelected: (path) => selectedImagePath = path),
+                    const SizedBox(height: 30),
+                    CustomTextField(
+                      hintText: "Name",
+                      controller: nameController,
+                    ),
+                    CustomTextField(
+                        hintText: "Email", controller: emailController),
+                    CustomTextField(
+                        isPassword: true,
+                        hintText: "PassWord",
+                        controller: passwordController),
+                    CustomTextField(
+                        isPassword: true,
+                        hintText: "Confirm Password",
+                        controller: confirmPasswordController),
+                    //====
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          bottom: 5, right: 30, left: 30, top: 6),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Cancel Button
+                          SizedBox(
+                              width: MediaQuery.sizeOf(context).width * 0.3,
+                              child: CustomButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                text: "Cancel",
+                              )),
 
-                      // Save Button
-                      Container(
-                          width: MediaQuery.sizeOf(context).width * 0.3,
-                          child: CustomButton(
-                            text: "save",
-                            onPressed: signIn,
-                          )),
-                    ],
-                  ),
-                )
-              ],
+                          // Save Button
+                          SizedBox(
+                              width: MediaQuery.sizeOf(context).width * 0.3,
+                              child: CustomButton(
+                                text: "save",
+                                onPressed: signIn,
+                              )),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
-          ),
+            Obx(() {
+              if (authViewModel.isLoading.value) {
+                return Center(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+                    color: const Color.fromARGB(78, 255, 255, 255),
+                    child: SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                );
+              }
+              return SizedBox();
+            })
+          ],
         ));
   }
 }

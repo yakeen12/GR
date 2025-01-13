@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/Views/players/now_playing.dart';
+import 'package:music_app/providers/music_provider.dart';
+import 'package:provider/provider.dart';
 
 class CustomScaffold extends StatefulWidget {
   final body;
-
+  final bool? showNowPlaying;
   //app bar text if u don't want to add it then there will be no app bar.
   String? title;
 
@@ -10,6 +13,7 @@ class CustomScaffold extends StatefulWidget {
   CustomScaffold(
       {required this.body,
       this.title,
+      this.showNowPlaying,
       // required this.bar,
       super.key});
 
@@ -38,14 +42,15 @@ class _CustomScaffoldState extends State<CustomScaffold> {
         body: Column(
           children: [
             // Custom AppBar
-            SizedBox(
+            const SizedBox(
               height: 24,
             ),
             (widget.title != null)
                 ? Container(
-                    height: 90,
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    decoration: BoxDecoration(
+                    height: 60,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 16),
+                    decoration: const BoxDecoration(
                       color: Colors.black,
                     ),
                     child: Row(
@@ -54,27 +59,32 @@ class _CustomScaffoldState extends State<CustomScaffold> {
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.arrow_back,
                             color: Colors.white,
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Text(
                           widget.title ?? "",
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                       ],
                     ),
                   )
                 : Container(),
 
             Expanded(child: widget.body),
+            (widget.showNowPlaying == false)
+                ? SizedBox(
+                    height: 0,
+                  )
+                : NowPlaying()
           ],
         ),
       ),

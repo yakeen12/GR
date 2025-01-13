@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Post extends StatelessWidget {
+  const Post({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +13,7 @@ class Post extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // User ID Section
-            Row(
+            const Row(
               children: [
                 CircleAvatar(
                   radius: 30,
@@ -28,16 +30,16 @@ class Post extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Song Details Section
             Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Row(
+              child: const Row(
                 children: [
                   CircleAvatar(
                     radius: 30,
@@ -62,16 +64,16 @@ class Post extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Message Box Section
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
                 color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: TextField(
+              child: const TextField(
                 maxLength: 200,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -80,7 +82,7 @@ class Post extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Dropdown and Buttons Section
             Row(
@@ -88,7 +90,7 @@ class Post extends StatelessWidget {
               children: [
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(12),
@@ -96,7 +98,7 @@ class Post extends StatelessWidget {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         value: '@chosse comunity', // Default value
-                        items: [
+                        items: const [
                           DropdownMenuItem(
                             value: '@chosse comunity',
                             child: Text('@chosse comunity'),
@@ -111,23 +113,23 @@ class Post extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.grey[300],
-                    onPrimary: Colors.black,
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.grey[300],
                   ),
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.grey[300],
-                    onPrimary: Colors.black,
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.grey[300],
                   ),
-                  child: Text('Saves'),
+                  child: const Text('Saves'),
                 ),
               ],
             ),
