@@ -17,19 +17,17 @@ class _CustomButtonState extends State<CustomButton> {
       onPressed: () {
         widget.onPressed();
       },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: const Color.fromARGB(255, 18, 4, 4), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), backgroundColor: const Color.fromARGB(255, 104, 2, 2),
+        elevation: 22,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+      ),
       child: SizedBox(
           child: Text(
         widget.text,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 18),
+        style: const TextStyle(fontSize: 18),
       )),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        elevation: 22,
-        primary: Color.fromARGB(255, 104, 2, 2),
-        onPrimary: Color.fromARGB(255, 18, 4, 4),
-        padding: const EdgeInsets.symmetric(vertical: 12),
-      ),
     );
   }
 }

@@ -1,37 +1,38 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:music_app/Models/song_model.dart';
 import 'package:music_app/services/user_service.dart';
-import 'package:music_app/models/user_model.dart';
+import 'package:music_app/Models/user_model.dart';
 
 class UserViewModel extends GetxController {
-  var isLoading = false.obs; // لتحديد ما إذا كانت البيانات في التحميل
-  var user =
-      Rx<User?>(null); // لتخزين بيانات المستخدم، نوع البيانات هو Rx<User>
+  var isLoading = false.obs;
+  var user = Rx<User?>(null);
 
-  var errorMessage = ''.obs; // لتخزين أي رسالة خطأ إذا حدثت
+  var errorMessage = ''.obs;
+
+  var likedSongs = <Song?>[].obs;
+
+  List<Song> get likedSongsList =>
+      likedSongs.where((song) => song != null).cast<Song>().toList();
+
+  void clearUser() {
+    user = Rx<User?>(null);
+    
+  }
 
   // Method to fetch user profile from the server
   Future<void> fetchUserProfile(String token) async {
-    isLoading(true); // بدء التحميل
+    isLoading(true);
     try {
-      var response = await UserService()
-          .getUserProfile(token); // الحصول على البروفايل باستخدام الخدمة
+      var response = await UserService().getUserProfile(token);
       if (response != null) {
-        user.value = User(
-            id: response.id,
-            username: response.username,
-            email: response.email,
-            likedSongs: response.likedSongs,
-            likedPosts: response.likedPosts,
-            comments: response.comments,
-            profilePicture: response.profilePicture,
-            secretGifts: response.secretGifts);
-      } else {
-        errorMessage.value = 'Failed to load profile.';
+        user.value = response;
       }
     } catch (e) {
       errorMessage.value = 'Error: $e';
+      printError(info: "$e");
     } finally {
-      isLoading(false); // إيقاف التحميل
+      isLoading(false);
     }
   }
 
@@ -58,6 +59,43 @@ class UserViewModel extends GetxController {
       errorMessage.value = 'Error: $e';
     } finally {
       isLoading(false);
+    }
+  }
+
+  // Method to fetch liked songs
+  Future<void> fetchLikedSongs(String token) async {
+    isLoading(true); // بدء التحميل
+    print("likedSongsssssssssssssssssssssssssssssssssssss $likedSongs");
+    try {
+      var response = await UserService().getUserLikes(token);
+      if (response.isNotEmpty) {
+        likedSongs.value = response;
+        print(
+            "likedSongsssssssssssssssssssssssssssssssssssss $likedSongs ${likedSongs}");
+      } else {
+        errorMessage.value = 'no songs';
+      }
+    } catch (e) {
+      errorMessage.value = 'Error fetching liked songs: $e';
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> toggleSongLike(String songId, String token, bool like) async {
+    try {
+      var response = await UserService().toggleLike(songId, token, like);
+      if (response.isNotEmpty) {
+        debugPrint("Number of songs: ${likedSongs.length}");
+        // debugPrint("Nugs: ${likedSongs[0]!.title}");
+
+        likedSongs.value = response;
+        print("likedSongsssssssssssssssssssssssssssssssssssss $likedSongs");
+      } else {
+        errorMessage.value = 'no songs';
+      }
+    } catch (e) {
+      print('Error toggling like: $e');
     }
   }
 }

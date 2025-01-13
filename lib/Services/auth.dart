@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:music_app/Models/auth_model.dart';
@@ -9,7 +7,7 @@ import 'package:music_app/utils/local_storage_service.dart';
 
 class AuthService {
   final String baseUrl =
-      'https://music-app-server-50cl.onrender.com/api/auth'; // رابط الخادم
+      'https://music-app-server-1-h4hl.onrender.com/api/auth'; // رابط الخادم
 
   Future<Map<String, dynamic>> register(
     AuthModel userData, {
@@ -99,7 +97,9 @@ class AuthService {
 
         // حذف التوكن من التخزين المحلي
         await LocalStorageService().clearToken();
-        Get.offAll(LoginPage()); // تأكد أن "/login" معرف كروت في GetX
+
+        
+        Get.offAll(const LoginPage()); // تأكد أن "/login" معرف كروت في GetX
       } else {
         throw Exception('Failed to log out: ${response.body}');
       }

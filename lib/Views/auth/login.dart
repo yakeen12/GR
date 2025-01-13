@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/CustomTextField.dart';
 import 'package:music_app/CustomWidgets/custom-Button.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
@@ -9,6 +10,8 @@ import 'package:music_app/homePage.dart';
 import 'package:music_app/methods.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -16,10 +19,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController PasswordController = TextEditingController();
+  final authViewModel = AuthViewModel();
 
   void logIn() async {
-    final authViewModel = AuthViewModel();
-
     final email = emailController.text;
     final password = PasswordController.text;
 
@@ -38,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (isValid == "Login Successful") {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign in successful!')),
+        const SnackBar(content: Text('Sign in successful!')),
       );
       // Navigate to another screen here
 
@@ -47,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       setState(() {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('login in failed. Please try again.')),
+          const SnackBar(content: Text('login in failed. Please try again.')),
         );
       });
     }
@@ -57,83 +59,67 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return CustomScaffold(body: LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _icon(),
-                    const SizedBox(height: 10),
-                    CustomTextField(
-                        hintText: "Email", controller: emailController),
-                    const SizedBox(height: 10),
-                    CustomTextField(
-                        hintText: "Password",
-                        controller: PasswordController,
-                        isPassword: true),
-                    const SizedBox(height: 30),
-                    _loginbtn(),
-                    const SizedBox(height: 20),
-                    _extraText(),
-                  ],
+        return Stack(
+          children: [
+            SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        _icon(),
+                        const SizedBox(height: 10),
+                        CustomTextField(
+                            hintText: "Email", controller: emailController),
+                        const SizedBox(height: 10),
+                        CustomTextField(
+                            hintText: "Password",
+                            controller: PasswordController,
+                            isPassword: true),
+                        const SizedBox(height: 30),
+                        _loginbtn(),
+                        const SizedBox(height: 20),
+                        _extraText(),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+            Obx(() {
+              if (authViewModel.isLoading.value) {
+                return Center(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+                    color: const Color.fromARGB(78, 255, 255, 255),
+                    child: SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                );
+              }
+              return SizedBox();
+            })
+          ],
         );
       },
     ));
   }
 
-  // Widget _Page() {
-  //   return LayoutBuilder(
-  //     builder: (BuildContext context, BoxConstraints constraints) {
-  //       return SingleChildScrollView(
-  //         child: ConstrainedBox(
-  //           constraints: BoxConstraints(
-  //             minHeight: constraints.maxHeight,
-  //           ),
-  //           child: IntrinsicHeight(
-  //             child: Padding(
-  //               padding: const EdgeInsets.all(32.0),
-  //               child: Column(
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 crossAxisAlignment: CrossAxisAlignment.center,
-  //                 children: [
-  //                   _icon(),
-  //                   const SizedBox(height: 30),
-  //                   CustomTextField(
-  //                       hintText: "UserName", controller: emailController),
-  //                   const SizedBox(height: 30),
-  //                   CustomTextField(
-  //                       hintText: "Password",
-  //                       controller: PasswordController,
-  //                       isPassword: true),
-  //                   const SizedBox(height: 30),
-  //                   _loginbtn(),
-  //                   const SizedBox(height: 20),
-  //                   _extraText(),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   Widget _icon() {
     return Container(
       padding: EdgeInsets.zero,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           //border: Border.all(color: const Color.fromARGB(255, 2, 2, 2),width: 2),
           shape: BoxShape.circle),
       child: Center(
@@ -164,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Not yet signed in?',
               style: TextStyle(color: Colors.grey),
             ),
@@ -176,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (context) => const SignInView()));
                 },
                 style: TextButton.styleFrom(foregroundColor: Colors.grey),
-                child: Text(
+                child: const Text(
                   "sign in now",
                   style: TextStyle(decoration: TextDecoration.underline),
                 ))
