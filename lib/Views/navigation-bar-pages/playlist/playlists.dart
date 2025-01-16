@@ -5,7 +5,7 @@ import 'package:music_app/ViewModels/episode_view_model.dart';
 import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/ViewModels/search_view_model.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
-import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
+import 'package:music_app/Views/gifts/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/music/createplaylist.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/music/likes.dart';

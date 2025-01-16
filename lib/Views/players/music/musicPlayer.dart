@@ -4,6 +4,7 @@ import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/CustomWidgets/likeSongButton.dart';
 import 'package:music_app/CustomWidgets/select-playList.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
+import 'package:music_app/Views/gifts/gift_one_song.dart';
 import 'package:music_app/Views/navigation-bar-pages/communities/create_post.dart';
 import 'package:music_app/Views/players/music/artist.dart';
 import 'package:music_app/providers/music_provider.dart';
@@ -122,7 +123,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         // shareSong(
                         //     song); // نفذ عملية المشاركة (يمكنك استخدام مكتبة مثل share_plus)
                       } else if (value == 'Add to Playlist') {
-                        final selectedPlaylistId = await showDialog<String>(
+                        await showDialog<String>(
                           context: context,
                           builder: (BuildContext context) {
                             return PlaylistSelectionDialog(
@@ -140,6 +141,26 @@ class _MusicPlayerState extends State<MusicPlayer> {
                             MaterialPageRoute(
                               builder: (context) => CreatePostPage(
                                   song: musicProvider.currentSong!),
+                            ));
+                      } else if (value == 'Add to Playlist') {
+                        await showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return PlaylistSelectionDialog(
+                              songId: musicProvider.currentSongId!,
+                            );
+                          },
+                        );
+
+                        Navigator.of(context)
+                            .pop(); // اغلق الحوار وعد للميوزيك بلاير
+                      } else if (value == "Send as a Gift") {
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  GiftOneSong(song: musicProvider.currentSong!),
                             ));
                       }
                     },
@@ -186,6 +207,21 @@ class _MusicPlayerState extends State<MusicPlayer> {
                             padding: const EdgeInsets.all(15),
                             child: const Text(
                               'Post to Community',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      ),
+                      PopupMenuItem(
+                        value: 'Send as a Gift',
+                        child: Container(
+                            margin: const EdgeInsets.only(top: 10, bottom: 10),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white)),
+                            width: MediaQuery.sizeOf(context).width,
+                            padding: const EdgeInsets.all(15),
+                            child: const Text(
+                              'Send as a Gift',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),

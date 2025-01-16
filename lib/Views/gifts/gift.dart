@@ -170,11 +170,11 @@ class _GiftState extends State<Gift> {
               Obx(() {
                 if (searchSongsViewModel.isLoading.value)
                   return CircularProgressIndicator();
-                if (searchSongsViewModel.errorMessage.value.isNotEmpty)
-                  return Text(
-                    searchSongsViewModel.errorMessage.value,
-                    style: TextStyle(color: Colors.white),
-                  );
+                // if (searchSongsViewModel.errorMessage.value.isNotEmpty)
+                //   return Text(
+                //     searchSongsViewModel.errorMessage.value,
+                //     style: TextStyle(color: Colors.white),
+                //   );
 
                 return Column(children: [
                   ...List.generate(searchSongsViewModel.songsGift.length,

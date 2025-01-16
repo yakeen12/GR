@@ -5,7 +5,7 @@ import 'package:music_app/CustomWidgets/post_widget.dart';
 import 'package:music_app/Models/user_model.dart';
 import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/ViewModels/post_view_model.dart';
-import 'package:music_app/Views/navigation-bar-pages/me/sendGift_from_pf.dart';
+import 'package:music_app/Views/gifts/sendGift_from_pf.dart';
 import 'package:music_app/Views/navigation-bar-pages/playlist/outUser/playList_inside_outUser.dart';
 import 'package:music_app/utils/local_storage_service.dart';
 
