@@ -221,7 +221,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         child: Container(
                             margin: const EdgeInsets.only(top: 10, bottom: 10),
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white)),
+                                border: Border.all(
+                                    color: Color.fromARGB(255, 10, 10, 10))),
                             width: MediaQuery.sizeOf(context).width,
                             padding: const EdgeInsets.all(15),
                             child: const Text(
