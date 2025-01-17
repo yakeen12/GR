@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/ViewModels/secret_gift_view_model.dart';
-import 'package:music_app/Views/navigation-bar-pages/me/my_gift_inside.dart';
-import 'package:music_app/Views/navigation-bar-pages/playlist/myplaylistinside.dart';
+import 'package:music_app/Views/gifts/my_gift_inside.dart';
 
 class MyGifts extends StatefulWidget {
   const MyGifts({super.key});
@@ -26,16 +25,16 @@ class _MyGiftsState extends State<MyGifts> {
                 color: Colors.white,
               ),
             );
-          } else if (secretGiftViewModel.errorMessage.isNotEmpty) {
-            return Center(
-              child: Text(
-                secretGiftViewModel.errorMessage.value,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
-              ),
-            );
+            // } else if (secretGiftViewModel.errorMessage.isNotEmpty) {
+            //   return Center(
+            //     child: Text(
+            //       secretGiftViewModel.errorMessage.value,
+            //       style: TextStyle(
+            //           color: Colors.white,
+            //           fontSize: 16,
+            //           fontWeight: FontWeight.bold),
+            //     ),
+            //   );
           } else if (!secretGiftViewModel.hasGifts) {
             return Center(
               child: Text(

@@ -54,6 +54,8 @@ class SearchViewModel extends GetxController {
       posts.assignAll((result['posts'] as List)
           .map((postJson) => Post.fromJson(postJson))
           .toList());
+      print("pssssssssssss posts ");
+      print(posts);
 
       songs.assignAll((result['songs'] as List)
           .map((songJson) => Song.fromJson(songJson))
@@ -75,6 +77,7 @@ class SearchViewModel extends GetxController {
           .map((podcastJson) => Podcast.fromJson(podcastJson))
           .toList());
     } catch (e) {
+      print(e);
       errorMessage.value = e.toString();
     } finally {
       isLoading.value = false;

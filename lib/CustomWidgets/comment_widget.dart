@@ -24,6 +24,7 @@ class _CommentWidgetState extends State<CommentWidget> {
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,6 +49,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                   height: 10,
                 ),
                 Text(widget.comment.content,
+                    textAlign: TextAlign.start,
                     style: TextStyle(color: Colors.white)),
               ],
             ),

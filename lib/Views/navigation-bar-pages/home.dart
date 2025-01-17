@@ -8,7 +8,7 @@ import 'package:music_app/ViewModels/search_view_model.dart';
 import 'package:music_app/ViewModels/songs_view_model.dart';
 import 'package:music_app/ViewModels/user_view_model.dart';
 import 'package:music_app/Views/navigation-bar-pages/communities/post_inside.dart';
-import 'package:music_app/Views/navigation-bar-pages/me/edit/gift.dart';
+import 'package:music_app/Views/gifts/gift.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/me_outside_user_search.dart';
 import 'package:music_app/Views/navigation-bar-pages/me/meeye.dart';
 import 'package:music_app/Views/players/music/artist.dart';
