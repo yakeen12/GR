@@ -212,7 +212,7 @@ class _PodcastPlayerState extends State<PodcastPlayer> {
                   iconSize: 36,
                   icon: const Icon(
                     Icons.more_vert,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 248, 246, 246),
                   ),
                   onSelected: (value) async {
                     if (value == 'Share Song') {
@@ -238,7 +238,8 @@ class _PodcastPlayerState extends State<PodcastPlayer> {
                             top: 10,
                           ),
                           decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white)),
+                              border: Border.all(
+                                  color: const Color.fromARGB(255, 0, 0, 0))),
                           width: MediaQuery.sizeOf(context).width,
                           padding: const EdgeInsets.all(15),
                           child: const Text(
@@ -255,7 +256,8 @@ class _PodcastPlayerState extends State<PodcastPlayer> {
                             top: 10,
                           ),
                           decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white)),
+                              border: Border.all(
+                                  color: const Color.fromARGB(255, 0, 0, 0))),
                           width: MediaQuery.sizeOf(context).width,
                           padding: const EdgeInsets.all(15),
                           child: const Text(

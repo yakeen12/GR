@@ -75,7 +75,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                       Text(
                         musicProvider.currentSongTitle!,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Color.fromARGB(255, 223, 220, 220),
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
@@ -115,7 +115,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                     iconSize: 36,
                     icon: const Icon(
                       Icons.more_vert,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 230, 226, 226),
                     ),
                     onSelected: (value) async {
                       if (value == 'Share Song') {
@@ -172,13 +172,14 @@ class _MusicPlayerState extends State<MusicPlayer> {
                               top: 10,
                             ),
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white)),
+                                border: Border.all(
+                                    color: Color.fromARGB(255, 6, 6, 6))),
                             width: MediaQuery.sizeOf(context).width,
                             padding: const EdgeInsets.all(15),
                             child: const Text(
                               'Share Song',
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Color.fromARGB(255, 245, 243, 243),
                                   fontWeight: FontWeight.bold),
                             )),
                       ),
@@ -187,7 +188,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         child: Container(
                             margin: const EdgeInsets.only(top: 10, bottom: 10),
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white)),
+                                border: Border.all(
+                                    color: const Color.fromARGB(255, 2, 2, 2))),
                             width: MediaQuery.sizeOf(context).width,
                             padding: const EdgeInsets.all(15),
                             child: const Text(
@@ -202,7 +204,9 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         child: Container(
                             margin: const EdgeInsets.only(top: 10, bottom: 10),
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white)),
+                                border: Border.all(
+                                    color:
+                                        const Color.fromARGB(255, 10, 10, 10))),
                             width: MediaQuery.sizeOf(context).width,
                             padding: const EdgeInsets.all(15),
                             child: const Text(
