@@ -44,7 +44,7 @@ class Artist {
       id: json['_id'],
       name: json['name'],
       image: json['image'] ?? "",
-      songs: json['songs'] != null
+      songs: json['songs'] != null && json['songs'] is List<Song>
           ? List<Song>.from(json['songs'].map((x) => Song.fromJson(x)))
           : [],
     );

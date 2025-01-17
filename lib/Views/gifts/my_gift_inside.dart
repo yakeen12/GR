@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:music_app/CustomWidgets/custom-scaffold.dart';
 import 'package:music_app/CustomWidgets/customSongCard.dart';
-import 'package:music_app/Models/playList_model.dart';
 import 'package:music_app/Models/secretGift_model.dart';
-import 'package:music_app/Models/song_model.dart';
-import 'package:music_app/ViewModels/playList_view_model.dart';
 import 'package:music_app/Views/players/music/musicPlayer.dart';
 import 'package:music_app/providers/music_provider.dart';
 import 'package:music_app/providers/podcast_provider.dart';
-import 'package:music_app/utils/local_storage_service.dart';
 import 'package:provider/provider.dart';
 
 class MyGiftInside extends StatefulWidget {
