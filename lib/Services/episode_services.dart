@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class EpisodeService {
   final String baseUrl =
-      'https://music-app-server-1-h4hl.onrender.com/api/episodes'; // الرابط الخاص بالخادم
+      'https://music-app-server-final.onrender.com/api/episodes'; // الرابط الخاص بالخادم
 
   Future<List<dynamic>> fetchallEpisodes() async {
     final response = await http.get(Uri.parse('$baseUrl/'));

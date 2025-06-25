@@ -4,7 +4,7 @@ import 'package:music_app/utils/local_storage_service.dart';
 
 class SecretGiftService {
   final String baseUrl =
-      'https://music-app-server-1-h4hl.onrender.com/api/secretGifts';
+      'https://music-app-server-final.onrender.com/api/secretGifts';
 
   Future<bool> sendGift(String receiverId, songList, String content) async {
     final response = await http.post(Uri.parse('$baseUrl/send'),

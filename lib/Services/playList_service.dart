@@ -6,7 +6,7 @@ import 'package:music_app/utils/local_storage_service.dart';
 
 class PlaylistService {
   final String baseUrl =
-      'https://music-app-server-1-h4hl.onrender.com/api/playlists';
+      'https://music-app-server-final.onrender.com/api/playlists';
 
   // جلب البلاي ليستات العامة
   Future<List<dynamic>> getPublicPlaylists(String userId) async {

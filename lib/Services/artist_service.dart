@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class ArtistService {
   final String baseUrl =
-      'https://music-app-server-1-h4hl.onrender.com/api/artists';
+      'https://music-app-server-final.onrender.com/api/artists';
 
   // طلب بيانات المستخدم
   Future<Artist?> getArtistProfile(String artistId) async {
