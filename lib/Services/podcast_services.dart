@@ -4,7 +4,7 @@ import 'package:music_app/Models/podcast_model.dart';
 
 class PodcastService {
   final String baseUrl =
-      'https://music-app-server-1-h4hl.onrender.com/api/podcasts'; // الرابط الخاص بالخادم
+      'https://music-app-server-final.onrender.com/api/podcasts'; // الرابط الخاص بالخادم
 
   // طلب بيانات المستخدم
   Future<Podcast?> getPodcastDetails(String podcastId) async {
