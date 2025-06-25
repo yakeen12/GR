@@ -7,7 +7,7 @@ import 'package:music_app/utils/local_storage_service.dart';
 
 class CommentService {
   final String baseUrl =
-      'https://music-app-server-1-h4hl.onrender.com/api/comments'; // الرابط الخاص بالخادم
+      'https://music-app-server-final.onrender.com/api/comments'; // الرابط الخاص بالخادم
 
   Future<void> addComment(
     String content,
