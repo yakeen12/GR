@@ -5,7 +5,7 @@ import 'package:music_app/Models/user_model.dart';
 
 class UserService {
   final String baseUrl =
-      'https://music-app-server-1-h4hl.onrender.com/api/users'; // الرابط الخاص بالخادم
+      'https://music-app-server-final.onrender.com/api/users'; // الرابط الخاص بالخادم
 
   Future<Map<String, dynamic>> updateUser({
     required String token,
