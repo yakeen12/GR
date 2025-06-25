@@ -5,7 +5,7 @@ import 'package:music_app/utils/local_storage_service.dart';
 
 class SearchService {
   final String apiUrl =
-      'https://music-app-server-1-h4hl.onrender.com/api/search';
+      'https://music-app-server-final.onrender.com/api/search';
 
   Future<Map<String, dynamic>> search(String query) async {
     final response =
