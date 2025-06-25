@@ -9,7 +9,7 @@ import 'package:music_app/utils/local_storage_service.dart';
 
 class PostService {
   final String baseUrl =
-      'https://music-app-server-1-h4hl.onrender.com/api/posts'; // الرابط الخاص بالخادم
+      'https://music-app-server-final.onrender.com/api/posts'; // الرابط الخاص بالخادم
 
   // إضافة بوست جديد
   Future<Map<String, dynamic>> createPost(String community, String content,
